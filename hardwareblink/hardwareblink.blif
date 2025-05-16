@@ -14,10 +14,9 @@
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "/usr/local/bin/../share/yosys/ice40/cells_map.v:41.34-42.52"
 .param LUT_INIT 0000000011111111
-.gate SB_HFOSC CLKHF=clk CLKHFEN=$true CLKHFPU=$true
+.gate SB_LFOSC CLKLF=clk CLKLFEN=$true CLKLFPU=$true
 .attr module_not_derived 00000000000000000000000000000001
-.attr src "hardwareblink.v:14.11-18.3"
-.param CLKHF_DIV "0b01"
+.attr src "hardwareblink.v:14.11-18.6"
 .gate SB_CARRY CI=count[0] CO=count_SB_DFFSR_Q_D_SB_LUT4_O_I3[2] I0=$false I1=count[1]
 .attr src "hardwareblink.v:31|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
 .gate SB_CARRY CI=count_SB_DFFSR_Q_D_SB_LUT4_O_I3[9] CO=count_SB_DFFSR_Q_D_SB_LUT4_O_I3[10] I0=$false I1=count[9]
@@ -198,7 +197,7 @@
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "/usr/local/bin/../share/yosys/ice40/cells_map.v:41.34-42.52"
 .param LUT_INIT 0000000011111111
-.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[23] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[24] I0=$true I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_15_I1
+.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[23] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[24] I0=$false I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_15_I1
 .attr src "hardwareblink.v:26|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
 .gate SB_LUT4 I0=$false I1=$false I2=$false I3=count[23] O=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_15_I1
 .attr module_not_derived 00000000000000000000000000000001
@@ -210,13 +209,13 @@
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "/usr/local/bin/../share/yosys/ice40/cells_map.v:41.34-42.52"
 .param LUT_INIT 0000000011111111
-.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[21] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[22] I0=$true I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_17_I1
+.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[21] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[22] I0=$false I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_17_I1
 .attr src "hardwareblink.v:26|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
 .gate SB_LUT4 I0=$false I1=$false I2=$false I3=count[21] O=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_17_I1
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "/usr/local/bin/../share/yosys/ice40/cells_map.v:41.34-42.52"
 .param LUT_INIT 0000000011111111
-.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[20] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[21] I0=$true I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_18_I1
+.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[20] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[21] I0=$false I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_18_I1
 .attr src "hardwareblink.v:26|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
 .gate SB_LUT4 I0=$false I1=$false I2=$false I3=count[20] O=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_18_I1
 .attr module_not_derived 00000000000000000000000000000001
@@ -234,19 +233,19 @@
 .param LUT_INIT 0000000011111111
 .gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[7] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[8] I0=$false I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_2_I1
 .attr src "hardwareblink.v:26|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[18] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[19] I0=$true I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_20_I1
+.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[18] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[19] I0=$false I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_20_I1
 .attr src "hardwareblink.v:26|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
 .gate SB_LUT4 I0=$false I1=$false I2=$false I3=count[18] O=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_20_I1
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "/usr/local/bin/../share/yosys/ice40/cells_map.v:41.34-42.52"
 .param LUT_INIT 0000000011111111
-.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[17] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[18] I0=$true I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_21_I1
+.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[17] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[18] I0=$false I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_21_I1
 .attr src "hardwareblink.v:26|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
 .gate SB_LUT4 I0=$false I1=$false I2=$false I3=count[17] O=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_21_I1
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "/usr/local/bin/../share/yosys/ice40/cells_map.v:41.34-42.52"
 .param LUT_INIT 0000000011111111
-.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[16] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[17] I0=$true I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_22_I1
+.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[16] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[17] I0=$false I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_22_I1
 .attr src "hardwareblink.v:26|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
 .gate SB_LUT4 I0=$false I1=$false I2=$false I3=count[16] O=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_22_I1
 .attr module_not_derived 00000000000000000000000000000001
@@ -264,25 +263,25 @@
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "/usr/local/bin/../share/yosys/ice40/cells_map.v:41.34-42.52"
 .param LUT_INIT 0000000011111111
-.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[13] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[14] I0=$false I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_25_I1
+.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[13] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[14] I0=$true I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_25_I1
 .attr src "hardwareblink.v:26|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
 .gate SB_LUT4 I0=$false I1=$false I2=$false I3=count[13] O=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_25_I1
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "/usr/local/bin/../share/yosys/ice40/cells_map.v:41.34-42.52"
 .param LUT_INIT 0000000011111111
-.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[12] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[13] I0=$true I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_26_I1
+.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[12] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[13] I0=$false I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_26_I1
 .attr src "hardwareblink.v:26|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
 .gate SB_LUT4 I0=$false I1=$false I2=$false I3=count[12] O=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_26_I1
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "/usr/local/bin/../share/yosys/ice40/cells_map.v:41.34-42.52"
 .param LUT_INIT 0000000011111111
-.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[11] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[12] I0=$true I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_27_I1
+.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[11] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[12] I0=$false I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_27_I1
 .attr src "hardwareblink.v:26|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
 .gate SB_LUT4 I0=$false I1=$false I2=$false I3=count[11] O=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_27_I1
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "/usr/local/bin/../share/yosys/ice40/cells_map.v:41.34-42.52"
 .param LUT_INIT 0000000011111111
-.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[10] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[11] I0=$false I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_28_I1
+.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[10] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[11] I0=$true I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_28_I1
 .attr src "hardwareblink.v:26|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
 .gate SB_LUT4 I0=$false I1=$false I2=$false I3=count[10] O=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_28_I1
 .attr module_not_derived 00000000000000000000000000000001
@@ -304,7 +303,7 @@
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "/usr/local/bin/../share/yosys/ice40/cells_map.v:41.34-42.52"
 .param LUT_INIT 0000000011111111
-.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[4] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[5] I0=$false I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_5_I1
+.gate SB_CARRY CI=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[4] CO=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO[5] I0=$true I1=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_5_I1
 .attr src "hardwareblink.v:26|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
 .gate SB_LUT4 I0=$false I1=$false I2=$false I3=count[4] O=count_SB_DFFSR_Q_31_D_SB_CARRY_CI_CO_SB_CARRY_CO_5_I1
 .attr module_not_derived 00000000000000000000000000000001

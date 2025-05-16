@@ -7825,6 +7825,7 @@
     "SB_HFOSC": {
       "attributes": {
         "blackbox": "00000000000000000000000000000001",
+        "cells_not_processed": "00000000000000000000000000000001",
         "src": "/usr/local/bin/../share/yosys/ice40/cells_sim.v:2395.1-2412.10"
       },
       "ports": {
@@ -9059,7 +9060,6 @@
     "SB_LFOSC": {
       "attributes": {
         "blackbox": "00000000000000000000000000000001",
-        "cells_not_processed": "00000000000000000000000000000001",
         "src": "/usr/local/bin/../share/yosys/ice40/cells_sim.v:2415.1-2420.10"
       },
       "ports": {
@@ -13806,23 +13806,22 @@
         },
         "OSCInst0": {
           "hide_name": 0,
-          "type": "SB_HFOSC",
+          "type": "SB_LFOSC",
           "parameters": {
-            "CLKHF_DIV": "0b01"
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "hardwareblink.v:14.11-18.3"
+            "src": "hardwareblink.v:14.11-18.6"
           },
           "port_directions": {
-            "CLKHF": "output",
-            "CLKHFEN": "input",
-            "CLKHFPU": "input"
+            "CLKLF": "output",
+            "CLKLFEN": "input",
+            "CLKLFPU": "input"
           },
           "connections": {
-            "CLKHF": [ 3 ],
-            "CLKHFEN": [ "1" ],
-            "CLKHFPU": [ "1" ]
+            "CLKLF": [ 3 ],
+            "CLKLFEN": [ "1" ],
+            "CLKLFPU": [ "1" ]
           }
         },
         "count_SB_CARRY_CI": {
@@ -15383,7 +15382,7 @@
           "connections": {
             "CI": [ 115 ],
             "CO": [ 113 ],
-            "I0": [ "1" ],
+            "I0": [ "0" ],
             "I1": [ 116 ]
           }
         },
@@ -15475,7 +15474,7 @@
           "connections": {
             "CI": [ 119 ],
             "CO": [ 117 ],
-            "I0": [ "1" ],
+            "I0": [ "0" ],
             "I1": [ 120 ]
           }
         },
@@ -15521,7 +15520,7 @@
           "connections": {
             "CI": [ 121 ],
             "CO": [ 119 ],
-            "I0": [ "1" ],
+            "I0": [ "0" ],
             "I1": [ 122 ]
           }
         },
@@ -15659,7 +15658,7 @@
           "connections": {
             "CI": [ 127 ],
             "CO": [ 123 ],
-            "I0": [ "1" ],
+            "I0": [ "0" ],
             "I1": [ 128 ]
           }
         },
@@ -15705,7 +15704,7 @@
           "connections": {
             "CI": [ 129 ],
             "CO": [ 127 ],
-            "I0": [ "1" ],
+            "I0": [ "0" ],
             "I1": [ 130 ]
           }
         },
@@ -15751,7 +15750,7 @@
           "connections": {
             "CI": [ 131 ],
             "CO": [ 129 ],
-            "I0": [ "1" ],
+            "I0": [ "0" ],
             "I1": [ 132 ]
           }
         },
@@ -15889,7 +15888,7 @@
           "connections": {
             "CI": [ 137 ],
             "CO": [ 135 ],
-            "I0": [ "0" ],
+            "I0": [ "1" ],
             "I1": [ 138 ]
           }
         },
@@ -15935,7 +15934,7 @@
           "connections": {
             "CI": [ 139 ],
             "CO": [ 137 ],
-            "I0": [ "1" ],
+            "I0": [ "0" ],
             "I1": [ 140 ]
           }
         },
@@ -15981,7 +15980,7 @@
           "connections": {
             "CI": [ 141 ],
             "CO": [ 139 ],
-            "I0": [ "1" ],
+            "I0": [ "0" ],
             "I1": [ 142 ]
           }
         },
@@ -16027,7 +16026,7 @@
           "connections": {
             "CI": [ 100 ],
             "CO": [ 141 ],
-            "I0": [ "0" ],
+            "I0": [ "1" ],
             "I1": [ 143 ]
           }
         },
@@ -16190,7 +16189,7 @@
           "connections": {
             "CI": [ 148 ],
             "CO": [ 146 ],
-            "I0": [ "0" ],
+            "I0": [ "1" ],
             "I1": [ 149 ]
           }
         },
