@@ -1,0 +1,11 @@
+/f-of-e-tools/tools/sunflower/tools/bin/riscv32-elf-as --march=rv32i --mabi=ilp32 init.S -o init.o
+/f-of-e-tools/tools/sunflower/tools/bin/riscv32-elf-gcc -march=rv32i -mabi=ilp32 -DM32 -Wall -O0 -I../include -c softwareblink.c
+/f-of-e-tools/tools/sunflower/tools/bin/riscv32-elf-ld -L/f-of-e-tools/tools/sunflower/tools/tools-lib/riscv -Map softwareblink.map -Tsail.ld init.o softwareblink.o  -o softwareblink -lc -lm -lgcc
+/f-of-e-tools/tools/sunflower/tools/bin/riscv32-elf-objcopy -O srec softwareblink softwareblink.sr
+/f-of-e-tools/tools/sunflower/tools/bin/riscv32-elf-gcc -E init-sf.S > init-sf.i; /f-of-e-tools/tools/sunflower/tools/bin/riscv32-elf-as --march=rv32i --mabi=ilp32 init-sf.i -o init-sf.o
+/f-of-e-tools/tools/sunflower/tools/bin/riscv32-elf-ld -Ttext 0x08004000  -L/f-of-e-tools/tools/sunflower/tools/tools-lib/riscv -Map softwareblink.map init-sf.o softwareblink.o  -o softwareblink-sf -lc -lgcc -lgloss
+/f-of-e-tools/tools/sunflower/tools/bin/riscv32-elf-objcopy -O srec softwareblink-sf softwareblink-sf.sr
+mkdir -p /gb3-resources/processor/programs/
+srec2hex -b 4096 softwareblink.sr
+cp program.hex /gb3-resources/processor/programs/
+cp data.hex /gb3-resources/processor/programs/
