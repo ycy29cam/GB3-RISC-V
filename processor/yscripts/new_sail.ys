@@ -1,0 +1,9 @@
+read_verilog verilog/*.v toplevel.v
+hierarchy -top top
+proc
+flatten
+opt
+stat                             # <-- Stat before synth: raw RTL stats
+synth_ice40 -top top -abc9
+stat                             # <-- Stat after synthesis: mapped cells
+write_json sail.json

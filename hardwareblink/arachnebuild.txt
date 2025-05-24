@@ -1,0 +1,68 @@
+seed: 1
+device: 5k
+read_chipdb +/share/arachne-pnr/chipdb-5k.bin...
+  supported packages: sg48, uwg30
+read_blif hardwareblink.blif...
+prune...
+read_pcf hardwareblink.pcf...
+instantiate_io...
+pack...
+
+After packing:
+IOs          1 / 21
+  IO_I3Cs    0 / 2
+  IO_ODs     0 / 3
+GBs          0 / 8
+  GB_IOs     0 / 8
+LCs          101 / 5280
+  DFF        4
+  CARRY      34
+  CARRY, DFF 29
+  DFF PASS   2
+  CARRY PASS 2
+BRAMs        0 / 30
+WARMBOOTs    0 / 1
+PLLs         0 / 1
+MAC16s       0 / 8
+SPRAM256KAs  0 / 4
+HFOSCs       1 / 1
+LFOSCs       0 / 1
+RGBA_DRVs    0 / 1
+LEDDA_IPs    0 / 1
+I2Cs         0 / 2
+SPIs         0 / 2
+
+place_constraints...
+promote_globals...
+  promoted count_SB_DFFSR_Q_R, 32 / 33
+  promoted 1 nets
+    1 sr/we
+  2 globals
+    1 sr/we
+    1 clk
+realize_constants...
+  realized 1
+place...
+  initial wire length = 2571
+  at iteration #50: temp = 24.2268, wire length = 881
+  at iteration #100: temp = 7.7517, wire length = 603
+  at iteration #150: temp = 3.78031, wire length = 365
+  at iteration #200: temp = 1.50159, wire length = 239
+  at iteration #250: temp = 0.040258, wire length = 168
+  final wire length = 168
+
+After placement:
+PIOs       1 / 21
+PLBs       20 / 660
+BRAMs      0 / 30
+
+  place time 0.12s
+route...
+  pass 1, 0 shared.
+
+After routing:
+span_4     36 / 23008
+span_12    13 / 4464
+
+  route time 0.11s
+write_txt hardwareblink.asc...
