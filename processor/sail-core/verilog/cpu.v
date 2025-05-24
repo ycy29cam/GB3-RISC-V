@@ -213,6 +213,7 @@ module cpu(
 	 */
 	if_id if_id_reg(
 			.clk(clk),
+			.flush(mistake_trigger),    // Connect mispredict flush signal
 			.data_in({inst_mux_out, pc_out}),
 			.data_out(if_id_out)
 		);
@@ -467,13 +468,14 @@ module cpu(
 			.out(dataMemOut_fwd_mux_out)
 		);
 
-	//Branch Predictor
-	branch_predictor branch_predictor_FSM(
+	// Branch Predictor with integrated BTB
+	branch_predictor branch_predictor_with_btb(
 			.clk(clk),
+			.reset(reset), // Add reset signal if needed
 			.actual_branch_decision(actual_branch_decision),
 			.branch_decode_sig(cont_mux_out[6]),
-			.branch_mem_sig(ex_mem_out[6]),
-			.in_addr(if_id_out[31:0]),
+			.branch_mem_sig(ex_mem_out[6]), // Update BTB in MEM stage
+			.in_addr(if_id_out[31:0]), // PC at fetch stage
 			.offset(imm_out),
 			.branch_addr(branch_predictor_addr),
 			.prediction(predict)

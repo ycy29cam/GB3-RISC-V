@@ -1,59 +1,24 @@
-/*
-	Authored 2018-2019, Ryan Voo.
+module branch_decision(
+    input Branch,                     // Control signal: branch instruction
+    input Predicted,                  // BTB prediction signal (from branch_predictor)
+    input Branch_Enable,              // ALU branch enable (from EX)
+    input Jump,                       // Control signal: jump instruction
+    output reg Mispredict,            // New: misprediction flag
+    output reg Decision,              // Actual branch decision
+    output reg Branch_Jump_Trigger    // Existing: PC select
+);
 
-	All rights reserved.
-	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions
-	are met:
+    always @(*) begin
+        // Determine if actual branch or jump should be taken
+        Decision = (Branch & Branch_Enable) | Jump;
 
-	*	Redistributions of source code must retain the above
-		copyright notice, this list of conditions and the following
-		disclaimer.
+        // PC selection: take branch or jump
+        Branch_Jump_Trigger = Decision;
 
-	*	Redistributions in binary form must reproduce the above
-		copyright notice, this list of conditions and the following
-		disclaimer in the documentation and/or other materials
-		provided with the distribution.
-
-	*	Neither the name of the author nor the names of its
-		contributors may be used to endorse or promote products
-		derived from this software without specific prior written
-		permission.
-
-	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-	"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-	LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-	FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-	COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-	INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-	BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-	LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-	CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-	LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-	ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-	POSSIBILITY OF SUCH DAMAGE.
-*/
-
-
-
-/*
- *	Description:
- *
- *		This module implements the branch resolution, located in MEM stage
- */
-
-
-
-module branch_decision (Branch, Predicted, Branch_Enable, Jump, Mispredict, Decision, Branch_Jump_Trigger);
-	input	Branch;
-	input	Predicted;
-	input	Branch_Enable;
-	input	Jump;
-	output	Mispredict;
-	output	Decision;
-	output	Branch_Jump_Trigger;
-
-	assign	Branch_Jump_Trigger	= ((!Predicted) & (Branch & Branch_Enable)) | Jump;
-	assign	Decision		= (Branch & Branch_Enable);
-	assign	Mispredict		= (Predicted & (!(Branch & Branch_Enable)));
+        // Compare prediction to actual outcome
+        if (Predicted != Decision)
+            Mispredict = 1'b1;       // Prediction was wrong
+        else
+            Mispredict = 1'b0;       // Prediction correct
+    end
 endmodule
