@@ -44,6 +44,7 @@
 
 module cpu(
 			clk,
+			wfi_out,
 			inst_mem_in,
 			inst_mem_out,
 			data_mem_out,
@@ -53,6 +54,9 @@ module cpu(
 			data_mem_memread,
 			data_mem_sign_mask
 		);
+
+	output wfi_out;
+
 	/*
 	 *	Input Clock
 	 */
@@ -308,6 +312,7 @@ module cpu(
 		);
 
 	assign CSRRI_signal = CSRR_signal & (if_id_out[46]);
+	assign wfi_out = wfi;
 
 	//ID/EX Pipeline Register
 	id_ex id_ex_reg(

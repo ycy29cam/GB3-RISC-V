@@ -175,6 +175,15 @@ module cpu(
 	/*
 	 *	Instruction Fetch Stage
 	 */
+
+	// clk modification
+	wire clk_sys, osc_ready;
+	osc_ctrl OSC (
+			.clk_req(~wfi),
+			.clk_sys(clk_sys),
+			.osc_ready(osc_ready)
+	);
+
 	mux2to1 pc_mux(
 			.input0(pc_mux0),
 			.input1(ex_mem_out[72:41]),
@@ -191,8 +200,10 @@ module cpu(
 	program_counter PC(
 			.inAddr(pc_in),
 			.outAddr(pc_out),
-			.clk(clk)
+			.clk(clk_sys)
 		);
+
+	wire fetch_ce = osc_ready; // 0 for 1 cycle (a hold for 1 cycle)
 
 	mux2to1 inst_mux(
 			.input0(inst_mem_out),
@@ -212,7 +223,8 @@ module cpu(
 	 *	IF/ID Pipeline Register
 	 */
 	if_id if_id_reg(
-			.clk(clk),
+			.clk(clk_sys),
+			.ce(fetch_ce), // new port
 			.data_in({inst_mux_out, pc_out}),
 			.data_out(if_id_out)
 		);
@@ -244,7 +256,7 @@ module cpu(
 		);
 
 	regfile register_files(
-			.clk(clk),
+			.clk(clk_sys),
 			.write(ex_mem_out[2]),
 			.wrAddr(ex_mem_out[142:138]),
 			.wrData(reg_dat_mux_out),
@@ -271,7 +283,7 @@ module cpu(
 		);
 
 	csr_file ControlAndStatus_registers(
-			.clk(clk),
+			.clk(clk_sys),
 			.write(mem_wb_out[3]), //TODO
 			.wrAddr_CSR(mem_wb_out[116:105]),
 			.wrVal_CSR(mem_wb_out[35:4]),
@@ -311,7 +323,7 @@ module cpu(
 
 	//ID/EX Pipeline Register
 	id_ex id_ex_reg(
-			.clk(clk),
+			.clk(clk_sys),
 			.data_in({if_id_out[63:52], RegB_AddrFwdFlush_mux_out[4:0], RegA_AddrFwdFlush_mux_out[4:0], if_id_out[43:39], dataMem_sign_mask, alu_ctl, imm_out, RegB_mux_out, RegA_mux_out, if_id_out[31:0], cont_mux_out[10:7], predict, cont_mux_out[6:0]}),
 			.data_out(id_ex_out)
 		);
@@ -361,7 +373,7 @@ module cpu(
 
 	//EX/MEM Pipeline Register
 	ex_mem ex_mem_reg(
-			.clk(clk),
+			.clk(clk_sys),
 			.data_in({id_ex_out[177:166], id_ex_out[155:151], wb_fwd2_mux_out, lui_result, alu_branch_enable, addr_adder_sum, id_ex_out[43:12], ex_cont_mux_out[8:0]}),
 			.data_out(ex_mem_out)
 		);
@@ -393,7 +405,7 @@ module cpu(
 
 	//MEM/WB Pipeline Register
 	mem_wb mem_wb_reg(
-			.clk(clk),
+			.clk(clk_sys),
 			.data_in({ex_mem_out[154:143], ex_mem_out[142:138], data_mem_out, mem_csrr_mux_out, ex_mem_out[105:74], ex_mem_out[3:0]}),
 			.data_out(mem_wb_out)
 		);
@@ -469,7 +481,7 @@ module cpu(
 
 	//Branch Predictor
 	branch_predictor branch_predictor_FSM(
-			.clk(clk),
+			.clk(clk_sys),
 			.actual_branch_decision(actual_branch_decision),
 			.branch_decode_sig(cont_mux_out[6]),
 			.branch_mem_sig(ex_mem_out[6]),
