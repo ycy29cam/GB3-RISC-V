@@ -172,6 +172,7 @@ module cpu(
 	wire			decode_ctrl_mux_sel;
 	wire			inst_mux_sel;
 
+
 	/*
 	 *	Instruction Fetch Stage
 	 */
@@ -515,4 +516,5 @@ module cpu(
 	assign data_mem_memwrite = ex_cont_mux_out[4];
 	assign data_mem_memread = ex_cont_mux_out[5];
 	assign data_mem_sign_mask = id_ex_out[150:147];
+
 endmodule

@@ -9,7 +9,8 @@
 
 # vscode and mac specific files
 .vscode/**
-.DS_Store**
+**/*.DS_Store
+
 
 **build/**
 
@@ -23,3 +24,19 @@
 **/*.i
 **/*.sr
 **/*.map
+#ignore all files ending with .vcd in any directory
+**/*.vcd 
+**/*.fst
+**/*.vvp
+**/*.
+**/*.S
+**/*.sh
+**/*.bin
+**/*.asc
+# Ignore editor config
+.vscode/
+# Ignore temp/test files
+out.svg
+output.txt
+logs/
+**/*.node0
