@@ -48,6 +48,7 @@ module top (led);
 	wire		data_clk_stall;
 	
 	wire		clk;
+	wire        wfi;
 	reg		ENCLKHF		= 1'b1;	// Plock enable
 	reg		CLKHF_POWERUP	= 1'b1;	// Power up the HFOSC circuit
 
@@ -60,6 +61,8 @@ module top (led);
 		.CLKHFPU(CLKHF_POWERUP),
 		.CLKHF(clk)
 	);
+
+	pll_ctrl PLLG (.clk_ref(clk_ref), .wfi(wfi), .clk_core(clk));
 
 	/*
 	 *	Memory interface
@@ -76,6 +79,7 @@ module top (led);
 
 	cpu processor(
 		.clk(clk_proc),
+		.wfi_out(wfi),
 		.inst_mem_in(inst_in),
 		.inst_mem_out(inst_out),
 		.data_mem_out(data_out),

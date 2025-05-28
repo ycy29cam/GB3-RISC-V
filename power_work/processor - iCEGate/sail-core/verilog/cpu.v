@@ -44,6 +44,7 @@
 
 module cpu(
 			clk,
+			wfi_out,
 			inst_mem_in,
 			inst_mem_out,
 			data_mem_out,
@@ -515,4 +516,6 @@ module cpu(
 	assign data_mem_memwrite = ex_cont_mux_out[4];
 	assign data_mem_memread = ex_cont_mux_out[5];
 	assign data_mem_sign_mask = id_ex_out[150:147];
+
+	assign wfi_out = wfi;
 endmodule

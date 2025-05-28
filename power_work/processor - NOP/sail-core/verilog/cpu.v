@@ -201,6 +201,9 @@ module cpu(
 			.out(inst_mux_out)
 		);
 
+	wire is_nop = (inst_mux_out == 32'h0000_0013);
+	wire fetch_ce = ~is_nop;
+
 	mux2to1 fence_mux(
 			.input0(pc_adder_out),
 			.input1(pc_out),
@@ -213,6 +216,7 @@ module cpu(
 	 */
 	if_id if_id_reg(
 			.clk(clk),
+			.ce(fetch_ce),
 			.data_in({inst_mux_out, pc_out}),
 			.data_out(if_id_out)
 		);

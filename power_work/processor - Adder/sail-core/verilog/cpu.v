@@ -127,6 +127,7 @@ module cpu(
 	 *	Execute stage
 	 */
 	wire [31:0]		ex_cont_mux_out;
+	wire [31:0]     pc_offset_mux_out;
 	wire [31:0]		addr_adder_mux_out;
 	wire [31:0]		alu_mux_out;
 	wire [31:0]		addr_adder_sum;
@@ -163,7 +164,7 @@ module cpu(
 	/*
 	 *	Branch Predictor
 	 */
-	wire [31:0]		pc_adder_out;
+	wire [31:0]     pc_next_sum;
 	wire [31:0]		branch_predictor_addr;
 	wire			predict;
 	wire [31:0]		branch_predictor_mux_out;
@@ -182,11 +183,18 @@ module cpu(
 			.out(pc_in)
 		);
 
-	adder pc_adder(
-			.input1(32'b100),
+	mux2to1 pc_offset_mux(
+			.input0(32'h00000004),            // PC+4
+    		.input1(branch_predictor_addr_offset), // imm from BTB (see note)
+    		.select(predict),
+    		.out(pc_offset_mux_out)
+	);
+
+	adder pc_next_adder (
+			.input1(pc_offset_mux_out),
 			.input2(pc_out),
-			.out(pc_adder_out)
-		);
+			.out(pc_next_sum)
+	);
 
 	program_counter PC(
 			.inAddr(pc_in),
@@ -202,7 +210,7 @@ module cpu(
 		);
 
 	mux2to1 fence_mux(
-			.input0(pc_adder_out),
+			.input0(pc_next_sum),
 			.input1(pc_out),
 			.select(Fence_signal),
 			.out(fence_mux_out)
@@ -474,7 +482,7 @@ module cpu(
 			.branch_decode_sig(cont_mux_out[6]),
 			.branch_mem_sig(ex_mem_out[6]),
 			.in_addr(if_id_out[31:0]),
-			.offset(imm_out),
+			.offset(branch_predictor_addr_offset),
 			.branch_addr(branch_predictor_addr),
 			.prediction(predict)
 		);
