@@ -87,7 +87,7 @@ module cpu(
 	/*
 	 *	Pipeline Registers
 	 */
-	wire [63:0]		if_id_out;
+	wire [63:0]			if_id_out;
 	wire [177:0]		id_ex_out;
 	wire [154:0]		ex_mem_out;
 	wire [116:0]		mem_wb_out;
@@ -469,17 +469,16 @@ module cpu(
 		);
 
 	// Branch Predictor with integrated BTB
-	branch_predictor branch_predictor_with_btb(
-			.clk(clk),
-			.reset(reset), // Add reset signal if needed
-			.actual_branch_decision(actual_branch_decision),
-			.branch_decode_sig(cont_mux_out[6]),
-			.branch_mem_sig(ex_mem_out[6]), // Update BTB in MEM stage
-			.in_addr(if_id_out[31:0]), // PC at fetch stage
-			.offset(imm_out),
-			.branch_addr(branch_predictor_addr),
-			.prediction(predict)
-		);
+	branch_predictor branch_predictor_with_btb (
+		.clk(clk),
+		.fetch_pc(pc_out),                 // PC from fetch stage (prediction)
+		.branch_addr(branch_predictor_addr),
+		.prediction(predict),
+		.update_en(ex_mem_out[6]),         // branch_mem_sig (from MEM stage)
+		.update_pc(ex_mem_out[72:41]),     // branch PC (from MEM stage)
+		.update_target(ex_mem_out[105:74]) // resolved target (from MEM stage)
+	);
+
 
 	mux2to1 branch_predictor_mux(
 			.input0(fence_mux_out),

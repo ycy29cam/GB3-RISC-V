@@ -1,0 +1,13 @@
+# Read the top-level design and its submodules
+read_verilog verilog/*.v
+# Lower behavioural code to processes
+proc
+# Set the top module
+hierarchy -check -top cpu
+
+# Flatten optional (if you want everything in one level)
+# flatten cpu
+
+# Generate a JSON netlist
+write_json cpu_netlist.json
+
