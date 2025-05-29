@@ -1,11 +1,11 @@
 module branch_predictor (
     input clk,
-    input [31:0] fetch_pc,
-    output reg [31:0] branch_addr,
-    output reg prediction,
-    input update_en,
-    input [31:0] update_pc,
-    input [31:0] update_target
+    input [31:0]        fetch_pc,          // PC during instruction fetch
+    output reg [31:0]   branch_addr,  // Predicted branch target address
+    output reg          prediction,          // Prediction hit (1) or miss (0)
+    input               update_en,                // Signal to enable update from memory 
+    input [31:0]        update_pc,         // PC of branch instruction (in MEM stage)
+    input [31:0]        update_target
 );
     parameter BTB_SIZE = 16;
     parameter ASSOC = 4;

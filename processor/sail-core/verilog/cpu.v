@@ -91,6 +91,7 @@ module cpu(
 	wire [177:0]		id_ex_out;
 	wire [154:0]		ex_mem_out;
 	wire [116:0]		mem_wb_out;
+	wire branch_taken_actual = (ex_mem_out[6] & ex_mem_out[73]) | ex_mem_out[0];
 
 	/*
 	 *	Control signals
@@ -171,6 +172,7 @@ module cpu(
 	wire			mistake_trigger;
 	wire			decode_ctrl_mux_sel;
 	wire			inst_mux_sel;
+	wire 			mispredict;	
 
 	/*
 	 *	Instruction Fetch Stage
@@ -367,17 +369,6 @@ module cpu(
 			.data_out(ex_mem_out)
 		);
 
-	//Memory Access Stage
-	branch_decision branch_decide(
-			.Branch(ex_mem_out[6]),
-			.Predicted(ex_mem_out[7]),
-			.Branch_Enable(ex_mem_out[73]),
-			.Jump(ex_mem_out[0]),
-			.Mispredict(mistake_trigger),
-			.Decision(actual_branch_decision),
-			.Branch_Jump_Trigger(pcsrc)
-		);
-
 	mux2to1 auipc_mux(
 			.input0(ex_mem_out[105:74]),
 			.input1(ex_mem_out[72:41]),
@@ -469,17 +460,33 @@ module cpu(
 		);
 
 	// Branch Predictor with integrated BTB
-	branch_predictor branch_predictor_with_btb (
+	branch_target_buffer branch_predictor_with_btb (
 		.clk(clk),
+		.rst(rst),  // If you have a reset signal, connect it
+
 		// Fetch stage
 		.fetch_pc(if_id_out[31:0]),
 		.branch_addr(branch_predictor_addr),
 		.prediction(predict),
-		// MEM stage update
-		.update_en(ex_mem_out[6]),           // branch_mem_sig
-		.update_pc(ex_mem_out[72:41]),      // PC of branch at MEM stage
-		.update_target(ex_mem_out[105:74])  // branch target at MEM stage
+
+		// Update stage (resolved in EX/MEM)
+		.update_en(ex_mem_out[6]),               // branch signal (branch taken or not)
+		.update_pc(ex_mem_out[72:41]),          // PC of the branch instruction
+		.update_target(ex_mem_out[105:74]),     // Target address computed
+		.is_branch(ex_mem_out[6]),              // Control signal indicating branch
+		.branch_taken(branch_taken_actual)      // Whether branch was taken
 	);
+
+		//Memory Access Stage
+	branch_decision branch_decide(
+			.Branch(ex_mem_out[6]),
+			.Predicted(ex_mem_out[7]),
+			.Branch_Enable(ex_mem_out[73]),
+			.Jump(ex_mem_out[0]),
+			.Mispredict(mistake_trigger),
+			.Decision(actual_branch_decision),
+			.Branch_Jump_Trigger(pcsrc)
+		);
 
 
 
