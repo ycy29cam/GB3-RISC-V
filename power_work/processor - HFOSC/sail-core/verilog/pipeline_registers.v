@@ -43,27 +43,18 @@
 
 
 /* IF/ID pipeline registers */ 
-module if_id (clk, data_in, data_out);
-	input			clk;
-	input [63:0]		data_in;
-	output reg[63:0]	data_out;
+module if_id (
+    input  wire         clk,      // system clock
+    input  wire         ce,       // 1 = capture data_in on this edge
+    input  wire [63:0]  data_in,  // {instruction , pc}
+    output reg  [63:0]  data_out  // registered value
+);
 
-	/*
-	 *	This uses Yosys's support for nonzero initial values:
-	 *
-	 *		https://github.com/YosysHQ/yosys/commit/0793f1b196df536975a044a4ce53025c81d00c7f
-	 *
-	 *	Rather than using this simulation construct (`initial`),
-	 *	the design should instead use a reset signal going to
-	 *	modules in the design.
-	 */
-	initial begin
-		data_out = 64'b0;
-	end
+    always @(posedge clk) begin
+        if (ce)
+            data_out <= data_in;   // load only when CE is high
+    end
 
-	always @(posedge clk) begin
-		data_out <= data_in;
-	end
 endmodule
 
 

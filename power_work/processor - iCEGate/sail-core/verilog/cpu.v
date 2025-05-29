@@ -59,6 +59,8 @@ module cpu(
 	 */
 	input clk;
 
+	output wfi_out;
+
 	/*
 	 *	instruction memory input
 	 */
