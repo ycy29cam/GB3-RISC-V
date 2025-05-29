@@ -70,8 +70,8 @@ module cpu(
 	input [31:0]		data_mem_out;
 	output [31:0]		data_mem_addr;
 	output [31:0]		data_mem_WrData;
-	output			data_mem_memwrite;
-	output			data_mem_memread;
+	output				data_mem_memwrite;
+	output				data_mem_memread;
 	output [3:0]		data_mem_sign_mask;
 
 	/*
@@ -471,13 +471,16 @@ module cpu(
 	// Branch Predictor with integrated BTB
 	branch_predictor branch_predictor_with_btb (
 		.clk(clk),
-		.fetch_pc(pc_out),                 // PC from fetch stage (prediction)
+		// Fetch stage
+		.fetch_pc(if_id_out[31:0]),
 		.branch_addr(branch_predictor_addr),
 		.prediction(predict),
-		.update_en(ex_mem_out[6]),         // branch_mem_sig (from MEM stage)
-		.update_pc(ex_mem_out[72:41]),     // branch PC (from MEM stage)
-		.update_target(ex_mem_out[105:74]) // resolved target (from MEM stage)
+		// MEM stage update
+		.update_en(ex_mem_out[6]),           // branch_mem_sig
+		.update_pc(ex_mem_out[72:41]),      // PC of branch at MEM stage
+		.update_target(ex_mem_out[105:74])  // branch target at MEM stage
 	);
+
 
 
 	mux2to1 branch_predictor_mux(
