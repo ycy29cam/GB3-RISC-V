@@ -70,6 +70,15 @@ module alu(ALUctl, A, B, ALUOut, Branch_Enable);
 	 *	the design should instead use a reset signal going to
 	 *	modules in the design.
 	 */
+
+
+	// Subtraction logic for branch decisions
+    wire [31:0] sub_result = A - B;
+    wire zero_flag  = (sub_result == 32'b0);
+    wire sign_flag  = sub_result[31];                    // MSB indicates negative for signed
+    wire [32:0] sub_ext = {1'b0, A} - {1'b0, B};  // Extend to capture borrow
+	wire borrow_flag = sub_ext[32];               // Borrow is in the MSB
+
 	initial begin
 		ALUOut = 32'b0;
 		Branch_Enable = 1'b0;
@@ -95,12 +104,12 @@ module alu(ALUctl, A, B, ALUOut, Branch_Enable);
 			/*
 			 *	SUBTRACT (the fields also matches all branches)
 			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB:	ALUOut = A - B;
+			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB:	ALUOut = sub_result;
 
 			/*
 			 *	SLT (the fields also matches all the other SLT variants)
 			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SLT:	ALUOut = $signed(A) < $signed(B) ? 32'b1 : 32'b0;
+			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SLT: ALUOut = {31'b0, slt_signed};
 
 			/*
 			 *	SRL (the fields also matches the other SRL variants)
@@ -146,12 +155,12 @@ module alu(ALUctl, A, B, ALUOut, Branch_Enable);
 
 	always @(ALUctl, ALUOut, A, B) begin
 		case (ALUctl[6:4])
-			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BEQ:	Branch_Enable = (ALUOut == 0);
-			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BNE:	Branch_Enable = !(ALUOut == 0);
-			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BLT:	Branch_Enable = ($signed(A) < $signed(B));
-			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BGE:	Branch_Enable = ($signed(A) >= $signed(B));
-			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BLTU:	Branch_Enable = ($unsigned(A) < $unsigned(B));
-			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BGEU:	Branch_Enable = ($unsigned(A) >= $unsigned(B));
+			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BEQ:	Branch_Enable = zero_flag;
+			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BNE:	Branch_Enable = ~zero_flag;
+			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BLT:	Branch_Enable = sign_flag;
+			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BGE:	Branch_Enable = ~sign_flag;
+			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BLTU:	Branch_Enable = borrow_flag;
+			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BGEU:	Branch_Enable = ~borrow_flag;
 
 			default:					Branch_Enable = 1'b0;
 		endcase
