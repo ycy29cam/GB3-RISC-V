@@ -43,36 +43,17 @@
 
 
 module cpu(
-			clk,
-			inst_mem_in,
-			inst_mem_out,
-			data_mem_out,
-			data_mem_addr,
-			data_mem_WrData,
-			data_mem_memwrite,
-			data_mem_memread,
-			data_mem_sign_mask
-		);
-	/*
-	 *	Input Clock
-	 */
-	input clk;
+    input clk,
+    output [31:0] inst_mem_in,
+    input  [31:0] inst_mem_out,
+    input  [31:0] data_mem_out,
+    output [31:0] data_mem_addr,
+    output [31:0] data_mem_WrData,
+    output        data_mem_memwrite,
+    output        data_mem_memread,
+    output [3:0]  data_mem_sign_mask
+);
 
-	/*
-	 *	instruction memory input
-	 */
-	output [31:0]		inst_mem_in;
-	input [31:0]		inst_mem_out;
-
-	/*
-	 *	Data Memory
-	 */
-	input [31:0]		data_mem_out;
-	output [31:0]		data_mem_addr;
-	output [31:0]		data_mem_WrData;
-	output			data_mem_memwrite;
-	output			data_mem_memread;
-	output [3:0]		data_mem_sign_mask;
 
 	/*
 	 *	Program Counter
@@ -185,6 +166,7 @@ module cpu(
 	adder pc_adder(
 			.input1(32'b100),
 			.input2(pc_out),
+			.clk(clk),
 			.out(pc_adder_out)
 		);
 
@@ -334,6 +316,7 @@ module cpu(
 	adder addr_adder(
 			.input1(addr_adder_mux_out),
 			.input2(id_ex_out[139:108]),
+			.clk(clk),
 			.out(addr_adder_sum)
 		);
 
@@ -348,6 +331,7 @@ module cpu(
 			.ALUctl(id_ex_out[146:140]),
 			.A(wb_fwd1_mux_out),
 			.B(alu_mux_out),
+			.clk(clk),
 			.ALUOut(alu_result),
 			.Branch_Enable(alu_branch_enable)
 		);
