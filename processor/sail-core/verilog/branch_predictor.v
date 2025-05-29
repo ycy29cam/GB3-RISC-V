@@ -105,6 +105,33 @@ module branch_predictor(
 		end
 	end
 
-	assign branch_addr = in_addr + offset;
+	wire [31:0] dsp_sum;
+	SB_MAC16 dsp_branch_addr (
+		.A(in_addr[15:0]),
+		.B(offset[15:0]),
+		.C(in_addr[31:16]),
+		.D(offset[31:16]),
+		.O(dsp_sum),
+		.CLK(clk),
+		.CE(1'b1),
+		.ADDSUBTOP(1'b0),  // Add
+		.ADDSUBBOT(1'b0),
+		.OLOADTOP(1'b0),
+		.OLOADBOT(1'b0),
+		.OHOLDTOP(1'b0),
+		.OHOLDBOT(1'b0),
+		.CI(1'b0),
+		.CO(),
+		.ACCUMCI(1'b0),
+		.ACCUMCO(),
+		.SIGNEXTIN(1'b0),
+		.SIGNEXTOUT()
+	);
+	defparam dsp_branch_addr.TOPOUTPUT_SELECT = 2'b00;
+	defparam dsp_branch_addr.BOTOUTPUT_SELECT = 2'b00;
+	defparam dsp_branch_addr.A_SIGNED = 1'b0;
+	defparam dsp_branch_addr.B_SIGNED = 1'b0;
+
+	assign branch_addr = dsp_sum;
 	assign prediction = s[1] & branch_decode_sig;
 endmodule

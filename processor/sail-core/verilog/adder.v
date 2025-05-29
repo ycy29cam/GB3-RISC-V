@@ -45,10 +45,44 @@
 
 
 
-module adder(input1, input2, out);
-	input [31:0]	input1;
-	input [31:0]	input2;
-	output [31:0]	out;
+module adder(
+    input [31:0] input1,
+    input [31:0] input2,
+    input clk,              // Clock required for DSP
+    output [31:0] out
+);
 
-	assign		out = input1 + input2;
+    wire [31:0] dsp_sum;
+    wire [31:0] O;
+
+    SB_MAC16 dsp_adder (
+        .A(input1[15:0]),
+        .B(input2[15:0]),
+        .C(input1[31:16]),
+        .D(input2[31:16]),
+        .O(O),
+        .CLK(clk),
+        .CE(1'b1),
+        .ADDSUBTOP(1'b0),       // Add operation
+        .ADDSUBBOT(1'b0),
+        .OLOADTOP(1'b0),
+        .OLOADBOT(1'b0),
+        .OHOLDTOP(1'b0),
+        .OHOLDBOT(1'b0),
+        .CI(1'b0),
+        .CO(),
+        .ACCUMCI(1'b0),
+        .ACCUMCO(),
+        .SIGNEXTIN(1'b0),
+        .SIGNEXTOUT()
+    );
+
+    // Configuration for Single 32-bit Adder mode
+    defparam dsp_adder.TOPOUTPUT_SELECT = 2'b00;   // Top: Adder output
+    defparam dsp_adder.BOTOUTPUT_SELECT = 2'b00;   // Bottom: Adder output
+    defparam dsp_adder.A_SIGNED = 1'b0;
+    defparam dsp_adder.B_SIGNED = 1'b0;
+
+    assign out = O;  // O[31:0] is the full 32-bit result
+
 endmodule

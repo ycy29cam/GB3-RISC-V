@@ -55,11 +55,12 @@
  *	fed to the ALU.
  */
 module alu(ALUctl, A, B, ALUOut, Branch_Enable);
-	input [6:0]		ALUctl;
+	input [6:0]			ALUctl;
 	input [31:0]		A;
 	input [31:0]		B;
+	input 				clk;
 	output reg [31:0]	ALUOut;
-	output reg		Branch_Enable;
+	output reg			Branch_Enable;
 
 	/*
 	 *	This uses Yosys's support for nonzero initial values:
@@ -71,13 +72,43 @@ module alu(ALUctl, A, B, ALUOut, Branch_Enable);
 	 *	modules in the design.
 	 */
 
+	// DSP output and carry out
+    wire [31:0] dsp_result;
+    wire CO;
 
-	// Subtraction logic for branch decisions
-    wire [31:0] sub_result = A - B;
-    wire zero_flag  = (sub_result == 32'b0);
-    wire sign_flag  = sub_result[31];                    // MSB indicates negative for signed
-    wire [32:0] sub_ext = {1'b0, A} - {1'b0, B};  // Extend to capture borrow
-	wire borrow_flag = sub_ext[32];               // Borrow is in the MSB
+	// Configure DSP for 32-bit add/subtract
+    SB_MAC16 dsp_alu (
+        .A(A[15:0]),
+        .B(B[15:0]),
+        .C(A[31:16]),
+        .D(B[31:16]),
+        .O(dsp_result),
+        .CLK(clk),
+        .CE(1'b1),
+        .ADDSUBTOP(ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB),
+        .ADDSUBBOT(ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB),
+        .OLOADTOP(1'b0),
+        .OLOADBOT(1'b0),
+        .OHOLDTOP(1'b0),
+        .OHOLDBOT(1'b0),
+        .CI(1'b0),
+        .CO(CO),
+        .ACCUMCI(1'b0),
+        .ACCUMCO(),
+        .SIGNEXTIN(1'b0),
+        .SIGNEXTOUT()
+    );
+
+	defparam dsp_alu.TOPOUTPUT_SELECT = 2'b00;  // 32-bit adder/subtractor mode
+    defparam dsp_alu.BOTOUTPUT_SELECT = 2'b00;
+    defparam dsp_alu.A_SIGNED = 1'b0;
+    defparam dsp_alu.B_SIGNED = 1'b0;
+
+	// Flags derived from DSP
+    wire zero_flag = (dsp_result == 32'b0);
+    wire sign_flag = dsp_result[31];
+    wire borrow_flag = ~CO;  // CO=1 means no borrow, CO=0 means borrow
+    wire slt_signed = sign_flag;
 
 	initial begin
 		ALUOut = 32'b0;
@@ -99,12 +130,12 @@ module alu(ALUctl, A, B, ALUOut, Branch_Enable);
 			/*
 			 *	ADD (the fields also match AUIPC, all loads, all stores, and ADDI)
 			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_ADD:	ALUOut = A + B;
+			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_ADD:	ALUOut = dsp_result;
 
 			/*
 			 *	SUBTRACT (the fields also matches all branches)
 			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB:	ALUOut = sub_result;
+			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB:	ALUOut = dsp_result;
 
 			/*
 			 *	SLT (the fields also matches all the other SLT variants)
