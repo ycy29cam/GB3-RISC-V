@@ -42,8 +42,10 @@
 
 
 
-module instruction_memory(addr, out);
+module instruction_memory(addr, clk, wfi, out);
 	input [31:0]		addr;
+	input wfi;
+	input clk;
 	output [31:0]		out;
 
 	/*

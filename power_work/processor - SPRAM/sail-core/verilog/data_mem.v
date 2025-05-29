@@ -31,8 +31,11 @@ module data_mem (
 
     //---------------- LED register at address 0x2000 ----------------
     reg [31:0] led_reg /* synthesis preserve */;
-    always_ff @(posedge clk)
-        if (memwrite && addr==32'h2000) led_reg <= write_data;
+    always @(posedge clk) begin
+        if (memwrite && addr == 32'h2000)
+            led_reg <= write_data;
+    end
+
 
     assign led = led_reg[7:0];
 endmodule

@@ -3,6 +3,7 @@ module top (led);
 
 	wire		clk_proc;
 	wire		data_clk_stall;
+	wire wfi;
 	
 	wire		clk;
 	reg		ENCLKHF		= 1'b1;	// Plock enable
@@ -12,8 +13,6 @@ module top (led);
 		.CLKHFEN(ENCLKHF),
 		.CLKHFPU(CLKHF_POWERUP),
 		.CLKHF(clk)
-
-	wire wfi;
 	);
 
 	wire[31:0]	inst_in;
@@ -57,7 +56,7 @@ module top (led);
 			.clk_stall(data_clk_stall)
 		);
 
-	io_led LED_IO(
+	io_leds LED_IO(
 		.clk(clk),
 		.led_bus(led_bus),
 		.wfi(wfi),

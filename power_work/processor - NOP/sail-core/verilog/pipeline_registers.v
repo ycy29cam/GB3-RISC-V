@@ -1,21 +1,22 @@
 module if_id (
     input  wire         clk,
-    input  wire         ce,          // 1 = capture data_in on rising edge
+    input  wire         ce,
     input  wire [63:0]  data_in,
     output wire [63:0]  data_out
 );
-    genvar i;                        // declare loop variable
+    genvar i;
     generate
         for (i = 0; i < 64; i = i + 1) begin : g
-            SB_DFFCE ff (            // hard flip-flop with CE pin
-                .C (clk),            // clock
-                .E (ce),             // clock enable
-                .D (data_in[i]),     // data in
-                .Q (data_out[i])     // data out
+            SB_DFFE ff (                 // ← correct cell name
+                .C (clk),                // clock
+                .E (ce),                 // clock enable
+                .D (data_in[i]),         // data in
+                .Q (data_out[i])         // data out
             );
         end
     endgenerate
 endmodule
+
 
 
 
