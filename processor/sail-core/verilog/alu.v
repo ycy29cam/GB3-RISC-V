@@ -74,35 +74,19 @@ module alu(
 
 	// DSP output and carry out
     wire [31:0] dsp_result;
-    wire CO;
+	wire CO;
+    wire is_sub;
 
-	// Configure DSP for 32-bit add/subtract
-    SB_MAC16 dsp_alu (
-        .A(A[15:0]),
-        .B(B[15:0]),
-        .C(A[31:16]),
-        .D(B[31:16]),
-        .O(dsp_result),
-        .CLK(clk),
-        .CE(1'b1),
-        .ADDSUBTOP(ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB),
-        .ADDSUBBOT(ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB),
-        .OLOADTOP(1'b0),
-        .OLOADBOT(1'b0),
-        .OHOLDTOP(1'b0),
-        .OHOLDBOT(1'b0),
-        .CI(1'b0),
-        .CO(CO),
-        .ACCUMCI(1'b0),
-        .ACCUMCO(),
-        .SIGNEXTIN(1'b0),
-        .SIGNEXTOUT()
+    assign is_sub = (ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB);
+
+    // Instantiate adder_dsp for addition and subtraction
+    adder_dsp dsp_inst (
+        .input1(A),
+        .input2(B),
+        .is_sub(is_sub),
+        .out(dsp_result),
+		.CO(CO)
     );
-
-	defparam dsp_alu.TOPOUTPUT_SELECT = 2'b00;  // 32-bit adder/subtractor mode
-    defparam dsp_alu.BOTOUTPUT_SELECT = 2'b00;
-    defparam dsp_alu.A_SIGNED = 1'b0;
-    defparam dsp_alu.B_SIGNED = 1'b0;
 
 	// Flags derived from DSP
     wire zero_flag = (dsp_result == 32'b0);

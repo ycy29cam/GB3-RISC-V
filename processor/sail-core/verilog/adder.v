@@ -52,14 +52,13 @@ module adder(
     output [31:0] out
 );
 
-    wire [31:0] dsp_sum;
     wire [31:0] O;
 
     SB_MAC16 dsp_adder (
-        .A(input1[15:0]),
-        .B(input2[15:0]),
-        .C(input1[31:16]),
-        .D(input2[31:16]),
+        .A(input1[31:16]),
+        .B(input1[15:0]),
+        .C(input2[31:16]),
+        .D(input2[15:0]),
         .O(O),
         .CLK(clk),
         .CE(1'b1),
@@ -78,11 +77,29 @@ module adder(
     );
 
     // Configuration for Single 32-bit Adder mode
-    defparam dsp_adder.TOPOUTPUT_SELECT = 2'b00;   // Top: Adder output
-    defparam dsp_adder.BOTOUTPUT_SELECT = 2'b00;   // Bottom: Adder output
-    defparam dsp_adder.A_SIGNED = 1'b0;
-    defparam dsp_adder.B_SIGNED = 1'b0;
+    defparam dsp_adder.NEG_TRIGGER = 1'b0;
+	defparam dsp_adder.C_REG = 1'b0;
+	defparam dsp_adder.A_REG = 1'b0;
+	defparam dsp_adder.B_REG = 1'b0;
+	defparam dsp_adder.D_REG = 1'b0;
+	defparam dsp_adder.TOP_8x8_MULT_REG = 1'b0;
+	defparam dsp_adder.BOT_8x8_MULT_REG = 1'b0;
+	defparam dsp_adder.PIPELINE_16x16_MULT_REG1 = 1'b0;
+	defparam dsp_adder.PIPELINE_16x16_MULT_REG2 = 1'b0;
+	defparam dsp_adder.TOPOUTPUT_SELECT = 2'b00;
+	defparam dsp_adder.TOPADDSUB_LOWERINPUT = 2'b00;
+	defparam dsp_adder.TOPADDSUB_UPPERINPUT = 1'b1;
+	defparam dsp_adder.TOPADDSUB_CARRYSELECT = 2'b10;
+	defparam dsp_adder.BOTOUTPUT_SELECT = 2'b00;
+	defparam dsp_adder.BOTADDSUB_LOWERINPUT = 2'b00;
+	defparam dsp_adder.BOTADDSUB_UPPERINPUT = 1'b1;
+	defparam dsp_adder.BOTADDSUB_CARRYSELECT = 2'b00;
+	defparam dsp_adder.MODE_8x8 = 1'b1;
+	defparam dsp_adder.A_SIGNED = 1'b0;
+	defparam dsp_adder.B_SIGNED = 1'b0;
 
     assign out = O;  // O[31:0] is the full 32-bit result
+
+	
 
 endmodule
