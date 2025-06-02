@@ -71,10 +71,11 @@ module ALUControl(FuncCode, ALUCtl, Opcode);
 
 
 	/*
-	 *	TODO:
+	 *
 	 *
 	 *	(1) Please replace the values being assigned to ALUCtl with the corresponding `defines in sail-core-defines.v
 	 *	(2) Please replace the FuncCode constants with the corresponding `defines in sail-core-defines.v
+	 *  Note no gains to be made from replacing
 	 */
 
 
@@ -82,28 +83,28 @@ module ALUControl(FuncCode, ALUCtl, Opcode);
 	always @(*) begin
 		case (Opcode)
 			/*
-			 *	LUI, U-Type
+			 *	LUI, U-Type CHECK THIS??
 			 */
 			`kRV32I_INSTRUCTION_OPCODE_LUI:
-				ALUCtl = 7'b0000010;
+				ALUCtl = `kSAIL_MICROARCHITECTURE_ALUCTL_6to0_LUI;
 
 			/*
 			 *	AUIPC, U-Type
 			 */
 			`kRV32I_INSTRUCTION_OPCODE_AUIPC:
-				ALUCtl = 7'b0000010;
+				ALUCtl = `kSAIL_MICROARCHITECTURE_ALUCTL_6to0_AUIPC;
 
 			/*
 			 *	JAL, UJ-Type
 			 */
 			`kRV32I_INSTRUCTION_OPCODE_JAL:
-				ALUCtl = `kSAIL_MICROARCHITECTURE_ALUCTL_6to0_ILLEGAL;
+				ALUCtl = `kSAIL_MICROARCHITECTURE_ALUCTL_6to0_JAL;
 
 			/*
 			 *	JALR, I-Type
 			 */
 			`kRV32I_INSTRUCTION_OPCODE_JALR:
-				ALUCtl = `kSAIL_MICROARCHITECTURE_ALUCTL_6to0_ILLEGAL;
+				ALUCtl = `kSAIL_MICROARCHITECTURE_ALUCTL_6to0_JALR;
 
 			/*
 			 *	Branch, SB-Type
@@ -111,17 +112,17 @@ module ALUControl(FuncCode, ALUCtl, Opcode);
 			`kRV32I_INSTRUCTION_OPCODE_BRANCH:
 				case (FuncCode[2:0])
 					3'b000:
-						ALUCtl = 7'b0010110; //BEQ conditions
+						ALUCtl = `kSAIL_MICROARCHITECTURE_ALUCTL_6to0_BEQ; //BEQ conditions
 					3'b001:
-						ALUCtl = 7'b0100110; //BNE conditions
+						ALUCtl = `kSAIL_MICROARCHITECTURE_ALUCTL_6to0_BNE; //BNE conditions
 					3'b100:
-						ALUCtl = 7'b0110110; //BLT conditions
+						ALUCtl = `kSAIL_MICROARCHITECTURE_ALUCTL_6to0_BLT; //BLT conditions
 					3'b101:
-						ALUCtl = 7'b1000110; //BGE conditions
+						ALUCtl = `kSAIL_MICROARCHITECTURE_ALUCTL_6to0_BGE; //BGE conditions
 					3'b110:
-						ALUCtl = 7'b1010110; //BLTU conditions
+						ALUCtl = `kSAIL_MICROARCHITECTURE_ALUCTL_6to0_BLTU; //BLTU conditions
 					3'b111:
-						ALUCtl = 7'b1100110; //BGEU conditions
+						ALUCtl = `kSAIL_MICROARCHITECTURE_ALUCTL_6to0_BGEU; //BGEU conditions
 					default:
 						ALUCtl = `kSAIL_MICROARCHITECTURE_ALUCTL_6to0_ILLEGAL;
 				endcase

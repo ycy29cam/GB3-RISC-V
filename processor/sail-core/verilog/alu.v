@@ -102,7 +102,7 @@ module alu(
 	always @(ALUctl, A, B) begin
 		case (ALUctl[3:0])
 			/*
-			 *	AND (the fields also match ANDI and LUI)
+			 *	AND (the fields also match ANDI and LUI) CHECK
 			 */
 			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_AND:	ALUOut = A & B;
 
