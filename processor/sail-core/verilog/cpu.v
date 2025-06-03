@@ -43,36 +43,17 @@
 
 
 module cpu(
-			clk,
-			inst_mem_in,
-			inst_mem_out,
-			data_mem_out,
-			data_mem_addr,
-			data_mem_WrData,
-			data_mem_memwrite,
-			data_mem_memread,
-			data_mem_sign_mask
-		);
-	/*
-	 *	Input Clock
-	 */
-	input clk;
+    input clk,
+    output [31:0] inst_mem_in,
+    input  [31:0] inst_mem_out,
+    input  [31:0] data_mem_out,
+    output [31:0] data_mem_addr,
+    output [31:0] data_mem_WrData,
+    output        data_mem_memwrite,
+    output        data_mem_memread,
+    output [3:0]  data_mem_sign_mask
+);
 
-	/*
-	 *	instruction memory input
-	 */
-	output [31:0]		inst_mem_in;
-	input [31:0]		inst_mem_out;
-
-	/*
-	 *	Data Memory
-	 */
-	input [31:0]		data_mem_out;
-	output [31:0]		data_mem_addr;
-	output [31:0]		data_mem_WrData;
-	output			data_mem_memwrite;
-	output			data_mem_memread;
-	output [3:0]		data_mem_sign_mask;
 
 	/*
 	 *	Program Counter

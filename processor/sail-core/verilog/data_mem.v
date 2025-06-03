@@ -36,7 +36,7 @@
 
 
 
-//Data cache
+//Data memory
 
 module data_mem (clk, addr, write_data, memwrite, memread, sign_mask, read_data, led, clk_stall);
 	input			clk;
