@@ -29,6 +29,5 @@ uchar bsort_input[] = {
 
     maxindex--;
   }
-    *gDebugLedsMemoryMappedRegister = ~(*gDebugLedsMemoryMappedRegister);
     return 0;
 }

@@ -118,8 +118,8 @@ module cpu(
 	wire [31:0]		imm_out;
 	wire [31:0]		RegA_mux_out;
 	wire [31:0]		RegB_mux_out;
-	wire [31:0]		RegA_AddrFwdFlush_mux_out;
-	wire [31:0]		RegB_AddrFwdFlush_mux_out;
+	wire [4:0]		RegA_AddrFwdFlush_mux_out;
+	wire [4:0]		RegB_AddrFwdFlush_mux_out;
 	wire [31:0]		rdValOut_CSR;
 	wire [3:0]		dataMem_sign_mask;
 
@@ -293,16 +293,16 @@ module cpu(
 			.out(RegB_mux_out)
 		);
 
-	mux2to1 RegA_AddrFwdFlush_mux( //TODO cleanup
-			.input0({27'b0, if_id_out[51:47]}),
-			.input1(32'b0),
+	mux2to1 #(5) RegA_AddrFwdFlush_mux( //TODO cleanup
+			.input0(if_id_out[51:47]),
+			.input1(5'b00000),
 			.select(CSRRI_signal),
 			.out(RegA_AddrFwdFlush_mux_out)
 		);
 
-	mux2to1 RegB_AddrFwdFlush_mux( //TODO cleanup
-			.input0({27'b0, if_id_out[56:52]}),
-			.input1(32'b0),
+	mux2to1 #(5) RegB_AddrFwdFlush_mux( //TODO cleanup
+			.input0(if_id_out[56:52]),
+			.input1(5'b00000),
 			.select(CSRR_signal),
 			.out(RegB_AddrFwdFlush_mux_out)
 		);
@@ -312,7 +312,7 @@ module cpu(
 	//ID/EX Pipeline Register
 	id_ex id_ex_reg(
 			.clk(clk),
-			.data_in({if_id_out[63:52], RegB_AddrFwdFlush_mux_out[4:0], RegA_AddrFwdFlush_mux_out[4:0], if_id_out[43:39], dataMem_sign_mask, alu_ctl, imm_out, RegB_mux_out, RegA_mux_out, if_id_out[31:0], cont_mux_out[10:7], predict, cont_mux_out[6:0]}),
+			.data_in({if_id_out[63:52], RegB_AddrFwdFlush_mux_out, RegA_AddrFwdFlush_mux_out, if_id_out[43:39], dataMem_sign_mask, alu_ctl, imm_out, RegB_mux_out, RegA_mux_out, if_id_out[31:0], cont_mux_out[10:7], predict, cont_mux_out[6:0]}),
 			.data_out(id_ex_out)
 		);
 
