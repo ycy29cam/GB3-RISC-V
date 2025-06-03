@@ -51,6 +51,8 @@ module top (led);
 	// reg		ENCLKHF		= 1'b1;	// Plock enable
 	// reg		CLKHF_POWERUP	= 1'b1;	// Power up the HFOSC circuit
 
+
+
 	`ifdef SIMULATION
 		reg clk;
 	`else
@@ -58,7 +60,7 @@ module top (led);
 		reg ENCLKHF       = 1'b1;
 		reg CLKHF_POWERUP = 1'b1;
 
-		SB_HFOSC #(.CLKHF_DIV("0b11")) OSCInst0 (
+		SB_HFOSC #(.CLKHF_DIV("0b10")) OSCInst0 (  //Change to 0b10 for 12MHz(it works), 0b11 for 6MHz
 			.CLKHFEN(ENCLKHF),
 			.CLKHFPU(CLKHF_POWERUP),
 			.CLKHF(clk)

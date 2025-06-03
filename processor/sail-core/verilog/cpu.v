@@ -36,10 +36,11 @@
 
 
 
+
+
 /*
  *	cpu top-level
  */
-
 
 
 module cpu(
@@ -145,16 +146,18 @@ module cpu(
 	 *	Writeback to registers stage
 	 */
 	wire [31:0]		wb_mux_out;
-	wire [31:0]		reg_dat_mux_out;
+	wire [31:0]		reg_dat_mux_out; 
 
 	/*
 	 *	Forwarding multiplexer wires
 	 */
-	wire [31:0]		dataMemOut_fwd_mux_out;
-	wire [31:0]		mem_fwd1_mux_out;
-	wire [31:0]		mem_fwd2_mux_out;
+	// wire [31:0]		dataMemOut_fwd_mux_out;
+	// wire [31:0]		mem_fwd1_mux_out;
+	// wire [31:0]		mem_fwd2_mux_out;
 	wire [31:0]		wb_fwd1_mux_out;
 	wire [31:0]		wb_fwd2_mux_out;
+
+
 	wire			mfwd1;
 	wire			mfwd2;
 	wire			wfwd1;
@@ -186,6 +189,7 @@ module cpu(
 	adder pc_adder(
 			.input1(32'b100),
 			.input2(pc_out),
+			// .is_sub(1'b0), // 0 for addition, 1 for subtraction
 			.out(pc_adder_out)
 		);
 
@@ -335,6 +339,7 @@ module cpu(
 	adder addr_adder(
 			.input1(addr_adder_mux_out),
 			.input2(id_ex_out[139:108]),
+			// .is_sub(1'b0), // 0 for addition, 1 for subtraction
 			.out(addr_adder_sum)
 		);
 
@@ -433,40 +438,71 @@ module cpu(
 			.WB_fwd2(wfwd2)
 		);
 
-	mux2to1 mem_fwd1_mux(
-			.input0(id_ex_out[75:44]),
-			.input1(dataMemOut_fwd_mux_out),
-			.select(mfwd1),
-			.out(mem_fwd1_mux_out)
-		);
+	// mux2to1 mem_fwd1_mux(
+	// 		.input0(id_ex_out[75:44]),
+	// 		.input1(dataMemOut_fwd_mux_out),
+	// 		.select(mfwd1),
+	// 		.out(mem_fwd1_mux_out)
+	// 	);
 
-	mux2to1 mem_fwd2_mux(
-			.input0(id_ex_out[107:76]),
-			.input1(dataMemOut_fwd_mux_out),
-			.select(mfwd2),
-			.out(mem_fwd2_mux_out)
-		);
+	// mux2to1 mem_fwd2_mux(
+	// 		.input0(id_ex_out[107:76]),
+	// 		.input1(dataMemOut_fwd_mux_out),
+	// 		.select(mfwd2),
+	// 		.out(mem_fwd2_mux_out)
+	// 	);
 
-	mux2to1 wb_fwd1_mux(
-			.input0(mem_fwd1_mux_out),
-			.input1(wb_mux_out),
-			.select(wfwd1),
-			.out(wb_fwd1_mux_out)
-		);
+	// mux2to1 wb_fwd1_mux(
+	// 		.input0(mem_fwd1_mux_out),
+	// 		.input1(wb_mux_out),
+	// 		.select(wfwd1),
+	// 		.out(wb_fwd1_mux_out)
+	// 	);
 
-	mux2to1 wb_fwd2_mux(
-			.input0(mem_fwd2_mux_out),
-			.input1(wb_mux_out),
-			.select(wfwd2),
-			.out(wb_fwd2_mux_out)
-		);
+	// mux2to1 wb_fwd2_mux(
+	// 		.input0(mem_fwd2_mux_out),
+	// 		.input1(wb_mux_out),
+	// 		.select(wfwd2),
+	// 		.out(wb_fwd2_mux_out)
+	// 	);
 
-	mux2to1 dataMemOut_fwd_mux(
-			.input0(ex_mem_out[105:74]),
-			.input1(data_mem_out),
-			.select(ex_mem_out[1]),
-			.out(dataMemOut_fwd_mux_out)
-		);
+	// mux2to1 dataMemOut_fwd_mux(
+	// 		.input0(ex_mem_out[105:74]),
+	// 		.input1(data_mem_out),
+	// 		.select(ex_mem_out[1]),
+	// 		.out(dataMemOut_fwd_mux_out)
+	// 	);
+
+	//======================================================
+	//  Forward-path (no helper module)
+	//======================================================
+	wire [3:0] sel_fwd1;
+	assign sel_fwd1[3] =  wfwd1;                        // WB stage
+	assign sel_fwd1[2] =  mfwd1 &  ex_mem_out[1];       // MEM-load
+	assign sel_fwd1[1] =  mfwd1 & ~ex_mem_out[1];       // MEM-ALU
+	assign sel_fwd1[0] = ~mfwd1 & ~wfwd1;   
+	
+	wire [3:0] sel_fwd2;
+	assign sel_fwd2[3] =  wfwd2;
+	assign sel_fwd2[2] =  mfwd2 &  ex_mem_out[1];
+	assign sel_fwd2[1] =  mfwd2 & ~ex_mem_out[1];
+	assign sel_fwd2[0] = ~mfwd2 & ~wfwd2;
+
+	// ---------- RS1 ----------
+	wire [31:0] rs1_ex        = sel_fwd1[0] ? id_ex_out[75:44]      : 32'h0; // EX stage
+	wire [31:0] rs1_mem_alu   = sel_fwd1[1] ? ex_mem_out[105:74]    : 32'h0; // MEM-ALU result
+	wire [31:0] rs1_mem_load  = sel_fwd1[2] ? data_mem_out          : 32'h0; // MEM-load result
+	wire [31:0] rs1_wb        = sel_fwd1[3] ? wb_mux_out            : 32'h0; // WB stage
+
+	assign wb_fwd1_mux_out =  rs1_ex | rs1_mem_alu | rs1_mem_load | rs1_wb;
+
+	// ---------- RS2 ----------
+	wire [31:0] rs2_ex        = sel_fwd2[0] ? id_ex_out[107:76]     : 32'h0;
+	wire [31:0] rs2_mem_alu   = sel_fwd2[1] ? ex_mem_out[105:74]    : 32'h0;
+	wire [31:0] rs2_mem_load  = sel_fwd2[2] ? data_mem_out          : 32'h0;
+	wire [31:0] rs2_wb        = sel_fwd2[3] ? wb_mux_out            : 32'h0;
+
+	assign wb_fwd2_mux_out =  rs2_ex | rs2_mem_alu | rs2_mem_load | rs2_wb;
 
 	//Branch Predictor
 	branch_predictor branch_predictor_FSM(
@@ -518,3 +554,4 @@ module cpu(
 	assign data_mem_sign_mask = id_ex_out[150:147];
 
 endmodule
+

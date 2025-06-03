@@ -2,6 +2,7 @@
 	softwareblink \
 	hardwareblink \
 	bubblesort \
+	cordic \
 	clean
 
 softwareblink:
@@ -13,6 +14,10 @@ hardwareblink:
 
 bubblesort:
 	cd bubblesort; make clean; make; make install
+	cd processor; make
+
+cordic:
+	cd cordic; make clean; make; make install
 	cd processor; make
 
 clean:
