@@ -282,7 +282,7 @@ module cpu(
 			.out(RegA_AddrFwdFlush_mux_out)
 		);
 
-	mux2to1 =(5) RegB_AddrFwdFlush_mux(
+	mux2to1 #(5) RegB_AddrFwdFlush_mux(
 			.input0(if_id_out[56:52]),
 			.input1(5'b00000),
 			.select(CSRR_signal),
