@@ -93,7 +93,7 @@ module cpu(
 	/*
 	 *	Decode stage
 	 */
-	wire [31:0]		cont_mux_out; //control signal mux
+	wire [10:0]		cont_mux_out; //control signal mux
 	wire [31:0]		regA_out;
 	wire [31:0]		regB_out;
 	wire [31:0]		imm_out;
@@ -107,7 +107,7 @@ module cpu(
 	/*
 	 *	Execute stage
 	 */
-	wire [31:0]		ex_cont_mux_out;
+	wire [8:0]		ex_cont_mux_out;
 	wire [31:0]		addr_adder_mux_out;
 	wire [31:0]		alu_mux_out;
 	wire [31:0]		addr_adder_sum;
@@ -217,9 +217,9 @@ module cpu(
 			.CSRR(CSRR_signal)
 		);
 
-	mux2to1 cont_mux(
-			.input0({21'b0, Jalr1, ALUSrc1, Lui1, Auipc1, Branch1, MemRead1, MemWrite1, CSRR_signal, RegWrite1, MemtoReg1, Jump1}),
-			.input1(32'b0),
+	mux2to1 #(11) cont_mux(
+			.input0({Jalr1, ALUSrc1, Lui1, Auipc1, Branch1, MemRead1, MemWrite1, CSRR_signal, RegWrite1, MemtoReg1, Jump1}),
+			.input1(11'b0),
 			.select(decode_ctrl_mux_sel),
 			.out(cont_mux_out)
 		);
@@ -298,9 +298,9 @@ module cpu(
 		);
 
 	//Execute stage
-	mux2to1 ex_cont_mux(
-			.input0({23'b0, id_ex_out[8:0]}),
-			.input1(32'b0),
+	mux2to1 #(9) ex_cont_mux(
+			.input0(id_ex_out[8:0]),
+			.input1(5'b0),
 			.select(pcsrc),
 			.out(ex_cont_mux_out)
 		);
@@ -343,7 +343,7 @@ module cpu(
 	//EX/MEM Pipeline Register
 	ex_mem ex_mem_reg(
 			.clk(clk),
-			.data_in({id_ex_out[177:166], id_ex_out[155:151], wb_fwd2_mux_out, lui_result, alu_branch_enable, addr_adder_sum, id_ex_out[43:12], ex_cont_mux_out[8:0]}),
+			.data_in({id_ex_out[177:166], id_ex_out[155:151], wb_fwd2_mux_out, lui_result, alu_branch_enable, addr_adder_sum, id_ex_out[43:12], ex_cont_mux_out}),
 			.data_out(ex_mem_out)
 		);
 
