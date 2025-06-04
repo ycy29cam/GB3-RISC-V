@@ -61,19 +61,33 @@ module alu(ALUctl, A, B, ALUOut, Branch_Enable);
 	output reg [31:0]	ALUOut;
 	output reg		Branch_Enable;
 
-	/*
-	 *	This uses Yosys's support for nonzero initial values:
-	 *
-	 *		https://github.com/YosysHQ/yosys/commit/0793f1b196df536975a044a4ce53025c81d00c7f
-	 *
-	 *	Rather than using this simulation construct (`initial`),
-	 *	the design should instead use a reset signal going to
-	 *	modules in the design.
-	 */
+	// Initialize outputs
 	initial begin
 		ALUOut = 32'b0;
 		Branch_Enable = 1'b0;
 	end
+
+	//use same adder for add/sub/slt
+	wire adder_ci;				// twos complement for subtraction
+	wire [31:0] input2;			// invert for subtraction
+	wire [31:0] adder_output;	// Result of A + input2 [+ carry-in]
+
+	//Subtraction when:
+    assign adder_ci = (
+        ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB ||
+        ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SLT
+    );
+
+	//Flip input bits if sub
+	assign input2 = adder_ci ? ~B : B;
+
+	// Instantiate full adder (used for ADD, SUB, SLT)
+    full_adder alu_full_adder(
+        .carry_in(adder_ci),
+        .input1(A),
+        .input2(input2),
+        .out(adder_output)
+    );
 
 	always @(ALUctl, A, B) begin
 		case (ALUctl[3:0])
@@ -90,17 +104,17 @@ module alu(ALUctl, A, B, ALUOut, Branch_Enable);
 			/*
 			 *	ADD (the fields also match AUIPC, all loads, all stores, and ADDI)
 			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_ADD:	ALUOut = A + B;
+			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_ADD:	ALUOut = adder_output;
 
 			/*
 			 *	SUBTRACT (the fields also matches all branches)
 			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB:	ALUOut = A - B;
+			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB:	ALUOut = adder_output;
 
 			/*
 			 *	SLT (the fields also matches all the other SLT variants)
 			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SLT:	ALUOut = $signed(A) < $signed(B) ? 32'b1 : 32'b0;
+			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SLT:	ALUOut = adder_output[31] ? 32'b1 : 32'b0;
 
 			/*
 			 *	SRL (the fields also matches the other SRL variants)
@@ -145,13 +159,14 @@ module alu(ALUctl, A, B, ALUOut, Branch_Enable);
 	end
 
 	always @(ALUctl, ALUOut, A, B) begin
+		unsigned_lt = ((~A[31] + B[31]) & ALUOut[31]) | (~A[31] & B[31]);
 		case (ALUctl[6:4])
 			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BEQ:	Branch_Enable = (ALUOut == 0);
 			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BNE:	Branch_Enable = !(ALUOut == 0);
-			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BLT:	Branch_Enable = ($signed(A) < $signed(B));
-			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BGE:	Branch_Enable = ($signed(A) >= $signed(B));
-			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BLTU:	Branch_Enable = ($unsigned(A) < $unsigned(B));
-			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BGEU:	Branch_Enable = ($unsigned(A) >= $unsigned(B));
+			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BLT:	Branch_Enable = ALUOut[31];
+			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BGE:	Branch_Enable = ~ALUOut[31];
+			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BLTU:	Branch_Enable = unsigned_lt;
+			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BGEU:	Branch_Enable = ~unsigned_lt;
 
 			default:					Branch_Enable = 1'b0;
 		endcase
