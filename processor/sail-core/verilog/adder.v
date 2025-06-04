@@ -1,54 +1,18 @@
-/*
-	Authored 2018-2019, Ryan Voo.
+module adder(
+    input [31:0] input1,
+    input [31:0] input2,
+    output [31:0] out
+);
 
-	All rights reserved.
-	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions
-	are met:
+    wire [31:0] O;
 
-	*	Redistributions of source code must retain the above
-		copyright notice, this list of conditions and the following
-		disclaimer.
+	adder_dsp dsp_inst (
+        .input1(input1),
+        .input2(input2),
+        .is_sub(0),
+        .out(O)
+    );
 
-	*	Redistributions in binary form must reproduce the above
-		copyright notice, this list of conditions and the following
-		disclaimer in the documentation and/or other materials
-		provided with the distribution.
+    assign out = O;  // O[31:0] is the full 32-bit result
 
-	*	Neither the name of the author nor the names of its
-		contributors may be used to endorse or promote products
-		derived from this software without specific prior written
-		permission.
-
-	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-	"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-	LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-	FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-	COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-	INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-	BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-	LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-	CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-	LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-	ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-	POSSIBILITY OF SUCH DAMAGE.
-*/
-
-
-
-/*
- *	Description:
- *
- *		This module implements an adder for use by the branch unit
- *		and program counter increment among other things.
- */
-
-
-
-module adder(input1, input2, out);
-	input [31:0]	input1;
-	input [31:0]	input2;
-	output [31:0]	out;
-
-	assign		out = input1 + input2;
 endmodule

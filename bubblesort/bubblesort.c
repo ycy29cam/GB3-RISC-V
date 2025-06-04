@@ -12,7 +12,6 @@ uchar bsort_input[] = {
   const int bsort_input_len = 0x426;
 
   volatile unsigned int *gDebugLedsMemoryMappedRegister = (unsigned int *)0x2000;
-  *gDebugLedsMemoryMappedRegister = 0xFF;
   *gDebugLedsMemoryMappedRegister = 0x00;
   int i;
   int maxindex = bsort_input_len - 1;
@@ -29,5 +28,6 @@ uchar bsort_input[] = {
 
     maxindex--;
   }
+   *gDebugLedsMemoryMappedRegister = 0xFF;
     return 0;
 }
