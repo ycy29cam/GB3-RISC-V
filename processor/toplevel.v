@@ -55,12 +55,12 @@ module toplevel (led);
 
 // `ifdef SIMULATION
     reg clk;
-    // always #5 clk = ~clk;       // 100 MHz test clock
+    always #5 clk = ~clk;       // 100 MHz test clock
 // `else
-//     wire clk;
-//     SB_HFOSC #(.CLKHF_DIV("0b10")) OSCInst0 (
-//         .CLKHFEN(1'b1), .CLKHFPU(1'b1), .CLKHF(clk)
-//     );
+    // wire clk;
+    // SB_HFOSC #(.CLKHF_DIV("0b10")) OSCInst0 (
+    //     .CLKHFEN(1'b1), .CLKHFPU(1'b1), .CLKHF(clk)
+    // );
 // `endif
 
 	// /*
