@@ -106,8 +106,8 @@ module cpu(
 	wire			Lui1;
 	wire			Auipc1;
 	wire			Fence_signal;
-	wire			CSRR_signal;
-	wire			CSRRI_signal;
+	// wire			CSRR_signal;
+	// wire			CSRRI_signal;
 
 	/*
 	 *	Decode stage
@@ -120,7 +120,7 @@ module cpu(
 	wire [31:0]		RegB_mux_out;
 	wire [31:0]		RegA_AddrFwdFlush_mux_out;
 	wire [31:0]		RegB_AddrFwdFlush_mux_out;
-	wire [31:0]		rdValOut_CSR;
+	// wire [31:0]		rdValOut_CSR;
 	wire [3:0]		dataMem_sign_mask;
 
 	/*
@@ -182,17 +182,18 @@ module cpu(
 			.out(pc_in)
 		);
 
+	program_counter PC(
+			.inAddr(pc_in),
+			.outAddr(pc_out),
+			.clk(clk)
+		);
+
 	adder pc_adder(
 			.input1(32'b100),
 			.input2(pc_out),
 			.out(pc_adder_out)
 		);
 
-	program_counter PC(
-			.inAddr(pc_in),
-			.outAddr(pc_out),
-			.clk(clk)
-		);
 
 	mux2to1 inst_mux(
 			.input0(inst_mem_out),
@@ -220,8 +221,8 @@ module cpu(
 	/*
 	 *	Decode Stage
 	 */
-	control control_unit(
-			.opcode({if_id_out[38:32]}),
+	control_unit control (
+			.opcode({if_id_out[38:32]}), //if_id_out[38:32] is the opcode
 			.MemtoReg(MemtoReg1),
 			.RegWrite(RegWrite1),
 			.MemWrite(MemWrite1),
@@ -232,18 +233,18 @@ module cpu(
 			.Jalr(Jalr1),
 			.Lui(Lui1),
 			.Auipc(Auipc1),
-			.Fence(Fence_signal),
-			.CSRR(CSRR_signal)
+			.Fence(Fence_signal)
+		//.CSRR(CSRR_signal)
 		);
 
 	mux2to1 cont_mux(
-			.input0({21'b0, Jalr1, ALUSrc1, Lui1, Auipc1, Branch1, MemRead1, MemWrite1, CSRR_signal, RegWrite1, MemtoReg1, Jump1}),
+			.input0({21'b0, Jalr1, ALUSrc1, Lui1, Auipc1, Branch1, MemRead1, MemWrite1, 1'b0, RegWrite1, MemtoReg1, Jump1}),
 			.input1(32'b0),
 			.select(decode_ctrl_mux_sel),
 			.out(cont_mux_out)
 		);
 
-	regfile register_files(
+	regfile reg_file(
 			.clk(clk),
 			.write(ex_mem_out[2]),
 			.wrAddr(ex_mem_out[142:138]),
@@ -259,55 +260,59 @@ module cpu(
 			.imm(imm_out)
 		);
 
-	ALUControl alu_control(
+	alu_control ALU_Control(
 			.Opcode(if_id_out[38:32]),
 			.FuncCode({if_id_out[62], if_id_out[46:44]}),
 			.ALUCtl(alu_ctl)
 		);
 
-	sign_mask_gen sign_mask_gen_inst(
+	dataMem_mask_gen sign_mask_gen_inst(
 			.func3(if_id_out[46:44]),
 			.sign_mask(dataMem_sign_mask)
 		);
 
-	csr_file ControlAndStatus_registers(
-			.clk(clk),
-			.write(mem_wb_out[3]), //TODO
-			.wrAddr_CSR(mem_wb_out[116:105]),
-			.wrVal_CSR(mem_wb_out[35:4]),
-			.rdAddr_CSR(inst_mux_out[31:20]),
-			.rdVal_CSR(rdValOut_CSR)
-		);
+	// csr_file ControlAndStatus_registers(
+	// 		.clk(clk),
+	// 		.write(mem_wb_out[3]), //TODO
+	// 		.wrAddr_CSR(mem_wb_out[116:105]),
+	// 		.wrVal_CSR(mem_wb_out[35:4]),
+	// 		.rdAddr_CSR(inst_mux_out[31:20]),
+	// 		.rdVal_CSR(rdValOut_CSR)
+	// 	);
 
-	mux2to1 RegA_mux(
-			.input0(regA_out),
-			.input1({27'b0, if_id_out[51:47]}),
-			.select(CSRRI_signal),
-			.out(RegA_mux_out)
-		);
+	// mux2to1 RegA_mux(
+	// 		.input0(regA_out),
+	// 		.input1({27'b0, if_id_out[51:47]}),
+	// 		.select(CSRRI_signal),
+	// 		.out(RegA_mux_out)
+	// 	);
+	assign RegA_mux_out = regA_out; //TODO cleanup
 
-	mux2to1 RegB_mux(
-			.input0(regB_out),
-			.input1(rdValOut_CSR),
-			.select(CSRR_signal),
-			.out(RegB_mux_out)
-		);
+	// mux2to1 RegB_mux(
+	// 		.input0(regB_out),
+	// 		.input1(rdValOut_CSR),
+	// 		.select(CSRR_signal),
+	// 		.out(RegB_mux_out)
+	// 	);
+	assign RegB_mux_out = regB_out;
 
-	mux2to1 RegA_AddrFwdFlush_mux( //TODO cleanup
-			.input0({27'b0, if_id_out[51:47]}),
-			.input1(32'b0),
-			.select(CSRRI_signal),
-			.out(RegA_AddrFwdFlush_mux_out)
-		);
+	// mux2to1 RegA_AddrFwdFlush_mux( //TODO cleanup
+	// 		.input0({27'b0, if_id_out[51:47]}),
+	// 		.input1(32'b0),
+	// 		.select(CSRRI_signal),
+	// 		.out(RegA_AddrFwdFlush_mux_out)
+	// 	);
+	assign RegA_AddrFwdFlush_mux_out = {27'b0, if_id_out[51:47]};
 
-	mux2to1 RegB_AddrFwdFlush_mux( //TODO cleanup
-			.input0({27'b0, if_id_out[56:52]}),
-			.input1(32'b0),
-			.select(CSRR_signal),
-			.out(RegB_AddrFwdFlush_mux_out)
-		);
+	// mux2to1 RegB_AddrFwdFlush_mux( //TODO cleanup
+	// 		.input0({27'b0, if_id_out[56:52]}),
+	// 		.input1(32'b0),
+	// 		.select(CSRR_signal),
+	// 		.out(RegB_AddrFwdFlush_mux_out)
+	// 	);
+	assign RegB_AddrFwdFlush_mux_out = {27'b0, if_id_out[56:52]};
 
-	assign CSRRI_signal = CSRR_signal & (if_id_out[46]);
+	// assign CSRRI_signal = CSRR_signal & (if_id_out[46]);
 
 	//ID/EX Pipeline Register
 	id_ex id_ex_reg(
@@ -367,7 +372,7 @@ module cpu(
 		);
 
 	//Memory Access Stage
-	branch_decision branch_decide(
+	branch_decide branch_decision(
 			.Branch(ex_mem_out[6]),
 			.Predicted(ex_mem_out[7]),
 			.Branch_Enable(ex_mem_out[73]),
@@ -414,7 +419,7 @@ module cpu(
 		);
 
 	//Forwarding Unit
-	ForwardingUnit forwarding_unit(
+	forwarding_unit ForwardingUnit(
 			.rs1(id_ex_out[160:156]),
 			.rs2(id_ex_out[165:161]),
 			.MEM_RegWriteAddr(ex_mem_out[142:138]),
@@ -515,4 +520,110 @@ module cpu(
 	assign data_mem_memwrite = ex_cont_mux_out[4];
 	assign data_mem_memread = ex_cont_mux_out[5];
 	assign data_mem_sign_mask = id_ex_out[150:147];
+endmodule
+
+
+
+module if_id (clk, data_in, data_out);
+	input			clk;
+	input [63:0]		data_in;
+	output reg[63:0]	data_out;
+
+	/*
+	 *	This uses Yosys's support for nonzero initial values:
+	 *
+	 *		https://github.com/YosysHQ/yosys/commit/0793f1b196df536975a044a4ce53025c81d00c7f
+	 *
+	 *	Rather than using this simulation construct (`initial`),
+	 *	the design should instead use a reset signal going to
+	 *	modules in the design.
+	 */
+	initial begin
+		data_out = 64'b0;
+	end
+
+	always @(posedge clk) begin
+		data_out <= data_in;
+	end
+endmodule
+
+
+
+/* ID/EX pipeline registers */ 
+module id_ex (clk, data_in, data_out);
+	input			clk;
+	input [177:0]		data_in;
+	output reg[177:0]	data_out;
+
+	/*
+	 *	The `initial` statement below uses Yosys's support for nonzero
+	 *	initial values:
+	 *
+	 *		https://github.com/YosysHQ/yosys/commit/0793f1b196df536975a044a4ce53025c81d00c7f
+	 *
+	 *	Rather than using this simulation construct (`initial`),
+	 *	the design should instead use a reset signal going to
+	 *	modules in the design and to thereby set the values.
+	 */
+	initial begin
+		data_out = 178'b0;
+	end
+
+	always @(posedge clk) begin
+		data_out <= data_in;
+	end
+endmodule
+
+
+
+/* EX/MEM pipeline registers */ 
+module ex_mem (clk, data_in, data_out);
+	input			clk;
+	input [154:0]		data_in;
+	output reg[154:0]	data_out;
+
+	/*
+	 *	The `initial` statement below uses Yosys's support for nonzero
+	 *	initial values:
+	 *
+	 *		https://github.com/YosysHQ/yosys/commit/0793f1b196df536975a044a4ce53025c81d00c7f
+	 *
+	 *	Rather than using this simulation construct (`initial`),
+	 *	the design should instead use a reset signal going to
+	 *	modules in the design and to thereby set the values.
+	 */
+	initial begin
+		data_out = 155'b0;
+	end
+
+	always @(posedge clk) begin
+		data_out <= data_in;
+	end
+endmodule
+
+
+
+/* MEM/WB pipeline registers */ 
+module mem_wb (clk, data_in, data_out);
+	input			clk;
+	input [116:0]		data_in;
+	output reg[116:0]	data_out;
+
+	/*
+	 *	The `initial` statement below uses Yosys's support for nonzero
+	 *	initial values:
+	 *
+	 *		https://github.com/YosysHQ/yosys/commit/0793f1b196df536975a044a4ce53025c81d00c7f
+	 *
+	 *	Rather than using this simulation construct (`initial`),
+	 *	the design should instead use a reset signal going to
+	 *	modules in the design and to thereby set the values.
+	 */
+	initial begin
+		data_out = 117'b0;
+	end
+
+	always @(posedge clk) begin
+		data_out <= data_in;
+	end
 endmodule

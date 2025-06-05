@@ -1,48 +1,6 @@
-/*
-	Authored 2018-2019, Ryan Voo.
-
-	All rights reserved.
-	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions
-	are met:
-
-	*	Redistributions of source code must retain the above
-		copyright notice, this list of conditions and the following
-		disclaimer.
-
-	*	Redistributions in binary form must reproduce the above
-		copyright notice, this list of conditions and the following
-		disclaimer in the documentation and/or other materials
-		provided with the distribution.
-
-	*	Neither the name of the author nor the names of its
-		contributors may be used to endorse or promote products
-		derived from this software without specific prior written
-		permission.
-
-	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-	"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-	LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-	FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-	COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-	INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-	BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-	LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-	CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-	LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-	ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-	POSSIBILITY OF SUCH DAMAGE.
-*/
 
 
-
-/*
- *	mask for loads/stores in data memory
- */
-
-
-
-module sign_mask_gen(func3, sign_mask);
+module dataMem_mask_gen(func3, sign_mask);
 	input [2:0]	func3;
 	output [3:0]	sign_mask;
 
@@ -66,3 +24,27 @@ module sign_mask_gen(func3, sign_mask);
 
 	assign sign_mask = {(~func3[2]), mask};
 endmodule
+
+
+// module sign_mask_gen(
+//     input  [2:0] func3,
+//     output [3:0] sign_mask
+// );
+//     // One-hot encoded types
+//     wire is_lb  = (func3 == 3'b000);  // Load Byte
+//     wire is_lh  = (func3 == 3'b001);  // Load Halfword
+//     wire is_lw  = (func3 == 3'b010);  // Load Word
+//     wire is_lbu = (func3 == 3'b100);  // Load Byte Unsigned
+//     wire is_lhu = (func3 == 3'b101);  // Load Halfword Unsigned
+
+//     // Each of these contributes to one-hot control for size & signedness
+//     wire [3:0] lb_mask  = is_lb  ? 4'b1001 : 4'b0000;
+//     wire [3:0] lh_mask  = is_lh  ? 4'b1011 : 4'b0000;
+//     wire [3:0] lw_mask  = is_lw  ? 4'b1111 : 4'b0000;
+//     wire [3:0] lbu_mask = is_lbu ? 4'b0001 : 4'b0000;
+//     wire [3:0] lhu_mask = is_lhu ? 4'b0011 : 4'b0000;
+
+//     // Final result using XOR of one-hot sources
+//     assign sign_mask = lb_mask ^ lh_mask ^ lw_mask ^ lbu_mask ^ lhu_mask;
+
+// endmodule

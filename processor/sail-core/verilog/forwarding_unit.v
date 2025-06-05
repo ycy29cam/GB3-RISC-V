@@ -42,7 +42,7 @@
 
 
 
-module ForwardingUnit(rs1, rs2, MEM_RegWriteAddr, WB_RegWriteAddr, MEM_RegWrite, WB_RegWrite, EX_CSRR_Addr, MEM_CSRR_Addr, WB_CSRR_Addr, MEM_CSRR, WB_CSRR, MEM_fwd1, MEM_fwd2, WB_fwd1, WB_fwd2);
+module forwarding_unit(rs1, rs2, MEM_RegWriteAddr, WB_RegWriteAddr, MEM_RegWrite, WB_RegWrite, EX_CSRR_Addr, MEM_CSRR_Addr, WB_CSRR_Addr, MEM_CSRR, WB_CSRR, MEM_fwd1, MEM_fwd2, WB_fwd1, WB_fwd2);
 	input [4:0]	rs1;
 	input [4:0]	rs2;
 	input [4:0]	MEM_RegWriteAddr;

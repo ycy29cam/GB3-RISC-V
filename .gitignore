@@ -14,12 +14,24 @@
 **build/**
 
 !**/*.*
-# **/*.blif
-# **/*.json
-# **/*.asc
-# **/*.bin
+**/*.blif
+**/*.json
+**/*.asc
+**/*.bin
 **/*.hex
 **/*.o
 **/*.i
 **/*.sr
 **/*.map
+**/*.txt
+**/*.py
+.DS_Store
+settings.json
+*.sh
+*.ld
+*.node0
+*.bin
+*.s
+**/*.S
+*.vvp
+*.fst

@@ -104,6 +104,8 @@ module data_mem (clk, addr, write_data, memwrite, memread, sign_mask, read_data,
 	 *	(Bad practice: The constant for the size should be a `define).
 	 */
 	reg [31:0]		data_block[0:1023];
+	//reg [31:0]		data_block[0:10000]; // (new) for testing purposes
+	// reg [31:0]		data_block[0:265]; //(new) for testing purposes
 
 	/*
 	 *	wire assignments
@@ -112,6 +114,8 @@ module data_mem (clk, addr, write_data, memwrite, memread, sign_mask, read_data,
 	wire [1:0]		addr_buf_byte_offset;
 
 	wire [31:0]		replacement_word;
+
+	// localparam  [9:0] MEM_OFFSET = 10'h400;
 
 	assign			addr_buf_block_addr	= addr_buf[11:2];
 	assign			addr_buf_byte_offset	= addr_buf[1:0];
@@ -220,10 +224,13 @@ module data_mem (clk, addr, write_data, memwrite, memread, sign_mask, read_data,
 	 *	the design should instead use a reset signal going to
 	 *	modules in the design.
 	 */
+	
 	initial begin
 		$readmemh("verilog/data.hex", data_block);
 		clk_stall = 0;
 	end
+
+
 
 	/*
 	 *	LED register interfacing with I/O
@@ -233,6 +240,8 @@ module data_mem (clk, addr, write_data, memwrite, memread, sign_mask, read_data,
 			led_reg <= write_data;
 		end
 	end
+
+
 
 	/*
 	 *	State machine
@@ -258,7 +267,12 @@ module data_mem (clk, addr, write_data, memwrite, memread, sign_mask, read_data,
 				 *	Subtract out the size of the instruction memory.
 				 *	(Bad practice: The constant should be a `define).
 				 */
-				word_buf <= data_block[addr_buf_block_addr - 32'h1000];
+
+				word_buf <= data_block[addr_buf_block_addr];
+
+
+				// word_buf <= data_block[addr_buf_block_addr - 32'h1000];
+
 				if(memread_buf==1'b1) begin
 					state <= READ;
 				end
@@ -280,7 +294,10 @@ module data_mem (clk, addr, write_data, memwrite, memread, sign_mask, read_data,
 				 *	Subtract out the size of the instruction memory.
 				 *	(Bad practice: The constant should be a `define).
 				 */
-				data_block[addr_buf_block_addr - 32'h1000] <= replacement_word;
+				data_block[addr_buf_block_addr] <= replacement_word;
+				// data_block[addr_buf_block_addr - 32'h1000] <= replacement_word;
+
+				 
 				state <= IDLE;
 			end
 
@@ -292,3 +309,4 @@ module data_mem (clk, addr, write_data, memwrite, memread, sign_mask, read_data,
 	 */
 	assign led = led_reg[7:0];
 endmodule
+

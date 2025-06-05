@@ -44,7 +44,7 @@
 
 
 
-module branch_decision (Branch, Predicted, Branch_Enable, Jump, Mispredict, Decision, Branch_Jump_Trigger);
+module branch_decide (Branch, Predicted, Branch_Enable, Jump, Mispredict, Decision, Branch_Jump_Trigger);
 	input	Branch;
 	input	Predicted;
 	input	Branch_Enable;
