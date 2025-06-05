@@ -46,13 +46,13 @@ module data_mem (clk, addr, write_data, memwrite, memread, sign_mask, read_data,
 	input			memread;
 	input [3:0]		sign_mask;
 	output reg [31:0]	read_data;
-	output [7:0]		led;
+	output	[7:0]	led;
 	output reg		clk_stall;	//Sets the clock high
 
 	/*
 	 *	led register
 	 */
-	reg [31:0]		led_reg;
+	reg	[7:0] led_reg; //only 1 bit is actually used
 
 	/*
 	 *	Current state
@@ -91,7 +91,7 @@ module data_mem (clk, addr, write_data, memwrite, memread, sign_mask, read_data,
 	/*
 	 *	Buffer to store address
 	 */
-	reg [31:0]		addr_buf;
+	reg [11:0]		addr_buf;
 
 	/*
 	 *	Sign_mask buffer
@@ -237,7 +237,7 @@ module data_mem (clk, addr, write_data, memwrite, memread, sign_mask, read_data,
 	 */
 	always @(posedge clk) begin
 		if(memwrite == 1'b1 && addr == 32'h2000) begin
-			led_reg <= write_data;
+			led_reg <= write_data[7:0];
 		end
 	end
 
@@ -253,7 +253,7 @@ module data_mem (clk, addr, write_data, memwrite, memread, sign_mask, read_data,
 				memread_buf <= memread;
 				memwrite_buf <= memwrite;
 				write_data_buffer <= write_data;
-				addr_buf <= addr;
+				addr_buf <= addr[11:0]; // 12 bits for the address
 				sign_mask_buf <= sign_mask;
 
 				if(memwrite==1'b1 || memread==1'b1) begin
@@ -307,6 +307,6 @@ module data_mem (clk, addr, write_data, memwrite, memread, sign_mask, read_data,
 	/*
 	 *	Test led
 	 */
-	assign led = led_reg[7:0];
+	assign led = led_reg;
 endmodule
 
