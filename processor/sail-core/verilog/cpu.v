@@ -89,7 +89,7 @@ module cpu(
 	 */
 	wire [63:0]		if_id_out;
 	wire [177:0]		id_ex_out;
-	wire [154:0]		ex_mem_out;
+	wire [120:0]		ex_mem_out;
 	wire [116:0]		mem_wb_out;
 
 	/*
@@ -177,7 +177,7 @@ module cpu(
 	 */
 	mux2to1 pc_mux(
 			.input0(pc_mux0),
-			.input1(ex_mem_out[72:41]),
+			.input1(ex_mem_out[38:7]),
 			.select(pcsrc),
 			.out(pc_in)
 		);
@@ -244,10 +244,10 @@ module cpu(
 			.out(cont_mux_out)
 		);
 
-	regfile reg_file(
+	reg_file regfile (
 			.clk(clk),
 			.write(ex_mem_out[2]),
-			.wrAddr(ex_mem_out[142:138]),
+			.wrAddr(ex_mem_out[108:104]),
 			.wrData(reg_dat_mux_out),
 			.rdAddrA(inst_mux_out[19:15]),
 			.rdDataA(regA_out),
@@ -338,7 +338,7 @@ module cpu(
 
 	adder addr_adder(
 			.input1(addr_adder_mux_out),
-			.input2(id_ex_out[139:108]),
+			.input2(id_ex_out[139:108]), //
 			.out(addr_adder_sum)
 		);
 
@@ -367,15 +367,27 @@ module cpu(
 	//EX/MEM Pipeline Register
 	ex_mem ex_mem_reg(
 			.clk(clk),
-			.data_in({id_ex_out[177:166], id_ex_out[155:151], wb_fwd2_mux_out, lui_result, alu_branch_enable, addr_adder_sum, id_ex_out[43:12], ex_cont_mux_out[8:0]}),
+			.data_in({
+				id_ex_out[177:166],
+				id_ex_out[155:151],
+				wb_fwd2_mux_out, 
+				lui_result, 
+				alu_branch_enable, 
+				addr_adder_sum, 
+				/* id_ex_out[43:12] gone */
+        		ex_cont_mux_out[8:6],        // 3   ➜ [6:4]
+        		/* ex_cont_mux_out[5:4] gone */
+        		ex_cont_mux_out[3:0]         // 4   ➜ [3:0]
+			}
+				),
 			.data_out(ex_mem_out)
 		);
 
 	//Memory Access Stage
 	branch_decide branch_decision(
-			.Branch(ex_mem_out[6]),
-			.Predicted(ex_mem_out[7]),
-			.Branch_Enable(ex_mem_out[73]),
+			.Branch(ex_mem_out[4]),
+			.Predicted(ex_mem_out[5]),
+			.Branch_Enable(ex_mem_out[39]),
 			.Jump(ex_mem_out[0]),
 			.Mispredict(mistake_trigger),
 			.Decision(actual_branch_decision),
@@ -383,15 +395,15 @@ module cpu(
 		);
 
 	mux2to1 auipc_mux(
-			.input0(ex_mem_out[105:74]),
-			.input1(ex_mem_out[72:41]),
-			.select(ex_mem_out[8]),
+			.input0(ex_mem_out[71:40]),
+			.input1(ex_mem_out[38:7]),
+			.select(ex_mem_out[6]),
 			.out(auipc_mux_out)
 		);
 
 	mux2to1 mem_csrr_mux(
 			.input0(auipc_mux_out),
-			.input1(ex_mem_out[137:106]),
+			.input1(ex_mem_out[103:72]),
 			.select(ex_mem_out[3]),
 			.out(mem_csrr_mux_out)
 		);
@@ -399,7 +411,13 @@ module cpu(
 	//MEM/WB Pipeline Register
 	mem_wb mem_wb_reg(
 			.clk(clk),
-			.data_in({ex_mem_out[154:143], ex_mem_out[142:138], data_mem_out, mem_csrr_mux_out, ex_mem_out[105:74], ex_mem_out[3:0]}),
+			.data_in({
+				ex_mem_out[120:109], 
+				ex_mem_out[108:104], 
+				data_mem_out, 
+				mem_csrr_mux_out, 
+				ex_mem_out[71:40], 
+				ex_mem_out[3:0]}),
 			.data_out(mem_wb_out)
 		);
 
@@ -422,12 +440,12 @@ module cpu(
 	forwarding_unit ForwardingUnit(
 			.rs1(id_ex_out[160:156]),
 			.rs2(id_ex_out[165:161]),
-			.MEM_RegWriteAddr(ex_mem_out[142:138]),
+			.MEM_RegWriteAddr(ex_mem_out[108:104]),
 			.WB_RegWriteAddr(mem_wb_out[104:100]),
 			.MEM_RegWrite(ex_mem_out[2]),
 			.WB_RegWrite(mem_wb_out[2]),
 			.EX_CSRR_Addr(id_ex_out[177:166]),
-			.MEM_CSRR_Addr(ex_mem_out[154:143]),
+			.MEM_CSRR_Addr(ex_mem_out[120:109]),
 			.WB_CSRR_Addr(mem_wb_out[116:105]),
 			.MEM_CSRR(ex_mem_out[3]),
 			.WB_CSRR(mem_wb_out[3]),
@@ -466,7 +484,7 @@ module cpu(
 		);
 
 	mux2to1 dataMemOut_fwd_mux(
-			.input0(ex_mem_out[105:74]),
+			.input0(ex_mem_out[71:40]),
 			.input1(data_mem_out),
 			.select(ex_mem_out[1]),
 			.out(dataMemOut_fwd_mux_out)
@@ -477,7 +495,7 @@ module cpu(
 			.clk(clk),
 			.actual_branch_decision(actual_branch_decision),
 			.branch_decode_sig(cont_mux_out[6]),
-			.branch_mem_sig(ex_mem_out[6]),
+			.branch_mem_sig(ex_mem_out[4]),
 			.in_addr(if_id_out[31:0]),
 			.offset(imm_out),
 			.branch_addr(branch_predictor_addr),
@@ -579,8 +597,8 @@ endmodule
 /* EX/MEM pipeline registers */ 
 module ex_mem (clk, data_in, data_out);
 	input			clk;
-	input [154:0]		data_in;
-	output reg[154:0]	data_out;
+	input [120:0]		data_in;
+	output reg[120:0]	data_out;
 
 	/*
 	 *	The `initial` statement below uses Yosys's support for nonzero
@@ -593,7 +611,7 @@ module ex_mem (clk, data_in, data_out);
 	 *	modules in the design and to thereby set the values.
 	 */
 	initial begin
-		data_out = 155'b0;
+		data_out = 121'b0;
 	end
 
 	always @(posedge clk) begin

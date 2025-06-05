@@ -44,7 +44,7 @@
 
 
 
-module regfile(clk, write, wrAddr, wrData, rdAddrA, rdDataA, rdAddrB, rdDataB);
+module reg_file(clk, write, wrAddr, wrData, rdAddrA, rdDataA, rdAddrB, rdDataB);
 	input		clk;
 	input		write;
 	input [4:0]	wrAddr;
