@@ -118,15 +118,15 @@ module cpu(
 	wire [31:0]		imm_out;
 	wire [31:0]		RegA_mux_out;
 	wire [31:0]		RegB_mux_out;
-	wire [31:0]		RegA_AddrFwdFlush_mux_out;
-	wire [31:0]		RegB_AddrFwdFlush_mux_out;
+	wire [4:0]		RegA_AddrFwdFlush_mux_out;
+	wire [4:0]		RegB_AddrFwdFlush_mux_out;
 	// wire [31:0]		rdValOut_CSR;
 	wire [3:0]		dataMem_sign_mask;
 
 	/*
 	 *	Execute stage
 	 */
-	wire [31:0]		ex_cont_mux_out;
+	wire [8:0]		ex_cont_mux_out;
 	wire [31:0]		addr_adder_mux_out;
 	wire [31:0]		alu_mux_out;
 	wire [31:0]		addr_adder_sum;
@@ -302,7 +302,7 @@ module cpu(
 	// 		.select(CSRRI_signal),
 	// 		.out(RegA_AddrFwdFlush_mux_out)
 	// 	);
-	assign RegA_AddrFwdFlush_mux_out = {27'b0, if_id_out[51:47]};
+	assign RegA_AddrFwdFlush_mux_out = if_id_out[51:47];
 
 	// mux2to1 RegB_AddrFwdFlush_mux( //TODO cleanup
 	// 		.input0({27'b0, if_id_out[56:52]}),
@@ -310,7 +310,7 @@ module cpu(
 	// 		.select(CSRR_signal),
 	// 		.out(RegB_AddrFwdFlush_mux_out)
 	// 	);
-	assign RegB_AddrFwdFlush_mux_out = {27'b0, if_id_out[56:52]};
+	assign RegB_AddrFwdFlush_mux_out = if_id_out[56:52];
 
 	// assign CSRRI_signal = CSRR_signal & (if_id_out[46]);
 
@@ -322,9 +322,9 @@ module cpu(
 		);
 
 	//Execute stage
-	mux2to1 ex_cont_mux(
-			.input0({23'b0, id_ex_out[8:0]}),
-			.input1(32'b0),
+	mux2to1 #(.WIDTH(9)) ex_cont_mux(
+			.input0(id_ex_out[8:0]),
+			.input1(9'b0),
 			.select(pcsrc),
 			.out(ex_cont_mux_out)
 		);
