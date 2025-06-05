@@ -90,7 +90,7 @@ module cpu(
 	wire [63:0]		if_id_out;
 	wire [177:0]		id_ex_out;
 	wire [120:0]		ex_mem_out;
-	wire [116:0]		mem_wb_out;
+	wire [84:0]		mem_wb_out;
 
 	/*
 	 *	Control signals
@@ -409,22 +409,22 @@ module cpu(
 		);
 
 	//MEM/WB Pipeline Register
-	mem_wb mem_wb_reg(
-			.clk(clk),
-			.data_in({
-				ex_mem_out[120:109], 
-				ex_mem_out[108:104], 
-				data_mem_out, 
-				mem_csrr_mux_out, 
-				ex_mem_out[71:40], 
-				ex_mem_out[3:0]}),
-			.data_out(mem_wb_out)
-		);
+	mem_wb mem_wb_reg (
+    .clk(clk),
+    .data_in({
+        ex_mem_out[120:109],   // 12  → mem_wb_out[84:73]
+        ex_mem_out[108:104],   // 5   → [72:68]
+        data_mem_out,          // 32  → [67:36]
+        mem_csrr_mux_out,      // 32  → [35:4]    (moves down)
+        ex_mem_out[3:0]        // 4   → [3:0]     (keep control bits)
+    }),
+    .data_out(mem_wb_out)
+);
 
 	//Writeback to Register Stage
 	mux2to1 wb_mux(
-			.input0(mem_wb_out[67:36]),
-			.input1(mem_wb_out[99:68]),
+			.input0(mem_wb_out[35:4]),
+			.input1(mem_wb_out[67:36]),
 			.select(mem_wb_out[1]),
 			.out(wb_mux_out)
 		);
@@ -441,12 +441,12 @@ module cpu(
 			.rs1(id_ex_out[160:156]),
 			.rs2(id_ex_out[165:161]),
 			.MEM_RegWriteAddr(ex_mem_out[108:104]),
-			.WB_RegWriteAddr(mem_wb_out[104:100]),
+			.WB_RegWriteAddr(mem_wb_out[72:68]),
 			.MEM_RegWrite(ex_mem_out[2]),
 			.WB_RegWrite(mem_wb_out[2]),
 			.EX_CSRR_Addr(id_ex_out[177:166]),
 			.MEM_CSRR_Addr(ex_mem_out[120:109]),
-			.WB_CSRR_Addr(mem_wb_out[116:105]),
+			.WB_CSRR_Addr(mem_wb_out[84:73]),
 			.MEM_CSRR(ex_mem_out[3]),
 			.WB_CSRR(mem_wb_out[3]),
 			.MEM_fwd1(mfwd1),
@@ -624,8 +624,8 @@ endmodule
 /* MEM/WB pipeline registers */ 
 module mem_wb (clk, data_in, data_out);
 	input			clk;
-	input [116:0]		data_in;
-	output reg[116:0]	data_out;
+	input [84:0]		data_in;
+	output reg[84:0]	data_out;
 
 	/*
 	 *	The `initial` statement below uses Yosys's support for nonzero
