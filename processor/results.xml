@@ -1,6 +1,6 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1749160964" />
-    <testcase name="rv32i_selfcheck" classname="test_rv32i_benchmark" file="/Users/jiahaozhang/Library/Python/3.10/lib/python/site-packages/cocotb/decorators.py" lineno="74" time="0.17706799507141113" sim_time_ns="30920.001" ratio_time="174622.1895579155" />
+    <property name="random_seed" value="1749210718" />
+    <testcase name="rv32i_selfcheck" classname="test_rv32i_benchmark" file="/Users/jiahaozhang/Library/Python/3.10/lib/python/site-packages/cocotb/decorators.py" lineno="74" time="0.24953413009643555" sim_time_ns="30920.001" ratio_time="123910.90945375121" />
   </testsuite>
 </testsuites>
