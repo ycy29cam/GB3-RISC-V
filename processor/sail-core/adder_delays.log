@@ -1,0 +1,24 @@
+Resolvable net names on path:
+     1.491 ns ..  3.252 ns processor.id_ex_out[174]
+     4.537 ns ..  6.298 ns processor.addr_adder_mux.input1_SB_LUT4_O_6_I1_SB_LUT4_I0_I1_SB_LUT4_O_I3_SB_LUT4_O_I3_SB_LUT4_O_I3
+     7.504 ns ..  9.914 ns processor.addr_adder_mux.input1_SB_LUT4_O_6_I1_SB_LUT4_I0_I1_SB_LUT4_O_I3_SB_LUT4_O_I3
+    11.199 ns .. 13.609 ns processor.addr_adder_mux.input1_SB_LUT4_O_6_I1_SB_LUT4_I0_I1_SB_LUT4_O_I3
+    14.484 ns .. 16.894 ns processor.addr_adder_mux.input1_SB_LUT4_O_6_I1_SB_LUT4_I0_I1_SB_LUT4_O_I1_SB_LUT4_I1_O
+    17.768 ns .. 19.530 ns processor.addr_adder_mux.input1_SB_LUT4_O_5_I1_SB_LUT4_I1_I3
+    20.762 ns .. 24.814 ns processor.addr_adder_mux.input1_SB_LUT4_O_5_I1_SB_LUT4_I1_O
+    25.688 ns .. 29.635 ns processor.alu_mux_out[4]
+    34.822 ns .. 38.279 ns processor.alu_main.dsp_output[31]
+    39.511 ns .. 41.272 ns data_mem_inst.addr_buf_SB_DFFE_Q_11_D_SB_LUT4_O_I3_SB_LUT4_O_I2_SB_LUT4_O_I2_SB_LUT4_O_I1_SB_LUT4_O_I0_SB_LUT4_I0_I2
+    42.146 ns .. 43.908 ns processor.ex_mem_reg.data_out_SB_DFF_Q_64_D_SB_LUT4_O_I3_SB_LUT4_O_I3_SB_LUT4_O_I2_SB_LUT4_I2_I3_SB_LUT4_O_I1
+    45.140 ns .. 48.636 ns processor.ex_mem_reg.data_out_SB_DFF_Q_64_D_SB_LUT4_O_I3_SB_LUT4_O_I3_SB_LUT4_O_I2_SB_LUT4_I2_I3
+    49.510 ns .. 51.272 ns processor.ex_mem_reg.data_out_SB_DFF_Q_64_D_SB_LUT4_O_I3_SB_LUT4_O_I2_SB_LUT4_I3_I1
+    52.504 ns .. 55.563 ns processor.ex_mem_reg.data_out_SB_DFF_Q_64_D_SB_LUT4_O_I3_SB_LUT4_O_I2_SB_LUT4_I3_O
+    56.768 ns .. 59.629 ns data_mem_inst.addr_buf_SB_DFFE_Q_11_D_SB_LUT4_O_I3_SB_LUT4_O_I3_SB_LUT4_I3_O
+    60.834 ns .. 62.596 ns processor.ex_mem_reg.data_out_SB_DFF_Q_48_D
+    63.470 ns .. 65.881 ns processor.ex_mem_reg.data_out_SB_DFF_Q_51_D_SB_LUT4_I0_O
+    67.086 ns .. 68.847 ns data_mem_inst.addr_buf_SB_DFFE_Q_7_D_SB_LUT4_I0_O
+    70.053 ns .. 74.887 ns data_mem_inst.addr_buf_SB_DFFE_Q_7_D_SB_LUT4_I0_O_SB_LUT4_I3_O
+                  lcout -> led[1]$SB_IO_OUT
+
+Total number of logic levels: 18
+Total path delay: 74.89 ns (13.35 MHz)

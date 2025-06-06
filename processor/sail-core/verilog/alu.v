@@ -69,8 +69,8 @@ module alu(ALUctl, A, B, ALUOut, Branch_Enable);
 
 	//use same adder for add/sub/slt
 	wire adder_ci;				// twos complement for subtraction
-	wire [31:0] input2;			// invert for subtraction
-	wire [31:0] adder_output;	// Result of A + input2 [+ carry-in]
+	// wire [31:0] input2;			// invert for subtraction
+	// wire [31:0] adder_output;	// Result of A + input2 [+ carry-in]
 
 	//Subtraction when:
     assign adder_ci = (
@@ -79,15 +79,24 @@ module alu(ALUctl, A, B, ALUOut, Branch_Enable);
     );
 
 	//Flip input bits if sub
-	assign input2 = adder_ci ? ~B : B;
+	// assign input2 = adder_ci ? ~B : B;
 
 	// Instantiate full adder (used for ADD, SUB, SLT)
-    full_adder alu_full_adder(
-        .carry_in(adder_ci),
-        .input1(A),
-        .input2(input2),
-        .out(adder_output)
-    );
+    // full_adder alu_full_adder(
+    //     .carry_in(adder_ci),
+    //     .input1(A),
+    //     .input2(input2),
+    //     .out(adder_output)
+    // );
+
+	wire [31:0] dsp_output;
+
+	dsp_addsub pc_adder(
+			.input1(A),
+			.input2(B),
+			.is_sub(adder_ci),
+			.out(dsp_output)
+		);
 
 	always @(ALUctl, A, B) begin
 		case (ALUctl[3:0])
@@ -104,17 +113,17 @@ module alu(ALUctl, A, B, ALUOut, Branch_Enable);
 			/*
 			 *	ADD (the fields also match AUIPC, all loads, all stores, and ADDI)
 			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_ADD:	ALUOut = adder_output;
+			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_ADD:	ALUOut = dsp_output;
 
 			/*
 			 *	SUBTRACT (the fields also matches all branches)
 			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB:	ALUOut = adder_output;
+			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB:	ALUOut = dsp_output;
 
 			/*
 			 *	SLT (the fields also matches all the other SLT variants)
 			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SLT:	ALUOut = adder_output[31] ? 32'b1 : 32'b0;
+			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SLT:	ALUOut = dsp_output[31] ? 32'b1 : 32'b0;
 
 			/*
 			 *	SRL (the fields also matches the other SRL variants)
