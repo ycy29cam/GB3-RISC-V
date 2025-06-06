@@ -45,13 +45,13 @@
 
 
 module regfile(clk, write, wrAddr, wrData, rdAddrA, rdDataA, rdAddrB, rdDataB);
-	input		clk;
-	input		write;
-	input [4:0]	wrAddr;
+	input			clk;
+	input			write;
+	input [4:0]		wrAddr;
 	input [31:0]	wrData;
-	input [4:0]	rdAddrA;
+	input [4:0]		rdAddrA;
 	output [31:0]	rdDataA;
-	input [4:0]	rdAddrB;
+	input [4:0]		rdAddrB;
 	output [31:0]	rdDataB;
 
 	/*
