@@ -42,11 +42,10 @@
 
 
 
-module instruction_memory (
-    input  wire        clk,
-    input  wire [31:0] addr,
-    output reg  [31:0] out
-);
+module instruction_memory(addr, out);
+	input [31:0]		addr;
+	output [31:0]		out;
+
 	/*
 	 *	Size the instruction memory.
 	 *
@@ -71,9 +70,5 @@ module instruction_memory (
 		$readmemh("verilog/program.hex",instruction_memory);
 	end
 
-	always @(posedge clk) begin
-        out <= instruction_memory[addr >> 2]; // word address
-    end
-
-	
+	assign out = instruction_memory[addr >> 2];
 endmodule
