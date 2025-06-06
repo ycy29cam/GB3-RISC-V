@@ -104,7 +104,7 @@ module branch_predictor(
 			s[0] <= (s[1]&(!s[0])) | ((!s[0])&actual_branch_decision) | (s[1]&actual_branch_decision);
 		end
 	end
-
+	
 	assign branch_addr = in_addr + offset;
 	assign prediction = s[1] & branch_decode_sig;
 endmodule
