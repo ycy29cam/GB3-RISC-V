@@ -49,7 +49,6 @@ module dsp_addsub(
     assign out = O;  // O[31:0] is the full 32-bit result
 endmodule
 
-
 module adder(input1, input2, out);
 	input [31:0]	input1;
 	input [31:0]	input2;
