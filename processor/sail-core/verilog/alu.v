@@ -54,29 +54,167 @@
  *	field is only unique across the instructions that are actually
  *	fed to the ALU.
  */
-module alu(ALUctl, A, B, ALUOut, Branch_Enable);
-	input [6:0]		ALUctl;
-	input [31:0]		A;
-	input [31:0]		B;
-	output reg [31:0]	ALUOut;
-	output reg		Branch_Enable;
 
-	// Initialize outputs
-	initial begin
-		ALUOut = 32'b0;
-		Branch_Enable = 1'b0;
-	end
+// module alu(ALUctl, A, B, ALUOut, Branch_Enable);
+// 	input [6:0]		ALUctl;
+// 	input [31:0]		A;
+// 	input [31:0]		B;
+// 	output reg [31:0]	ALUOut;
+// 	output reg		Branch_Enable;
 
+// 	// Initialize outputs
+// 	initial begin
+// 		ALUOut = 32'b0;
+// 		Branch_Enable = 1'b0;
+// 	end
+
+// 	//use same adder for add/sub/slt
+// 	wire adder_ci;				// twos complement for subtraction
+// 	wire [31:0] input2;			// invert for subtraction
+// 	wire [31:0] adder_output;	// Result of A + input2 [+ carry-in]
+
+// 	//Subtraction when:
+//     assign adder_ci = (
+//         ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB ||
+//         ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SLT
+//     );
+
+// 	// Flip input bits if sub
+// 	assign input2 = adder_ci ? ~B : B;
+
+// 	// Instantiate full adder (used for ADD, SUB, SLT)
+//     full_adder alu_full_adder(
+//         .carry_in(adder_ci),
+//         .input1(A),
+//         .input2(input2),
+//         .out(adder_output)
+//     );
+
+// 	// dsp_addsub pc_adder(
+// 	// 		.input1(A),
+// 	// 		.input2(B),
+// 	// 		.is_sub(adder_ci),
+// 	// 		.out(adder_output)
+// 	// 	);
+
+// 	always @(ALUctl, A, B) begin
+// 		case (ALUctl[3:0])
+// 			/*
+// 			 *	AND (the fields also match ANDI and LUI)
+// 			 */
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_AND:	ALUOut = A & B;
+
+// 			/*
+// 			 *	OR (the fields also match ORI)
+// 			 */
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_OR:	ALUOut = A | B;
+
+// 			/*
+// 			 *	ADD (the fields also match AUIPC, all loads, all stores, and ADDI)
+// 			 */
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_ADD:	ALUOut = adder_output;
+
+// 			/*
+// 			 *	SUBTRACT (the fields also matches all branches)
+// 			 */
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB:	ALUOut = adder_output;
+
+// 			/*
+// 			 *	SLT (the fields also matches all the other SLT variants)
+// 			 */
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SLT:	ALUOut = adder_output[31] ? 32'b1 : 32'b0;
+
+// 			/*
+// 			 *	SRL (the fields also matches the other SRL variants)
+// 			 */
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SRL:	ALUOut = A >> B[4:0];
+
+// 			/*
+// 			 *	SRA (the fields also matches the other SRA variants)
+// 			 */
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SRA:	ALUOut = $signed(A) >>> B[4:0];
+
+// 			/*
+// 			 *	SLL (the fields also match the other SLL variants)
+// 			 */
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SLL:	ALUOut = A << B[4:0];
+
+// 			/*
+// 			 *	XOR (the fields also match other XOR variants)
+// 			 */
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_XOR:	ALUOut = A ^ B;
+
+// 			/*
+// 			 *	CSRRW  only
+// 			 */
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_CSRRW:	ALUOut = A;
+
+// 			/*
+// 			 *	CSRRS only
+// 			 */
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_CSRRS:	ALUOut = A | B;
+
+// 			/*
+// 			 *	CSRRC only
+// 			 */
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_CSRRC:	ALUOut = (~A) & B;
+
+// 			/*
+// 			 *	Should never happen.
+// 			 */
+// 			default:					ALUOut = 0;
+// 		endcase
+// 	end
+
+// 	always @(ALUctl, ALUOut, A, B) begin
+// 		unsigned_lt = ((~A[31] + B[31]) & ALUOut[31]) | (~A[31] & B[31]);
+// 		case (ALUctl[6:4])
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BEQ:	Branch_Enable = (ALUOut == 0);
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BNE:	Branch_Enable = !(ALUOut == 0);
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BLT:	Branch_Enable = ALUOut[31];
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BGE:	Branch_Enable = ~ALUOut[31];
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BLTU:	Branch_Enable = unsigned_lt;
+// 			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BGEU:	Branch_Enable = ~unsigned_lt;
+
+// 			default:					Branch_Enable = 1'b0;
+// 		endcase
+// 	end
+// endmodule
+
+// Not functioning ALU
+
+module alu(
+    input  [6:0]  ALUctl,          // {branch[6:4], op[3:0]}
+    input  [31:0] A,
+    input  [31:0] B,
+    output wire [31:0] ALUOut, // ALU result
+    output wire       Branch_Enable // Branch condition result
+);
+
+	    //------------------------------------------------------------------
+    // 1. Local one-hot decode (keep until the ID stage supplies one-hot)
+    //------------------------------------------------------------------
+    wire op_and   = (ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_AND);
+    wire op_or    = (ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_OR);
+    wire op_add   = (ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_ADD);
+    wire op_sub   = (ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB);
+    wire op_slt   = (ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SLT);
+    wire op_srl   = (ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SRL);
+    wire op_sra   = (ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SRA);
+    wire op_sll   = (ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SLL);
+    wire op_xor   = (ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_XOR);
+    wire op_csrrw = (ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_CSRRW);
+    wire op_csrrs = (ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_CSRRS);
+    wire op_csrrc = (ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_CSRRC);
+
+	
 	//use same adder for add/sub/slt
 	wire adder_ci;				// twos complement for subtraction
 	wire [31:0] input2;			// invert for subtraction
 	wire [31:0] adder_output;	// Result of A + input2 [+ carry-in]
 
 	//Subtraction when:
-    assign adder_ci = (
-        ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB ||
-        ALUctl[3:0] == `kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SLT
-    );
+    assign adder_ci = op_sub || op_slt;
 
 	// Flip input bits if sub
 	assign input2 = adder_ci ? ~B : B;
@@ -96,86 +234,46 @@ module alu(ALUctl, A, B, ALUOut, Branch_Enable);
 	// 		.out(adder_output)
 	// 	);
 
-	always @(ALUctl, A, B) begin
-		case (ALUctl[3:0])
-			/*
-			 *	AND (the fields also match ANDI and LUI)
-			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_AND:	ALUOut = A & B;
+    wire [31:0] w_and   = op_and   ? (A &  B)                         	: 32'h0;
+    wire [31:0] w_or    = op_or    ? (A |  B)                         	: 32'h0;
+    wire [31:0] w_add   = op_add   ? adder_output                     	: 32'h0;
+    wire [31:0] w_sub   = op_sub   ? adder_output                     	: 32'h0;
+    wire [31:0] w_slt   = op_slt   ? (adder_output[31] ? 32'b1 : 32'b0)	: 32'h0;
+    wire [31:0] w_srl   = op_srl   ? (A >>  B[4:0])                   	: 32'h0;
+    wire [31:0] w_sra   = op_sra   ? ($signed(A) >>> B[4:0])          	: 32'h0;
+    wire [31:0] w_sll   = op_sll   ? (A <<  B[4:0])                   	: 32'h0;
+    wire [31:0] w_xor   = op_xor   ? (A ^  B)                         	: 32'h0;
+    wire [31:0] w_csrrw = op_csrrw ?  A                               	: 32'h0;
+    wire [31:0] w_csrrs = op_csrrs ? (A |  B)                         	: 32'h0;
+    wire [31:0] w_csrrc = op_csrrc ? ((~A) & B)                       	: 32'h0;
 
-			/*
-			 *	OR (the fields also match ORI)
-			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_OR:	ALUOut = A | B;
+	wire [31:0] alu_res =
+           w_and | w_or  | w_add | w_sub |
+           w_slt | w_srl | w_sra | w_sll |
+           w_xor | w_csrrw | w_csrrs | w_csrrc;
 
-			/*
-			 *	ADD (the fields also match AUIPC, all loads, all stores, and ADDI)
-			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_ADD:	ALUOut = adder_output;
+	assign ALUOut = alu_res;
+	wire unsigned_lt = ((~A[31] + B[31]) & ALUOut[31]) | (~A[31] & B[31]);
+	
+    wire br_beq  = (ALUctl[6:4] == `kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BEQ);
+    wire br_bne  = (ALUctl[6:4] == `kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BNE);
+    wire br_blt  = (ALUctl[6:4] == `kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BLT);
+    wire br_bge  = (ALUctl[6:4] == `kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BGE);
+    wire br_bltu = (ALUctl[6:4] == `kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BLTU);
+    wire br_bgeu = (ALUctl[6:4] == `kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BGEU);
 
-			/*
-			 *	SUBTRACT (the fields also matches all branches)
-			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SUB:	ALUOut = adder_output;
+	    //---------------------------------------------------------------
+    //  individual branch predicates (32-bit comparisons)
+    //---------------------------------------------------------------
 
-			/*
-			 *	SLT (the fields also matches all the other SLT variants)
-			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SLT:	ALUOut = adder_output[31] ? 32'b1 : 32'b0;
 
-			/*
-			 *	SRL (the fields also matches the other SRL variants)
-			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SRL:	ALUOut = A >> B[4:0];
 
-			/*
-			 *	SRA (the fields also matches the other SRA variants)
-			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SRA:	ALUOut = $signed(A) >>> B[4:0];
+    wire take_beq  = br_beq  & (ALUOut == 32'h0);                // result of SUB == 0
+    wire take_bne  = br_bne  & (ALUOut != 32'h0);
+    wire take_blt  = br_blt  & ALUOut[31];
+    wire take_bge  = br_bge  & ~ALUOut[31];
+    wire take_bltu = br_bltu & unsigned_lt;                         // unsigned
+    wire take_bgeu = br_bgeu & ~unsigned_lt;
 
-			/*
-			 *	SLL (the fields also match the other SLL variants)
-			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_SLL:	ALUOut = A << B[4:0];
-
-			/*
-			 *	XOR (the fields also match other XOR variants)
-			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_XOR:	ALUOut = A ^ B;
-
-			/*
-			 *	CSRRW  only
-			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_CSRRW:	ALUOut = A;
-
-			/*
-			 *	CSRRS only
-			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_CSRRS:	ALUOut = A | B;
-
-			/*
-			 *	CSRRC only
-			 */
-			`kSAIL_MICROARCHITECTURE_ALUCTL_3to0_CSRRC:	ALUOut = (~A) & B;
-
-			/*
-			 *	Should never happen.
-			 */
-			default:					ALUOut = 0;
-		endcase
-	end
-
-	always @(ALUctl, ALUOut, A, B) begin
-		unsigned_lt = ((~A[31] + B[31]) & ALUOut[31]) | (~A[31] & B[31]);
-		case (ALUctl[6:4])
-			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BEQ:	Branch_Enable = (ALUOut == 0);
-			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BNE:	Branch_Enable = !(ALUOut == 0);
-			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BLT:	Branch_Enable = ALUOut[31];
-			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BGE:	Branch_Enable = ~ALUOut[31];
-			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BLTU:	Branch_Enable = unsigned_lt;
-			`kSAIL_MICROARCHITECTURE_ALUCTL_6to4_BGEU:	Branch_Enable = ~unsigned_lt;
-
-			default:					Branch_Enable = 1'b0;
-		endcase
-	end
+	assign Branch_Enable = take_beq  | take_bne  | take_blt | take_bge  | take_bltu | take_bgeu;
 endmodule
