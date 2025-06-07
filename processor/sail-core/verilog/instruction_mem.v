@@ -42,33 +42,32 @@
 
 
 
-module instruction_memory(addr, out);
+module instruction_memory(addr, out, clk);
 	input [31:0]		addr;
 	output [31:0]		out;
+	input clk; //For using BRAM
+
+	// wire [7:0] word_addr = addr[9:2]; // word-aligned address
+
+    // wire [15:0] lower_half;
+    // wire [15:0] upper_half;
 
 	/*
 	 *	Size the instruction memory.
 	 *
 	 *	(Bad practice: The constant should be a `define).
 	 */
-	parameter INSTR_DEPTH = 12; // 6 for 64 or 12 for 4096
-	reg [31:0]		instruction_memory[0:2**INSTR_DEPTH-1];
 
-	/*
-	 *
-	 *	The only way to have an initializable memory is to use the Block RAM.
-	 *	This uses Yosys's support for nonzero initial values:
-	 *
-	 *	Rather than using this simulation construct (`initial`),
-	 *	the design should instead use a reset signal going to
-	 *	modules in the design.
-	 */
+	 
+	parameter 		INSTR_SIZE = 1024; 
+	reg [31:0]		instruction_memory[0:INSTR_SIZE-1];
+	reg [31:0] 		out_buff;  // For synchronous reading of data
+
 	initial begin
-		/*
-		 *	read from "program.hex" and store the instructions in instruction memory
-		 */
 		$readmemh("verilog/program.hex",instruction_memory);
 	end
 
-	assign out = instruction_memory[addr >> 2];
+	always @(posedge clk) begin
+		out <= instruction_memory[addr >> 2];
+	end
 endmodule

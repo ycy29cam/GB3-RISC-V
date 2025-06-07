@@ -44,17 +44,23 @@
 module top (led);
 	output [7:0]	led;
 
-	wire		clk_proc;
-	wire		data_clk_stall;
-	
-	wire		clk;
-	reg		ENCLKHF		= 1'b1;	// Plock enable
-	reg		CLKHF_POWERUP	= 1'b1;	// Power up the HFOSC circuit
+	wire			clk_proc;
+	wire			data_clk_stall;
+
+	wire			clk;
+
+
+	reg				ENCLKHF		= 1'b1;	// Clock enable
+	reg				CLKHF_POWERUP	= 1'b1;	// Power up the HFOSC circuit
 
 
 	/*
 	 *	Use the iCE40's hard primitive for the clock source.
 	 */
+
+	 // The SB_HFOSC primitive contains the following parameter and their default values:  
+	// Parameter CLKHF_DIV = 2’b00 : 00 = 48MHz, 01 = 24MHz, 10 = 12MHz, 11 = 6MHz ; Default = “00” 
+	// 								 
 	SB_HFOSC #(.CLKHF_DIV("0b01")) OSCInst0 ( // 12MHz is 10 6MHz is 11
 		.CLKHFEN(ENCLKHF),
 		.CLKHFPU(CLKHF_POWERUP),
@@ -88,7 +94,8 @@ module top (led);
 
 	instruction_memory inst_mem( 
 		.addr(inst_in), 
-		.out(inst_out)
+		.out(inst_out),
+		.clk(~clk_proc)
 	);
 
 	data_mem data_mem_inst(
