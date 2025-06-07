@@ -51,18 +51,12 @@ module instruction_memory(addr, out);
 	 *
 	 *	(Bad practice: The constant should be a `define).
 	 */
-	parameter INSTR_DEPTH = 12; // 6 for 64 or 12 for 4096
-	reg [31:0]		instruction_memory[0:2**INSTR_DEPTH-1];
 
-	/*
-	 *
-	 *	The only way to have an initializable memory is to use the Block RAM.
-	 *	This uses Yosys's support for nonzero initial values:
-	 *
-	 *	Rather than using this simulation construct (`initial`),
-	 *	the design should instead use a reset signal going to
-	 *	modules in the design.
-	 */
+	 
+	parameter 		INSTR_SIZE = 178; 
+	reg [31:0]		instruction_memory[0:INSTR_SIZE-1];
+	//reg [31:0] 		out_buff;  // For synchronous reading of data
+
 	initial begin
 		/*
 		 *	read from "program.hex" and store the instructions in instruction memory
