@@ -24,7 +24,7 @@
 **/*.sr
 **/*.map
 **/*.txt
-**/*.py
+# **/*.py
 .DS_Store
 settings.json
 *.sh
