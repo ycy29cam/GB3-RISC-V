@@ -182,10 +182,10 @@ module cpu(
 			.out(pc_in)
 		);
 
-	adder pc_adder(
-			.input1(32'b100),
-			.input2(pc_out),
-			.out(pc_adder_out)
+	cla32 pc_adder(
+			.a(32'b100),
+			.b(pc_out),
+			.sum(pc_adder_out)
 		);
 
 	program_counter PC(
@@ -331,10 +331,10 @@ module cpu(
 			.out(addr_adder_mux_out)
 		);
 
-	adder addr_adder(
-			.input1(addr_adder_mux_out),
-			.input2(id_ex_out[139:108]),
-			.out(addr_adder_sum)
+	cla32 addr_adder(
+			.a(addr_adder_mux_out),
+			.b(id_ex_out[139:108]),
+			.sum(addr_adder_sum)
 		);
 
 	mux2to1 alu_mux(
