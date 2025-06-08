@@ -47,6 +47,11 @@ module top (led);
 	wire		clk_proc;
 	wire		data_clk_stall;
 	
+	wire clk_hf;
+	wire clk_pll;
+	wire clk_pll_proc;
+	// wire clk_hf_proc;
+	wire locked;
 	wire		clk;
 	reg		ENCLKHF		= 1'b1;	// Plock enable
 	reg		CLKHF_POWERUP	= 1'b1;	// Power up the HFOSC circuit
@@ -55,12 +60,38 @@ module top (led);
 	/*
 	 *	Use the iCE40's hard primitive for the clock source.
 	 */
-	SB_HFOSC #(.CLKHF_DIV("0b11")) OSCInst0 (
+	SB_HFOSC #(.CLKHF_DIV("0b00")) OSCInst0 (
 		.CLKHFEN(ENCLKHF),
 		.CLKHFPU(CLKHF_POWERUP),
-		.CLKHF(clk)
+		.CLKHF(clk_hf)
 	);
 
+
+	SB_PLL40_CORE #(
+			.FEEDBACK_PATH("SIMPLE"),
+			.DIVR(4'b0010),		// DIVR =  2
+			.DIVF(7'b0111111),	// DIVF = 63
+			.DIVQ(3'b101),		// DIVQ =  5
+			.FILTER_RANGE(3'b001)	// FILTER_RANGE = 1
+		) uut (
+			.LOCK(locked),
+			.RESETB(1'b1),
+			.BYPASS(1'b0),
+			.REFERENCECLK(clk_hf),
+			.PLLOUTCORE(clk_pll)
+			);
+
+	// // Clock divide by 3
+	// clk_div3 clock_divider(
+	// 	.clk_in(clk_pll),
+	// 	.clk_out(clk)
+	// );
+
+	// Clock divide by 2
+	always @(posedge clk_pll) begin
+		clk <= ~clk;
+	end
+	
 	/*
 	 *	Memory interface
 	 */
@@ -87,7 +118,8 @@ module top (led);
 	);
 
 	instruction_memory inst_mem( 
-		.addr(inst_in), 
+		.addr(inst_in),
+		.clk(clk_pll_proc),
 		.out(inst_out)
 	);
 
@@ -104,4 +136,5 @@ module top (led);
 		);
 
 	assign clk_proc = (data_clk_stall) ? 1'b1 : clk;
+	assign clk_pll_proc = (data_clk_stall) ? 1'b1 : clk_pll;
 endmodule

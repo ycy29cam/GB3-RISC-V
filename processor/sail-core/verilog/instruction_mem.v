@@ -42,9 +42,10 @@
 
 
 
-module instruction_memory(addr, out);
+module instruction_memory(addr, out, clk);
 	input [31:0]		addr;
-	output [31:0]		out;
+	output reg[31:0]		out;
+	input clk; //For using BRAM
 
 	/*
 	 *	Size the instruction memory.
@@ -53,9 +54,9 @@ module instruction_memory(addr, out);
 	 */
 
 	 
-	parameter 		INSTR_SIZE = 178; 
+	parameter 		INSTR_SIZE = 256; 
 	reg [31:0]		instruction_memory[0:INSTR_SIZE-1];
-	//reg [31:0] 		out_buff;  // For synchronous reading of data
+	// reg [31:0] 		out_buff;  // For synchronous reading of data
 
 	initial begin
 		/*
@@ -64,5 +65,8 @@ module instruction_memory(addr, out);
 		$readmemh("verilog/program.hex",instruction_memory);
 	end
 
-	assign out = instruction_memory[addr >> 2];
+	always @(posedge clk) begin
+		out <= instruction_memory[addr >> 2];
+	end
+
 endmodule
