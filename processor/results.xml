@@ -1,6 +1,6 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1749332636" />
-    <testcase name="rv32i_selfcheck" classname="test_rv32i_benchmark" file="/Users/jiahaozhang/Desktop/iia_project/RISC-V_Processor/GB3-RISC-V/processor/test_rv32i_benchmark.py" lineno="74" time="0.1793820858001709" sim_time_ns="30920.001" ratio_time="172369.50313112338" />
+    <property name="random_seed" value="1749373839" />
+    <testcase name="rv32i_selfcheck" classname="test_rv32i_benchmark" file="/Users/jiahaozhang/Desktop/iia_project/RISC-V_Processor/GB3-RISC-V/processor/test_rv32i_benchmark.py" lineno="83" time="0.17780184745788574" sim_time_ns="30920.001" ratio_time="173901.46076701328" />
   </testsuite>
 </testsuites>
