@@ -1,23 +1,22 @@
-// program_counter.v  (Option A, no rst, no stall)
-module program_counter #(
-    parameter RESET_VAL = 32'b0
-)(
-    input  logic        clk,
-    input  logic        branch_i,         // new: take branch_target_i
-    input  logic [31:0] branch_target_i,  // from addr_adder
-    output logic [31:0] pc_o              // replaces outAddr
-);
+module program_counter(inAddr, outAddr, clk);
+	input			clk;
+	input [31:0]		inAddr;
+	output reg[31:0]	outAddr;
 
-    // next‐PC mux
-    logic [31:0] pc_next;
-    always_comb begin
-        if (branch_i)      pc_next = branch_target_i;  
-        else                pc_next = pc_o + 32'd4;      // sequential +4
-    end
+	/*
+	 *	This uses Yosys's support for nonzero initial values:
+	 *
+	 *		https://github.com/YosysHQ/yosys/commit/0793f1b196df536975a044a4ce53025c81d00c7f
+	 *
+	 *	Rather than using this simulation construct (`initial`),
+	 *	the design should instead use a reset signal going to
+	 *	modules in the design.
+	 */
+	initial begin
+		outAddr = 32'b0;
+	end
 
-    // PC register, no external reset/stall
-    initial pc_o = RESET_VAL;
-    always @(posedge clk) begin
-        pc_o <= pc_next;
-    end
+	always @(posedge clk) begin
+		outAddr <= inAddr;
+	end
 endmodule
