@@ -79,6 +79,7 @@ module cpu(
 	 */
 	wire [31:0]		pc_mux0;
 	wire [31:0]		pc_out;
+	wire [31:0]		pc_plus4_o;
 	wire			pcsrc;
 	wire [31:0]		inst_mux_out;
 
@@ -173,12 +174,28 @@ module cpu(
 	 *	Instruction Fetch Stage
 	 */
 
-	program_counter #(.RESET_VAL(32'h0000_0000)) PC (
-			.clk            (clk),
-			.branch_i       (pcsrc),      // your existing branch trigger
-			.branch_target_i(addr_adder_sum),  // the addr_adder output
-			.fence_i        (Fence_signal),// your FENCE.I pulse
-			.pc_o           (pc_out)      // feeds instruction_mem, IF/ID latch, etc.
+	reg pcsrc_d;
+	always @(posedge clk) pcsrc_d <= pcsrc;
+	wire pcsrc_pulse = pcsrc & ~pcsrc_d;
+
+	reg fence_q;
+	always @(posedge clk) fence_q <= Fence_signal;
+
+	reg mistake_d;
+	always @(posedge clk) mistake_d <= mistake_trigger;
+	wire replay_pulse = mistake_trigger & ~mistake_d;
+
+	wire [31:0] replay_addr = id_ex_out[43:12];
+
+	program_counter #(.RESET_VAL(32'b0)) PC (
+			.clk             (clk),
+			.replay_i        (replay_pulse),
+			.replay_addr_i   (replay_addr),
+			.branch_i        (pcsrc_pulse),        // one-shot real branch
+			.branch_target_i (addr_adder_sum),     // EX branch/JAL/JALR target
+			.fence_i         (fence_q),
+			.pc_o            (pc_out),
+			.pc_plus4_o      (pc_plus4_o)
 	);
 
 	mux2to1 inst_mux(
@@ -193,7 +210,7 @@ module cpu(
 	 */
 	if_id if_id_reg(
 			.clk(clk),
-			.data_in({inst_mux_out, pc_out}),
+			.data_in({inst_mux_out, pc_plus4_o}),
 			.data_out(if_id_out)
 		);
 
@@ -460,7 +477,7 @@ module cpu(
 		);
 
 	mux2to1 branch_predictor_mux(
-			.input0(pc_out),
+			.input0(pc_plus4_o),
 			.input1(branch_predictor_addr),
 			.select(predict),
 			.out(branch_predictor_mux_out)
