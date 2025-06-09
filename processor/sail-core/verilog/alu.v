@@ -234,6 +234,9 @@ module alu(
 	// 		.out(adder_output)
 	// 	);
 
+//     wire signed [31:0] A_signed = A;
+// wire [31:0] w_sra = op_sra ? A_signed >>> B[4:0] : 32'h0; might need this
+
     wire [31:0] w_and   = op_and   ? (A &  B)                         	: 32'h0;
     wire [31:0] w_or    = op_or    ? (A |  B)                         	: 32'h0;
     wire [31:0] w_add   = op_add   ? adder_output                     	: 32'h0;
