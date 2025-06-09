@@ -78,11 +78,9 @@ module cpu(
 	 *	Program Counter
 	 */
 	wire [31:0]		pc_mux0;
-	wire [31:0]		pc_in;
 	wire [31:0]		pc_out;
 	wire			pcsrc;
 	wire [31:0]		inst_mux_out;
-	wire [31:0]		fence_mux_out;
 
 	/*
 	 *	Pipeline Registers
@@ -163,7 +161,6 @@ module cpu(
 	/*
 	 *	Branch Predictor
 	 */
-	wire [31:0]		pc_adder_out;
 	wire [31:0]		branch_predictor_addr;
 	wire			predict;
 	wire [31:0]		branch_predictor_mux_out;
@@ -175,37 +172,20 @@ module cpu(
 	/*
 	 *	Instruction Fetch Stage
 	 */
-	mux2to1 pc_mux(
-			.input0(pc_mux0),
-			.input1(ex_mem_out[72:41]),
-			.select(pcsrc),
-			.out(pc_in)
-		);
 
-	adder pc_adder(
-			.input1(32'b100),
-			.input2(pc_out),
-			.out(pc_adder_out)
-		);
-
-	program_counter PC(
-			.inAddr(pc_in),
-			.outAddr(pc_out),
-			.clk(clk)
-		);
+	program_counter #(.RESET_VAL(32'h0000_0000)) PC (
+			.clk            (clk),
+			.branch_i       (pcsrc),      // your existing branch trigger
+			.branch_target_i(addr_adder_sum),  // the addr_adder output
+			.fence_i        (Fence_signal),// your FENCE.I pulse
+			.pc_o           (pc_out)      // feeds instruction_mem, IF/ID latch, etc.
+	);
 
 	mux2to1 inst_mux(
 			.input0(inst_mem_out),
 			.input1(32'b0),
 			.select(inst_mux_sel),
 			.out(inst_mux_out)
-		);
-
-	mux2to1 fence_mux(
-			.input0(pc_adder_out),
-			.input1(pc_out),
-			.select(Fence_signal),
-			.out(fence_mux_out)
 		);
 
 	/*
@@ -480,7 +460,7 @@ module cpu(
 		);
 
 	mux2to1 branch_predictor_mux(
-			.input0(fence_mux_out),
+			.input0(pc_out),
 			.input1(branch_predictor_addr),
 			.select(predict),
 			.out(branch_predictor_mux_out)

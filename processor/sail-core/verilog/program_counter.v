@@ -1,22 +1,33 @@
-module program_counter(inAddr, outAddr, clk);
-	input			clk;
-	input [31:0]		inAddr;
-	output reg[31:0]	outAddr;
+module program_counter #(
+    parameter RESET_VAL = 32'b0
+)(
+    input        clk,               // CPU clock
+    input        branch_i,          // take the branch/jump target
+    input  [31:0] branch_target_i,  // computed by addr_adder
+    input        fence_i,           // FENCE.I replay
+    output [31:0] pc_o              // current PC for fetch
+);
 
-	/*
-	 *	This uses Yosys's support for nonzero initial values:
-	 *
-	 *		https://github.com/YosysHQ/yosys/commit/0793f1b196df536975a044a4ce53025c81d00c7f
-	 *
-	 *	Rather than using this simulation construct (`initial`),
-	 *	the design should instead use a reset signal going to
-	 *	modules in the design.
-	 */
-	initial begin
-		outAddr = 32'b0;
-	end
+    reg [31:0] pc_o;
+    reg [31:0] pc_next;
 
-	always @(posedge clk) begin
-		outAddr <= inAddr;
-	end
+    // combinational next-PC logic
+    always @(*) begin
+        if (branch_i)
+            pc_next = branch_target_i;  // redirect on BNE/BEQ/JAL/JALR
+        else if (fence_i)
+            pc_next = pc_o;             // replay same PC
+        else
+            pc_next = pc_o + 32'b100;     // normal sequential +4
+    end
+
+    // register update
+    initial begin
+        pc_o = RESET_VAL;
+    end
+
+    always @(posedge clk) begin
+        pc_o <= pc_next;
+    end
+
 endmodule
