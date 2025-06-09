@@ -1,53 +1,12 @@
-/*
-	Authored 2018-2019, Ryan Voo.
-
-	All rights reserved.
-	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions
-	are met:
-
-	*	Redistributions of source code must retain the above
-		copyright notice, this list of conditions and the following
-		disclaimer.
-
-	*	Redistributions in binary form must reproduce the above
-		copyright notice, this list of conditions and the following
-		disclaimer in the documentation and/or other materials
-		provided with the distribution.
-
-	*	Neither the name of the author nor the names of its
-		contributors may be used to endorse or promote products
-		derived from this software without specific prior written
-		permission.
-
-	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-	"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-	LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-	FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-	COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-	INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-	BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-	LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-	CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-	LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-	ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-	POSSIBILITY OF SUCH DAMAGE.
-*/
-
-
-/*
- *	top.v
- *
- *	Top level entity, linking cpu with data and instruction memory.
- */
-
 module top (led);
 	output [7:0]	led;
 
 	wire		clk_proc;
 	wire		data_clk_stall;
 	
-	wire		clk;
+	wire 		locked;
+	wire		clk_hf;
+	wire 		clk_pll;
 	reg		ENCLKHF		= 1'b1;	// Plock enable
 	reg		CLKHF_POWERUP	= 1'b1;	// Power up the HFOSC circuit
 
@@ -58,7 +17,21 @@ module top (led);
 	SB_HFOSC #(.CLKHF_DIV("0b11")) OSCInst0 (
 		.CLKHFEN(ENCLKHF),
 		.CLKHFPU(CLKHF_POWERUP),
-		.CLKHF(clk)
+		.CLKHF(clk_hf)
+	);
+
+	SB_PLL40_CORE #(
+			.FEEDBACK_PATH("SIMPLE"),
+			.DIVR(4'b0000),		// DIVR =  0
+			.DIVF(7'b0111111),	// DIVF = 63
+			.DIVQ(3'b100),		// DIVQ =  4
+			.FILTER_RANGE(3'b001)	// FILTER_RANGE = 1
+		) uut (
+			.LOCK(locked),
+			.RESETB(1'b1),
+			.BYPASS(1'b0),
+			.REFERENCECLK(clk_hf),
+			.PLLOUTCORE(clk_pll)
 	);
 
 	/*
@@ -92,7 +65,7 @@ module top (led);
 	);
 
 	data_mem data_mem_inst(
-			.clk(clk),
+			.clk(clk_pll),
 			.addr(data_addr),
 			.write_data(data_WrData),
 			.memwrite(data_memwrite), 
@@ -103,5 +76,5 @@ module top (led);
 			.clk_stall(data_clk_stall)
 		);
 
-	assign clk_proc = (data_clk_stall) ? 1'b1 : clk;
+	assign clk_proc = (data_clk_stall) ? 1'b1 : clk_pll;
 endmodule
