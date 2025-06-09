@@ -51,7 +51,7 @@ module control(
 		Jalr,
 		Lui,
 		Auipc,
-		Fence,
+		Fence
 		//CSRR
 	);
 

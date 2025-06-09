@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1749386246" />
+    <testcase name="rv32i_selfcheck" classname="test_rv32i_benchmark" file="/Users/jiahaozhang/Library/Python/3.10/lib/python/site-packages/cocotb/decorators.py" lineno="74" time="0.2739121913909912" sim_time_ns="30920.001" ratio_time="112882.89448885384" />
+  </testsuite>
+</testsuites>

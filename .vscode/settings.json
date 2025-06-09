@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "sf-types.h": "c",
+        "devscc.h": "c",
+        "sh7708.h": "c"
+    }
+}

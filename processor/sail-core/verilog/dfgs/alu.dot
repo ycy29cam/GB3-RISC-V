@@ -1,0 +1,4 @@
+digraph "alu" {
+  rankdir = LR;
+	n2 [shape=octagon,label="vg=2 | 1653 cells\n\nA\nALUOut\nALUctl\nB\nBranch_Enable\nalu_res"];
+}

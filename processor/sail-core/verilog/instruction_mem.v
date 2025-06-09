@@ -53,7 +53,7 @@ module instruction_memory(addr, out);
 	 */
 
 	 
-	parameter 		INSTR_SIZE = 178; 
+	parameter 		INSTR_SIZE = 1024; 
 	reg [31:0]		instruction_memory[0:INSTR_SIZE-1];
 	//reg [31:0] 		out_buff;  // For synchronous reading of data
 
