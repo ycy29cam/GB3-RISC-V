@@ -1,124 +1,121 @@
-`timescale 1ns/1ps
-module regfile
-(
-    input            clk,
+/*
+	Authored 2018-2019, Ryan Voo.
 
-    input            write,
-    input  [4:0]     wrAddr,
-    input  [31:0]    wrData,
+	All rights reserved.
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions
+	are met:
 
-    input  [4:0]     rdAddrA,
-    output [31:0]    rdDataA,
+	*	Redistributions of source code must retain the above
+		copyright notice, this list of conditions and the following
+		disclaimer.
 
-    input  [4:0]     rdAddrB,
-    output [31:0]    rdDataB
-);
-    // ---------------------------------------------------------------------
-    // Internal signals
-    // ---------------------------------------------------------------------
-    wire        we          =  write & (wrAddr != 5'd0);  // block writes to x0
-    wire [7:0]  waddr8      = {3'b000, wrAddr};           // EBR is 256 deep
-    wire [7:0]  raddrA8     = {3'b000, rdAddrA};
-    wire [7:0]  raddrB8     = {3'b000, rdAddrB};
+	*	Redistributions in binary form must reproduce the above
+		copyright notice, this list of conditions and the following
+		disclaimer in the documentation and/or other materials
+		provided with the distribution.
 
-    // Low / high halves coming from the four RAM blocks
-    wire [15:0] rdALo, rdAHi, rdBLo, rdBHi;
+	*	Neither the name of the author nor the names of its
+		contributors may be used to endorse or promote products
+		derived from this software without specific prior written
+		permission.
 
-    // ---------- low word, feeds read port A ----------
-    SB_RAM256x16 ram_lo_A (
-        .RDATA      (rdALo),
-        .RADDR      (raddrA8),
-        .RCLK       (clk),
-        .RCLKE      (1'b1),
-        .RE         (1'b1),
+	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+	"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+	LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+	FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+	INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+	BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+	LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+	CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+	LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+	ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
 
-        .WDATA      (wrData[15:0]),
-        .WADDR      (waddr8),
-        .WCLK       (clk),
-        .WCLKE      (1'b1),
-        .WE         (we),
-        .MASK       (16'hFFFF)
-    );
 
-    // ---------- high word, feeds read port A ----------
-    SB_RAM256x16 ram_hi_A (
-        .RDATA      (rdAHi),
-        .RADDR      (raddrA8),
-        .RCLK       (clk),
-        .RCLKE      (1'b1),
-        .RE         (1'b1),
 
-        .WDATA      (wrData[31:16]),
-        .WADDR      (waddr8),
-        .WCLK       (clk),
-        .WCLKE      (1'b1),
-        .WE         (we),
-        .MASK       (16'hFFFF)
-    );
+/*
+ *	Description:
+ *
+ *		This module implements the register file.
+ */
 
-    // ---------- low word, feeds read port B ----------
-    SB_RAM256x16 ram_lo_B (
-        .RDATA      (rdBLo),
-        .RADDR      (raddrB8),
-        .RCLK       (clk),
-        .RCLKE      (1'b1),
-        .RE         (1'b1),
 
-        .WDATA      (wrData[15:0]),
-        .WADDR      (waddr8),
-        .WCLK       (clk),
-        .WCLKE      (1'b1),
-        .WE         (we),
-        .MASK       (16'hFFFF)
-    );
 
-    // ---------- high word, feeds read port B ----------
-    SB_RAM256x16 ram_hi_B (
-        .RDATA      (rdBHi),
-        .RADDR      (raddrB8),
-        .RCLK       (clk),
-        .RCLKE      (1'b1),
-        .RE         (1'b1),
+module regfile(clk, write, wrAddr, wrData, rdAddrA, rdDataA, rdAddrB, rdDataB);
+	input			clk;
+	input			write;
+	input [4:0]		wrAddr;
+	input [31:0]	wrData;
+	input [4:0]		rdAddrA;
+	output [31:0]	rdDataA;
+	input [4:0]		rdAddrB;
+	output [31:0]	rdDataB;
 
-        .WDATA      (wrData[31:16]),
-        .WADDR      (waddr8),
-        .WCLK       (clk),
-        .WCLKE      (1'b1),
-        .WE         (we),
-        .MASK       (16'hFFFF)
-    );
+	/*
+	 *	register file, 32 x 32-bit registers
+	 */
+	reg [31:0]	regfile[31:0];
 
-    // ---------------------------------------------------------------------
-    //  Pipeline registers and simple forwarding (same as original design)
-    // ---------------------------------------------------------------------
-    reg [4:0]   rdAddrA_buf, rdAddrB_buf, wrAddr_buf;
-    reg [31:0]  wrData_buf;
-    reg         write_buf;
-    reg [31:0]  regDatA, regDatB;
+	wire[15:0] rdALo;
 
-    wire [31:0] memDatA = {rdAHi, rdALo};
-    wire [31:0] memDatB = {rdBHi, rdBLo};
+	ram ram_lo_A(
+		.RDATA(rdALo),
+		.raddr(rdAddrA),
+		.clk(clk),
+		.WDATA(wrData[15:0]),
+		.waddr(wrAddr),
+		.write(write),
+	);
 
-    always @(posedge clk) begin
-        // write-back forwarding pipeline
-        wrAddr_buf   <= wrAddr;
-        wrData_buf   <= wrData;
-        write_buf    <= write;
+	/*
+	 *	buffer to store address at each positive clock edge
+	 */
+	reg [4:0]	rdAddrA_buf;
+	reg [4:0]	rdAddrB_buf;
 
-        rdAddrA_buf  <= rdAddrA;
-        rdAddrB_buf  <= rdAddrB;
+	/*
+	 *	registers for forwarding
+	 */
+	reg [31:0]	regDatA;
+	reg [31:0]	regDatB;
+	reg [4:0]	wrAddr_buf;
+	reg [31:0]	wrData_buf;
+	reg		write_buf;
 
-        regDatA      <= (rdAddrA == 5'd0) ? 32'd0 : memDatA;
-        regDatB      <= (rdAddrB == 5'd0) ? 32'd0 : memDatB;
-    end
+	/*
+	 *	The `initial` statement below uses Yosys's support for nonzero
+	 *	initial values:
+	 *
+	 *		https://github.com/YosysHQ/yosys/commit/0793f1b196df536975a044a4ce53025c81d00c7f
+	 *
+	 *	Rather than using this simulation construct (`initial`),
+	 *	the design should instead use a reset signal going to
+	 *	modules in the design and to thereby set the values.
+	 */
 
-    // RAW hazard forwarding (identical to original)
-    assign rdDataA =
-        ( write_buf & (wrAddr_buf == rdAddrA_buf) & (wrAddr_buf != 5'd0) )
-            ? wrData_buf : regDatA;
+	/*
+	 *	Sets register 0 to 0
+	 */
+	initial begin
+		regfile[0] = 32'b0;
+	end
 
-    assign rdDataB =
-        ( write_buf & (wrAddr_buf == rdAddrB_buf) & (wrAddr_buf != 5'd0) )
-            ? wrData_buf : regDatB;
+	always @(posedge clk) begin
+		if (write==1'b1 && wrAddr!=5'b0) begin
+			regfile[wrAddr] <= wrData;
+		end
+		wrAddr_buf	<= wrAddr;
+		write_buf	<= write;
+		wrData_buf	<= wrData;
+		rdAddrA_buf	<= rdAddrA;
+		rdAddrB_buf	<= rdAddrB;
+		regDatA		<= regfile[rdAddrA];
+		regDatB		<= regfile[rdAddrB];
+	end
 
+	assign	rdDataA = ((wrAddr_buf==rdAddrA_buf) & write_buf & wrAddr_buf!=5'b0) ? wrData_buf : regDatA;
+	assign	rdDataB = ((wrAddr_buf==rdAddrB_buf) & write_buf & wrAddr_buf!=5'b0) ? wrData_buf : regDatB;
 endmodule
