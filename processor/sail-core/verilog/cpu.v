@@ -134,6 +134,7 @@ module cpu(
 	wire			alu_branch_enable;
 	wire [31:0]		alu_result;
 	wire [31:0]		lui_result;
+	wire 			alu_en;
 
 	/*
 	 *	Memory access stage
@@ -262,7 +263,8 @@ module cpu(
 	ALUControl alu_control(
 			.Opcode(if_id_out[38:32]),
 			.FuncCode({if_id_out[62], if_id_out[46:44]}),
-			.ALUCtl(alu_ctl)
+			.ALUCtl(alu_ctl),
+			.ALUEnable(alu_en)
 		);
 
 	sign_mask_gen sign_mask_gen_inst(
@@ -348,6 +350,7 @@ module cpu(
 			.ALUctl(id_ex_out[146:140]),
 			.A(wb_fwd1_mux_out),
 			.B(alu_mux_out),
+			.ALUEnable(alu_en),
 			.ALUOut(alu_result),
 			.Branch_Enable(alu_branch_enable)
 		);
