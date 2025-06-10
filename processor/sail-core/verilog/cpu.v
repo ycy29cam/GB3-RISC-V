@@ -77,12 +77,12 @@ module cpu(
 	/*
 	 *	Program Counter
 	 */
-	wire [31:0]		pc_mux0;
-	wire [31:0]		pc_in;
-	wire [31:0]		pc_out;
+	wire [29:0]		pc_mux0;
+	wire [29:0]		pc_in;
+	wire [29:0]		pc_out;
 	wire			pcsrc;
 	wire [31:0]		inst_mux_out;
-	wire [31:0]		fence_mux_out;
+	wire [29:0]		fence_mux_out;
 
 	/*
 	 *	Pipeline Registers
@@ -129,7 +129,7 @@ module cpu(
 	wire [31:0]		ex_cont_mux_out;
 	wire [31:0]		addr_adder_mux_out;
 	wire [31:0]		alu_mux_out;
-	wire [31:0]		addr_adder_sum;
+	wire [29:0]		addr_adder_sum;
 	wire [6:0]		alu_ctl;
 	wire			alu_branch_enable;
 	wire [31:0]		alu_result;
@@ -163,10 +163,10 @@ module cpu(
 	/*
 	 *	Branch Predictor
 	 */
-	wire [31:0]		pc_adder_out;
+	wire [29:0]		pc_adder_out;
 	wire [31:0]		branch_predictor_addr;
 	wire			predict;
-	wire [31:0]		branch_predictor_mux_out;
+	wire [29:0]		branch_predictor_mux_out;
 	wire			actual_branch_decision;
 	wire			mistake_trigger;
 	wire			decode_ctrl_mux_sel;
@@ -175,24 +175,25 @@ module cpu(
 	/*
 	 *	Instruction Fetch Stage
 	 */
-	mux2to1 pc_mux(
-			.input0(pc_mux0),
-			.input1(ex_mem_out[72:41]),
+		
+	short_mux pc_mux(
+			.input0(pc_mux0), // 30
+			.input1(ex_mem_out[72:43]), //30
 			.select(pcsrc),
-			.out(pc_in)
-		);
+			.out(pc_in) // 30
+	);
 
-	adder pc_adder(
-			.input1(32'b100),
+	short_adder pc_adder(
+			.input1(30'b1),
 			.input2(pc_out),
 			.out(pc_adder_out)
-		);
+	);
 
-	program_counter PC(
+	short_pc PC(
 			.inAddr(pc_in),
-			.outAddr(pc_out),
+			.outAddr(pc_out), // 30
 			.clk(clk)
-		);
+	);
 
 	mux2to1 inst_mux(
 			.input0(inst_mem_out),
@@ -201,11 +202,11 @@ module cpu(
 			.out(inst_mux_out)
 		);
 
-	mux2to1 fence_mux(
-			.input0(pc_adder_out),
-			.input1(pc_out),
+	short_mux fence_mux(
+			.input0(pc_adder_out), // 30
+			.input1(pc_out), // 30
 			.select(Fence_signal),
-			.out(fence_mux_out)
+			.out(fence_mux_out) // 30
 		);
 
 	/*
@@ -213,7 +214,7 @@ module cpu(
 	 */
 	if_id if_id_reg(
 			.clk(clk),
-			.data_in({inst_mux_out, pc_out}),
+			.data_in({inst_mux_out, {pc_out, 2'b0}}),
 			.data_out(if_id_out)
 		);
 
@@ -331,11 +332,11 @@ module cpu(
 			.out(addr_adder_mux_out)
 		);
 
-	adder addr_adder(
-			.input1(addr_adder_mux_out),
-			.input2(id_ex_out[139:108]),
+	short_adder addr_adder(
+			.input1(addr_adder_mux_out[31:2]),
+			.input2(id_ex_out[139:110]),
 			.out(addr_adder_sum)
-		);
+	);
 
 	mux2to1 alu_mux(
 			.input0(wb_fwd2_mux_out),
@@ -362,7 +363,7 @@ module cpu(
 	//EX/MEM Pipeline Register
 	ex_mem ex_mem_reg(
 			.clk(clk),
-			.data_in({id_ex_out[177:166], id_ex_out[155:151], wb_fwd2_mux_out, lui_result, alu_branch_enable, addr_adder_sum, id_ex_out[43:12], ex_cont_mux_out[8:0]}),
+			.data_in({id_ex_out[177:166], id_ex_out[155:151], wb_fwd2_mux_out, lui_result, alu_branch_enable, {addr_adder_sum, 2'b0}, id_ex_out[43:12], ex_cont_mux_out[8:0]}),
 			.data_out(ex_mem_out)
 		);
 
@@ -475,23 +476,23 @@ module cpu(
 			.branch_mem_sig(ex_mem_out[6]),
 			.in_addr(if_id_out[31:0]),
 			.offset(imm_out),
-			.branch_addr(branch_predictor_addr),
+			.branch_addr(branch_predictor_addr), // 32
 			.prediction(predict)
 		);
 
-	mux2to1 branch_predictor_mux(
-			.input0(fence_mux_out),
-			.input1(branch_predictor_addr),
+	short_mux branch_predictor_mux(
+			.input0(fence_mux_out), // 30
+			.input1(branch_predictor_addr[31:2]), // 30
 			.select(predict),
-			.out(branch_predictor_mux_out)
-		);
+			.out(branch_predictor_mux_out) // 30
+	);
 
-	mux2to1 mistaken_branch_mux(
-			.input0(branch_predictor_mux_out),
-			.input1(id_ex_out[43:12]),
+	short_mux mistaken_branch_mux(
+			.input0(branch_predictor_mux_out), // 30
+			.input1(id_ex_out[43:14]), // 30
 			.select(mistake_trigger),
-			.out(pc_mux0)
-		);
+			.out(pc_mux0) // 30
+	);
 
 	wire[31:0] mem_regwb_mux_out; //TODO copy of wb_mux but in mem stage, move back and cleanup
 	//A copy of the writeback mux, but in MEM stage //TODO move back and cleanup
@@ -507,7 +508,7 @@ module cpu(
 	assign inst_mux_sel = pcsrc | predict | mistake_trigger | Fence_signal;
 
 	//Instruction Memory Connections
-	assign inst_mem_in = pc_out;
+	assign inst_mem_in = {pc_out, 2'b0};
 
 	//Data Memory Connections
 	assign data_mem_addr = lui_result;
