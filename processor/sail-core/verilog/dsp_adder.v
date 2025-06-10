@@ -30,20 +30,9 @@ module adder_dsp (
       .ADDSUBTOP(is_sub), .ADDSUBBOT(is_sub)  
     );
 
-    // defparam mac_inst.TOPOUTPUT_SELECT        = 2'b00; // direct output (Top Output Select: 00: Adder/Subtractor, not registered)
-    // defparam mac_inst.BOTOUTPUT_SELECT        = 2'b00; // direct output (Bottom Output Select:00: Adder/Subtractor, not registered)
-
-    // defparam mac_inst.TOPADDSUB_LOWERINPUT    = 2'b00; // A
     defparam mac_inst.TOPADDSUB_UPPERINPUT    = 1'b1;  // C
     defparam mac_inst.TOPADDSUB_CARRYSELECT   = 2'b10; // constant 0
-
-    // defparam mac_inst.BOTADDSUB_LOWERINPUT    = 2'b00; // B
     defparam mac_inst.BOTADDSUB_UPPERINPUT    = 1'b1;  // D
-   // defparam mac_inst.BOTADDSUB_CARRYSELECT   = 2'b00; // constant 0
-
     defparam mac_inst.MODE_8x8                = 1'b1;  // disable multiplier
-    // defparam mac_inst.A_SIGNED                = 1'b0;
-    // defparam mac_inst.B_SIGNED                = 1'b0;
-
 
 endmodule
