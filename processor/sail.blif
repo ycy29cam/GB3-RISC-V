@@ -7,23 +7,31 @@
 .names $true
 1
 .names $undef
-.gate SB_HFOSC CLKHF=clk CLKHFEN=$true CLKHFPU=$true
+.gate SB_HFOSC CLKHF=clk_hf CLKHFEN=$true CLKHFPU=$true
 .attr module_not_derived 00000000000000000000000000000001
-.attr src "toplevel.v:58.33-62.3"
-.param CLKHF_DIV "0b01"
-.gate SB_LUT4 I0=$false I1=$false I2=clk I3=data_clk_stall O=clk_proc
+.attr src "toplevel.v:17.33-21.3"
+.param CLKHF_DIV "0b11"
+.gate SB_LUT4 I0=$false I1=$false I2=clk_pll I3=data_clk_stall O=clk_proc
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "/usr/local/bin/../share/yosys/ice40/cells_map.v:46.34-47.52"
 .param LUT_INIT 1111111111110000
-.subckt data_mem addr[0]=data_addr[0] addr[1]=data_addr[1] addr[2]=data_addr[2] addr[3]=data_addr[3] addr[4]=data_addr[4] addr[5]=data_addr[5] addr[6]=data_addr[6] addr[7]=data_addr[7] addr[8]=data_addr[8] addr[9]=data_addr[9] addr[10]=data_addr[10] addr[11]=data_addr[11] addr[12]=data_addr[12] addr[13]=data_addr[13] addr[14]=data_addr[14] addr[15]=data_addr[15] addr[16]=data_addr[16] addr[17]=data_addr[17] addr[18]=data_addr[18] addr[19]=data_addr[19] addr[20]=data_addr[20] addr[21]=data_addr[21] addr[22]=data_addr[22] addr[23]=data_addr[23] addr[24]=data_addr[24] addr[25]=data_addr[25] addr[26]=data_addr[26] addr[27]=data_addr[27] addr[28]=data_addr[28] addr[29]=data_addr[29] addr[30]=data_addr[30] addr[31]=data_addr[31] clk=clk clk_stall=data_clk_stall led[0]=led[0] led[1]=led[1] led[2]=led[2] led[3]=led[3] led[4]=led[4] led[5]=led[5] led[6]=led[6] led[7]=led[7] memread=data_memread memwrite=data_memwrite read_data[0]=data_out[0] read_data[1]=data_out[1] read_data[2]=data_out[2] read_data[3]=data_out[3] read_data[4]=data_out[4] read_data[5]=data_out[5] read_data[6]=data_out[6] read_data[7]=data_out[7] read_data[8]=data_out[8] read_data[9]=data_out[9] read_data[10]=data_out[10] read_data[11]=data_out[11] read_data[12]=data_out[12] read_data[13]=data_out[13] read_data[14]=data_out[14] read_data[15]=data_out[15] read_data[16]=data_out[16] read_data[17]=data_out[17] read_data[18]=data_out[18] read_data[19]=data_out[19] read_data[20]=data_out[20] read_data[21]=data_out[21] read_data[22]=data_out[22] read_data[23]=data_out[23] read_data[24]=data_out[24] read_data[25]=data_out[25] read_data[26]=data_out[26] read_data[27]=data_out[27] read_data[28]=data_out[28] read_data[29]=data_out[29] read_data[30]=data_out[30] read_data[31]=data_out[31] sign_mask[0]=data_sign_mask[0] sign_mask[1]=data_sign_mask[1] sign_mask[2]=data_sign_mask[2] sign_mask[3]=data_sign_mask[3] write_data[0]=data_WrData[0] write_data[1]=data_WrData[1] write_data[2]=data_WrData[2] write_data[3]=data_WrData[3] write_data[4]=data_WrData[4] write_data[5]=data_WrData[5] write_data[6]=data_WrData[6] write_data[7]=data_WrData[7] write_data[8]=data_WrData[8] write_data[9]=data_WrData[9] write_data[10]=data_WrData[10] write_data[11]=data_WrData[11] write_data[12]=data_WrData[12] write_data[13]=data_WrData[13] write_data[14]=data_WrData[14] write_data[15]=data_WrData[15] write_data[16]=data_WrData[16] write_data[17]=data_WrData[17] write_data[18]=data_WrData[18] write_data[19]=data_WrData[19] write_data[20]=data_WrData[20] write_data[21]=data_WrData[21] write_data[22]=data_WrData[22] write_data[23]=data_WrData[23] write_data[24]=data_WrData[24] write_data[25]=data_WrData[25] write_data[26]=data_WrData[26] write_data[27]=data_WrData[27] write_data[28]=data_WrData[28] write_data[29]=data_WrData[29] write_data[30]=data_WrData[30] write_data[31]=data_WrData[31]
+.subckt data_mem addr[0]=data_addr[0] addr[1]=data_addr[1] addr[2]=data_addr[2] addr[3]=data_addr[3] addr[4]=data_addr[4] addr[5]=data_addr[5] addr[6]=data_addr[6] addr[7]=data_addr[7] addr[8]=data_addr[8] addr[9]=data_addr[9] addr[10]=data_addr[10] addr[11]=data_addr[11] addr[12]=data_addr[12] addr[13]=data_addr[13] addr[14]=data_addr[14] addr[15]=data_addr[15] addr[16]=data_addr[16] addr[17]=data_addr[17] addr[18]=data_addr[18] addr[19]=data_addr[19] addr[20]=data_addr[20] addr[21]=data_addr[21] addr[22]=data_addr[22] addr[23]=data_addr[23] addr[24]=data_addr[24] addr[25]=data_addr[25] addr[26]=data_addr[26] addr[27]=data_addr[27] addr[28]=data_addr[28] addr[29]=data_addr[29] addr[30]=data_addr[30] addr[31]=data_addr[31] clk=clk_pll clk_stall=data_clk_stall led[0]=led[0] led[1]=led[1] led[2]=led[2] led[3]=led[3] led[4]=led[4] led[5]=led[5] led[6]=led[6] led[7]=led[7] memread=data_memread memwrite=data_memwrite read_data[0]=data_out[0] read_data[1]=data_out[1] read_data[2]=data_out[2] read_data[3]=data_out[3] read_data[4]=data_out[4] read_data[5]=data_out[5] read_data[6]=data_out[6] read_data[7]=data_out[7] read_data[8]=data_out[8] read_data[9]=data_out[9] read_data[10]=data_out[10] read_data[11]=data_out[11] read_data[12]=data_out[12] read_data[13]=data_out[13] read_data[14]=data_out[14] read_data[15]=data_out[15] read_data[16]=data_out[16] read_data[17]=data_out[17] read_data[18]=data_out[18] read_data[19]=data_out[19] read_data[20]=data_out[20] read_data[21]=data_out[21] read_data[22]=data_out[22] read_data[23]=data_out[23] read_data[24]=data_out[24] read_data[25]=data_out[25] read_data[26]=data_out[26] read_data[27]=data_out[27] read_data[28]=data_out[28] read_data[29]=data_out[29] read_data[30]=data_out[30] read_data[31]=data_out[31] sign_mask[0]=data_sign_mask[0] sign_mask[1]=data_sign_mask[1] sign_mask[2]=data_sign_mask[2] sign_mask[3]=data_sign_mask[3] write_data[0]=data_WrData[0] write_data[1]=data_WrData[1] write_data[2]=data_WrData[2] write_data[3]=data_WrData[3] write_data[4]=data_WrData[4] write_data[5]=data_WrData[5] write_data[6]=data_WrData[6] write_data[7]=data_WrData[7] write_data[8]=data_WrData[8] write_data[9]=data_WrData[9] write_data[10]=data_WrData[10] write_data[11]=data_WrData[11] write_data[12]=data_WrData[12] write_data[13]=data_WrData[13] write_data[14]=data_WrData[14] write_data[15]=data_WrData[15] write_data[16]=data_WrData[16] write_data[17]=data_WrData[17] write_data[18]=data_WrData[18] write_data[19]=data_WrData[19] write_data[20]=data_WrData[20] write_data[21]=data_WrData[21] write_data[22]=data_WrData[22] write_data[23]=data_WrData[23] write_data[24]=data_WrData[24] write_data[25]=data_WrData[25] write_data[26]=data_WrData[26] write_data[27]=data_WrData[27] write_data[28]=data_WrData[28] write_data[29]=data_WrData[29] write_data[30]=data_WrData[30] write_data[31]=data_WrData[31]
 .attr module_not_derived 00000000000000000000000000000001
-.attr src "toplevel.v:94.11-104.4"
+.attr src "toplevel.v:67.11-77.4"
 .subckt instruction_memory addr[0]=inst_in[0] addr[1]=inst_in[1] addr[2]=inst_in[2] addr[3]=inst_in[3] addr[4]=inst_in[4] addr[5]=inst_in[5] addr[6]=inst_in[6] addr[7]=inst_in[7] addr[8]=inst_in[8] addr[9]=inst_in[9] addr[10]=inst_in[10] addr[11]=inst_in[11] addr[12]=inst_in[12] addr[13]=inst_in[13] addr[14]=inst_in[14] addr[15]=inst_in[15] addr[16]=inst_in[16] addr[17]=inst_in[17] addr[18]=inst_in[18] addr[19]=inst_in[19] addr[20]=inst_in[20] addr[21]=inst_in[21] addr[22]=inst_in[22] addr[23]=inst_in[23] addr[24]=inst_in[24] addr[25]=inst_in[25] addr[26]=inst_in[26] addr[27]=inst_in[27] addr[28]=inst_in[28] addr[29]=inst_in[29] addr[30]=inst_in[30] addr[31]=inst_in[31] out[0]=inst_out[0] out[1]=inst_out[1] out[2]=inst_out[2] out[3]=inst_out[3] out[4]=inst_out[4] out[5]=inst_out[5] out[6]=inst_out[6] out[7]=inst_out[7] out[8]=inst_out[8] out[9]=inst_out[9] out[10]=inst_out[10] out[11]=inst_out[11] out[12]=inst_out[12] out[13]=inst_out[13] out[14]=inst_out[14] out[15]=inst_out[15] out[16]=inst_out[16] out[17]=inst_out[17] out[18]=inst_out[18] out[19]=inst_out[19] out[20]=inst_out[20] out[21]=inst_out[21] out[22]=inst_out[22] out[23]=inst_out[23] out[24]=inst_out[24] out[25]=inst_out[25] out[26]=inst_out[26] out[27]=inst_out[27] out[28]=inst_out[28] out[29]=inst_out[29] out[30]=inst_out[30] out[31]=inst_out[31]
 .attr module_not_derived 00000000000000000000000000000001
-.attr src "toplevel.v:89.21-92.3"
+.attr src "toplevel.v:62.21-65.3"
 .subckt cpu clk=clk_proc data_mem_WrData[0]=data_WrData[0] data_mem_WrData[1]=data_WrData[1] data_mem_WrData[2]=data_WrData[2] data_mem_WrData[3]=data_WrData[3] data_mem_WrData[4]=data_WrData[4] data_mem_WrData[5]=data_WrData[5] data_mem_WrData[6]=data_WrData[6] data_mem_WrData[7]=data_WrData[7] data_mem_WrData[8]=data_WrData[8] data_mem_WrData[9]=data_WrData[9] data_mem_WrData[10]=data_WrData[10] data_mem_WrData[11]=data_WrData[11] data_mem_WrData[12]=data_WrData[12] data_mem_WrData[13]=data_WrData[13] data_mem_WrData[14]=data_WrData[14] data_mem_WrData[15]=data_WrData[15] data_mem_WrData[16]=data_WrData[16] data_mem_WrData[17]=data_WrData[17] data_mem_WrData[18]=data_WrData[18] data_mem_WrData[19]=data_WrData[19] data_mem_WrData[20]=data_WrData[20] data_mem_WrData[21]=data_WrData[21] data_mem_WrData[22]=data_WrData[22] data_mem_WrData[23]=data_WrData[23] data_mem_WrData[24]=data_WrData[24] data_mem_WrData[25]=data_WrData[25] data_mem_WrData[26]=data_WrData[26] data_mem_WrData[27]=data_WrData[27] data_mem_WrData[28]=data_WrData[28] data_mem_WrData[29]=data_WrData[29] data_mem_WrData[30]=data_WrData[30] data_mem_WrData[31]=data_WrData[31] data_mem_addr[0]=data_addr[0] data_mem_addr[1]=data_addr[1] data_mem_addr[2]=data_addr[2] data_mem_addr[3]=data_addr[3] data_mem_addr[4]=data_addr[4] data_mem_addr[5]=data_addr[5] data_mem_addr[6]=data_addr[6] data_mem_addr[7]=data_addr[7] data_mem_addr[8]=data_addr[8] data_mem_addr[9]=data_addr[9] data_mem_addr[10]=data_addr[10] data_mem_addr[11]=data_addr[11] data_mem_addr[12]=data_addr[12] data_mem_addr[13]=data_addr[13] data_mem_addr[14]=data_addr[14] data_mem_addr[15]=data_addr[15] data_mem_addr[16]=data_addr[16] data_mem_addr[17]=data_addr[17] data_mem_addr[18]=data_addr[18] data_mem_addr[19]=data_addr[19] data_mem_addr[20]=data_addr[20] data_mem_addr[21]=data_addr[21] data_mem_addr[22]=data_addr[22] data_mem_addr[23]=data_addr[23] data_mem_addr[24]=data_addr[24] data_mem_addr[25]=data_addr[25] data_mem_addr[26]=data_addr[26] data_mem_addr[27]=data_addr[27] data_mem_addr[28]=data_addr[28] data_mem_addr[29]=data_addr[29] data_mem_addr[30]=data_addr[30] data_mem_addr[31]=data_addr[31] data_mem_memread=data_memread data_mem_memwrite=data_memwrite data_mem_out[0]=data_out[0] data_mem_out[1]=data_out[1] data_mem_out[2]=data_out[2] data_mem_out[3]=data_out[3] data_mem_out[4]=data_out[4] data_mem_out[5]=data_out[5] data_mem_out[6]=data_out[6] data_mem_out[7]=data_out[7] data_mem_out[8]=data_out[8] data_mem_out[9]=data_out[9] data_mem_out[10]=data_out[10] data_mem_out[11]=data_out[11] data_mem_out[12]=data_out[12] data_mem_out[13]=data_out[13] data_mem_out[14]=data_out[14] data_mem_out[15]=data_out[15] data_mem_out[16]=data_out[16] data_mem_out[17]=data_out[17] data_mem_out[18]=data_out[18] data_mem_out[19]=data_out[19] data_mem_out[20]=data_out[20] data_mem_out[21]=data_out[21] data_mem_out[22]=data_out[22] data_mem_out[23]=data_out[23] data_mem_out[24]=data_out[24] data_mem_out[25]=data_out[25] data_mem_out[26]=data_out[26] data_mem_out[27]=data_out[27] data_mem_out[28]=data_out[28] data_mem_out[29]=data_out[29] data_mem_out[30]=data_out[30] data_mem_out[31]=data_out[31] data_mem_sign_mask[0]=data_sign_mask[0] data_mem_sign_mask[1]=data_sign_mask[1] data_mem_sign_mask[2]=data_sign_mask[2] data_mem_sign_mask[3]=data_sign_mask[3] inst_mem_in[0]=inst_in[0] inst_mem_in[1]=inst_in[1] inst_mem_in[2]=inst_in[2] inst_mem_in[3]=inst_in[3] inst_mem_in[4]=inst_in[4] inst_mem_in[5]=inst_in[5] inst_mem_in[6]=inst_in[6] inst_mem_in[7]=inst_in[7] inst_mem_in[8]=inst_in[8] inst_mem_in[9]=inst_in[9] inst_mem_in[10]=inst_in[10] inst_mem_in[11]=inst_in[11] inst_mem_in[12]=inst_in[12] inst_mem_in[13]=inst_in[13] inst_mem_in[14]=inst_in[14] inst_mem_in[15]=inst_in[15] inst_mem_in[16]=inst_in[16] inst_mem_in[17]=inst_in[17] inst_mem_in[18]=inst_in[18] inst_mem_in[19]=inst_in[19] inst_mem_in[20]=inst_in[20] inst_mem_in[21]=inst_in[21] inst_mem_in[22]=inst_in[22] inst_mem_in[23]=inst_in[23] inst_mem_in[24]=inst_in[24] inst_mem_in[25]=inst_in[25] inst_mem_in[26]=inst_in[26] inst_mem_in[27]=inst_in[27] inst_mem_in[28]=inst_in[28] inst_mem_in[29]=inst_in[29] inst_mem_in[30]=inst_in[30] inst_mem_in[31]=inst_in[31] inst_mem_out[0]=inst_out[0] inst_mem_out[1]=inst_out[1] inst_mem_out[2]=inst_out[2] inst_mem_out[3]=inst_out[3] inst_mem_out[4]=inst_out[4] inst_mem_out[5]=inst_out[5] inst_mem_out[6]=inst_out[6] inst_mem_out[7]=inst_out[7] inst_mem_out[8]=inst_out[8] inst_mem_out[9]=inst_out[9] inst_mem_out[10]=inst_out[10] inst_mem_out[11]=inst_out[11] inst_mem_out[12]=inst_out[12] inst_mem_out[13]=inst_out[13] inst_mem_out[14]=inst_out[14] inst_mem_out[15]=inst_out[15] inst_mem_out[16]=inst_out[16] inst_mem_out[17]=inst_out[17] inst_mem_out[18]=inst_out[18] inst_mem_out[19]=inst_out[19] inst_mem_out[20]=inst_out[20] inst_mem_out[21]=inst_out[21] inst_mem_out[22]=inst_out[22] inst_mem_out[23]=inst_out[23] inst_mem_out[24]=inst_out[24] inst_mem_out[25]=inst_out[25] inst_mem_out[26]=inst_out[26] inst_mem_out[27]=inst_out[27] inst_mem_out[28]=inst_out[28] inst_mem_out[29]=inst_out[29] inst_mem_out[30]=inst_out[30] inst_mem_out[31]=inst_out[31]
 .attr module_not_derived 00000000000000000000000000000001
-.attr src "toplevel.v:77.6-87.3"
+.attr src "toplevel.v:50.6-60.3"
+.gate SB_PLL40_CORE BYPASS=$false LOCK=locked PLLOUTCORE=clk_pll REFERENCECLK=clk_hf RESETB=$true
+.attr module_not_derived 00000000000000000000000000000001
+.attr src "toplevel.v:29.5-35.3"
+.param DIVF 1010100
+.param DIVQ 110
+.param DIVR 0000
+.param FEEDBACK_PATH "SIMPLE"
+.param FILTER_RANGE 001
 .names $true CLKHF_POWERUP
 1 1
 .names $true ENCLKHF
@@ -2558,198 +2566,198 @@
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "/usr/local/bin/../share/yosys/ice40/cells_map.v:51.34-52.52"
 .param LUT_INIT 1111001100110000
-.gate SB_LUT4 I0=$false I1=in_addr[19] I2=offset[19] I3=branch_addr_SB_LUT4_O_I3[19] O=branch_addr[19]
+.gate SB_LUT4 I0=$false I1=offset[19] I2=in_addr[19] I3=branch_addr_SB_LUT4_O_I3[19] O=branch_addr[19]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[18] I2=offset[18] I3=branch_addr_SB_LUT4_O_I3[18] O=branch_addr[18]
+.gate SB_LUT4 I0=$false I1=offset[18] I2=in_addr[18] I3=branch_addr_SB_LUT4_O_I3[18] O=branch_addr[18]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[0] I2=offset[0] I3=$false O=branch_addr[0]
+.gate SB_LUT4 I0=$false I1=offset[0] I2=in_addr[0] I3=$false O=branch_addr[0]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[9] I2=offset[9] I3=branch_addr_SB_LUT4_O_I3[9] O=branch_addr[9]
+.gate SB_LUT4 I0=$false I1=offset[9] I2=in_addr[9] I3=branch_addr_SB_LUT4_O_I3[9] O=branch_addr[9]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[8] I2=offset[8] I3=branch_addr_SB_LUT4_O_I3[8] O=branch_addr[8]
+.gate SB_LUT4 I0=$false I1=offset[8] I2=in_addr[8] I3=branch_addr_SB_LUT4_O_I3[8] O=branch_addr[8]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[7] I2=offset[7] I3=branch_addr_SB_LUT4_O_I3[7] O=branch_addr[7]
+.gate SB_LUT4 I0=$false I1=offset[7] I2=in_addr[7] I3=branch_addr_SB_LUT4_O_I3[7] O=branch_addr[7]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[6] I2=offset[6] I3=branch_addr_SB_LUT4_O_I3[6] O=branch_addr[6]
+.gate SB_LUT4 I0=$false I1=offset[6] I2=in_addr[6] I3=branch_addr_SB_LUT4_O_I3[6] O=branch_addr[6]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[5] I2=offset[5] I3=branch_addr_SB_LUT4_O_I3[5] O=branch_addr[5]
+.gate SB_LUT4 I0=$false I1=offset[5] I2=in_addr[5] I3=branch_addr_SB_LUT4_O_I3[5] O=branch_addr[5]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[4] I2=offset[4] I3=branch_addr_SB_LUT4_O_I3[4] O=branch_addr[4]
+.gate SB_LUT4 I0=$false I1=offset[4] I2=in_addr[4] I3=branch_addr_SB_LUT4_O_I3[4] O=branch_addr[4]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[3] I2=offset[3] I3=branch_addr_SB_LUT4_O_I3[3] O=branch_addr[3]
+.gate SB_LUT4 I0=$false I1=offset[3] I2=in_addr[3] I3=branch_addr_SB_LUT4_O_I3[3] O=branch_addr[3]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[31] I2=offset[31] I3=branch_addr_SB_LUT4_O_I3[31] O=branch_addr[31]
+.gate SB_LUT4 I0=$false I1=offset[31] I2=in_addr[31] I3=branch_addr_SB_LUT4_O_I3[31] O=branch_addr[31]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[30] I2=offset[30] I3=branch_addr_SB_LUT4_O_I3[30] O=branch_addr[30]
+.gate SB_LUT4 I0=$false I1=offset[30] I2=in_addr[30] I3=branch_addr_SB_LUT4_O_I3[30] O=branch_addr[30]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[17] I2=offset[17] I3=branch_addr_SB_LUT4_O_I3[17] O=branch_addr[17]
+.gate SB_LUT4 I0=$false I1=offset[17] I2=in_addr[17] I3=branch_addr_SB_LUT4_O_I3[17] O=branch_addr[17]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[2] I2=offset[2] I3=branch_addr_SB_LUT4_O_I3[2] O=branch_addr[2]
+.gate SB_LUT4 I0=$false I1=offset[2] I2=in_addr[2] I3=branch_addr_SB_LUT4_O_I3[2] O=branch_addr[2]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[29] I2=offset[29] I3=branch_addr_SB_LUT4_O_I3[29] O=branch_addr[29]
+.gate SB_LUT4 I0=$false I1=offset[29] I2=in_addr[29] I3=branch_addr_SB_LUT4_O_I3[29] O=branch_addr[29]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[28] I2=offset[28] I3=branch_addr_SB_LUT4_O_I3[28] O=branch_addr[28]
+.gate SB_LUT4 I0=$false I1=offset[28] I2=in_addr[28] I3=branch_addr_SB_LUT4_O_I3[28] O=branch_addr[28]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[27] I2=offset[27] I3=branch_addr_SB_LUT4_O_I3[27] O=branch_addr[27]
+.gate SB_LUT4 I0=$false I1=offset[27] I2=in_addr[27] I3=branch_addr_SB_LUT4_O_I3[27] O=branch_addr[27]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[26] I2=offset[26] I3=branch_addr_SB_LUT4_O_I3[26] O=branch_addr[26]
+.gate SB_LUT4 I0=$false I1=offset[26] I2=in_addr[26] I3=branch_addr_SB_LUT4_O_I3[26] O=branch_addr[26]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[25] I2=offset[25] I3=branch_addr_SB_LUT4_O_I3[25] O=branch_addr[25]
+.gate SB_LUT4 I0=$false I1=offset[25] I2=in_addr[25] I3=branch_addr_SB_LUT4_O_I3[25] O=branch_addr[25]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[24] I2=offset[24] I3=branch_addr_SB_LUT4_O_I3[24] O=branch_addr[24]
+.gate SB_LUT4 I0=$false I1=offset[24] I2=in_addr[24] I3=branch_addr_SB_LUT4_O_I3[24] O=branch_addr[24]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[23] I2=offset[23] I3=branch_addr_SB_LUT4_O_I3[23] O=branch_addr[23]
+.gate SB_LUT4 I0=$false I1=offset[23] I2=in_addr[23] I3=branch_addr_SB_LUT4_O_I3[23] O=branch_addr[23]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[22] I2=offset[22] I3=branch_addr_SB_LUT4_O_I3[22] O=branch_addr[22]
+.gate SB_LUT4 I0=$false I1=offset[22] I2=in_addr[22] I3=branch_addr_SB_LUT4_O_I3[22] O=branch_addr[22]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[21] I2=offset[21] I3=branch_addr_SB_LUT4_O_I3[21] O=branch_addr[21]
+.gate SB_LUT4 I0=$false I1=offset[21] I2=in_addr[21] I3=branch_addr_SB_LUT4_O_I3[21] O=branch_addr[21]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[16] I2=offset[16] I3=branch_addr_SB_LUT4_O_I3[16] O=branch_addr[16]
+.gate SB_LUT4 I0=$false I1=offset[16] I2=in_addr[16] I3=branch_addr_SB_LUT4_O_I3[16] O=branch_addr[16]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[20] I2=offset[20] I3=branch_addr_SB_LUT4_O_I3[20] O=branch_addr[20]
+.gate SB_LUT4 I0=$false I1=offset[20] I2=in_addr[20] I3=branch_addr_SB_LUT4_O_I3[20] O=branch_addr[20]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[1] I2=offset[1] I3=branch_addr_SB_LUT4_O_I3[1] O=branch_addr[1]
+.gate SB_LUT4 I0=$false I1=offset[1] I2=in_addr[1] I3=branch_addr_SB_LUT4_O_I3[1] O=branch_addr[1]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[15] I2=offset[15] I3=branch_addr_SB_LUT4_O_I3[15] O=branch_addr[15]
+.gate SB_LUT4 I0=$false I1=offset[15] I2=in_addr[15] I3=branch_addr_SB_LUT4_O_I3[15] O=branch_addr[15]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[14] I2=offset[14] I3=branch_addr_SB_LUT4_O_I3[14] O=branch_addr[14]
+.gate SB_LUT4 I0=$false I1=offset[14] I2=in_addr[14] I3=branch_addr_SB_LUT4_O_I3[14] O=branch_addr[14]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[13] I2=offset[13] I3=branch_addr_SB_LUT4_O_I3[13] O=branch_addr[13]
+.gate SB_LUT4 I0=$false I1=offset[13] I2=in_addr[13] I3=branch_addr_SB_LUT4_O_I3[13] O=branch_addr[13]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[12] I2=offset[12] I3=branch_addr_SB_LUT4_O_I3[12] O=branch_addr[12]
+.gate SB_LUT4 I0=$false I1=offset[12] I2=in_addr[12] I3=branch_addr_SB_LUT4_O_I3[12] O=branch_addr[12]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[11] I2=offset[11] I3=branch_addr_SB_LUT4_O_I3[11] O=branch_addr[11]
+.gate SB_LUT4 I0=$false I1=offset[11] I2=in_addr[11] I3=branch_addr_SB_LUT4_O_I3[11] O=branch_addr[11]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=in_addr[10] I2=offset[10] I3=branch_addr_SB_LUT4_O_I3[10] O=branch_addr[10]
+.gate SB_LUT4 I0=$false I1=offset[10] I2=in_addr[10] I3=branch_addr_SB_LUT4_O_I3[10] O=branch_addr[10]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
 .gate SB_DFFN C=clk D=branch_mem_sig Q=branch_mem_sig_reg
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/branch_predictor.v:54.5-56.8|/usr/local/bin/../share/yosys/ice40/cells_map.v:1.51-1.90"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[9] CO=branch_addr_SB_LUT4_O_I3[10] I0=in_addr[9] I1=offset[9]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[9] CO=branch_addr_SB_LUT4_O_I3[10] I0=offset[9] I1=in_addr[9]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[8] CO=branch_addr_SB_LUT4_O_I3[9] I0=in_addr[8] I1=offset[8]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[8] CO=branch_addr_SB_LUT4_O_I3[9] I0=offset[8] I1=in_addr[8]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[28] CO=branch_addr_SB_LUT4_O_I3[29] I0=in_addr[28] I1=offset[28]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[28] CO=branch_addr_SB_LUT4_O_I3[29] I0=offset[28] I1=in_addr[28]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[27] CO=branch_addr_SB_LUT4_O_I3[28] I0=in_addr[27] I1=offset[27]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[27] CO=branch_addr_SB_LUT4_O_I3[28] I0=offset[27] I1=in_addr[27]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[26] CO=branch_addr_SB_LUT4_O_I3[27] I0=in_addr[26] I1=offset[26]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[26] CO=branch_addr_SB_LUT4_O_I3[27] I0=offset[26] I1=in_addr[26]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[25] CO=branch_addr_SB_LUT4_O_I3[26] I0=in_addr[25] I1=offset[25]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[25] CO=branch_addr_SB_LUT4_O_I3[26] I0=offset[25] I1=in_addr[25]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[24] CO=branch_addr_SB_LUT4_O_I3[25] I0=in_addr[24] I1=offset[24]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[24] CO=branch_addr_SB_LUT4_O_I3[25] I0=offset[24] I1=in_addr[24]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[23] CO=branch_addr_SB_LUT4_O_I3[24] I0=in_addr[23] I1=offset[23]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[23] CO=branch_addr_SB_LUT4_O_I3[24] I0=offset[23] I1=in_addr[23]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[22] CO=branch_addr_SB_LUT4_O_I3[23] I0=in_addr[22] I1=offset[22]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[22] CO=branch_addr_SB_LUT4_O_I3[23] I0=offset[22] I1=in_addr[22]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[21] CO=branch_addr_SB_LUT4_O_I3[22] I0=in_addr[21] I1=offset[21]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[21] CO=branch_addr_SB_LUT4_O_I3[22] I0=offset[21] I1=in_addr[21]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[20] CO=branch_addr_SB_LUT4_O_I3[21] I0=in_addr[20] I1=offset[20]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[20] CO=branch_addr_SB_LUT4_O_I3[21] I0=offset[20] I1=in_addr[20]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[1] CO=branch_addr_SB_LUT4_O_I3[2] I0=in_addr[1] I1=offset[1]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[1] CO=branch_addr_SB_LUT4_O_I3[2] I0=offset[1] I1=in_addr[1]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[7] CO=branch_addr_SB_LUT4_O_I3[8] I0=in_addr[7] I1=offset[7]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[7] CO=branch_addr_SB_LUT4_O_I3[8] I0=offset[7] I1=in_addr[7]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[19] CO=branch_addr_SB_LUT4_O_I3[20] I0=in_addr[19] I1=offset[19]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[19] CO=branch_addr_SB_LUT4_O_I3[20] I0=offset[19] I1=in_addr[19]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[18] CO=branch_addr_SB_LUT4_O_I3[19] I0=in_addr[18] I1=offset[18]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[18] CO=branch_addr_SB_LUT4_O_I3[19] I0=offset[18] I1=in_addr[18]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[17] CO=branch_addr_SB_LUT4_O_I3[18] I0=in_addr[17] I1=offset[17]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[17] CO=branch_addr_SB_LUT4_O_I3[18] I0=offset[17] I1=in_addr[17]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[16] CO=branch_addr_SB_LUT4_O_I3[17] I0=in_addr[16] I1=offset[16]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[16] CO=branch_addr_SB_LUT4_O_I3[17] I0=offset[16] I1=in_addr[16]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[15] CO=branch_addr_SB_LUT4_O_I3[16] I0=in_addr[15] I1=offset[15]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[15] CO=branch_addr_SB_LUT4_O_I3[16] I0=offset[15] I1=in_addr[15]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[14] CO=branch_addr_SB_LUT4_O_I3[15] I0=in_addr[14] I1=offset[14]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[14] CO=branch_addr_SB_LUT4_O_I3[15] I0=offset[14] I1=in_addr[14]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[13] CO=branch_addr_SB_LUT4_O_I3[14] I0=in_addr[13] I1=offset[13]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[13] CO=branch_addr_SB_LUT4_O_I3[14] I0=offset[13] I1=in_addr[13]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[12] CO=branch_addr_SB_LUT4_O_I3[13] I0=in_addr[12] I1=offset[12]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[12] CO=branch_addr_SB_LUT4_O_I3[13] I0=offset[12] I1=in_addr[12]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[11] CO=branch_addr_SB_LUT4_O_I3[12] I0=in_addr[11] I1=offset[11]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[11] CO=branch_addr_SB_LUT4_O_I3[12] I0=offset[11] I1=in_addr[11]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[10] CO=branch_addr_SB_LUT4_O_I3[11] I0=in_addr[10] I1=offset[10]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[10] CO=branch_addr_SB_LUT4_O_I3[11] I0=offset[10] I1=in_addr[10]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[6] CO=branch_addr_SB_LUT4_O_I3[7] I0=in_addr[6] I1=offset[6]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[6] CO=branch_addr_SB_LUT4_O_I3[7] I0=offset[6] I1=in_addr[6]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=$false CO=branch_addr_SB_LUT4_O_I3[1] I0=in_addr[0] I1=offset[0]
+.gate SB_CARRY CI=$false CO=branch_addr_SB_LUT4_O_I3[1] I0=offset[0] I1=in_addr[0]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[5] CO=branch_addr_SB_LUT4_O_I3[6] I0=in_addr[5] I1=offset[5]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[5] CO=branch_addr_SB_LUT4_O_I3[6] I0=offset[5] I1=in_addr[5]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[4] CO=branch_addr_SB_LUT4_O_I3[5] I0=in_addr[4] I1=offset[4]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[4] CO=branch_addr_SB_LUT4_O_I3[5] I0=offset[4] I1=in_addr[4]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[3] CO=branch_addr_SB_LUT4_O_I3[4] I0=in_addr[3] I1=offset[3]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[3] CO=branch_addr_SB_LUT4_O_I3[4] I0=offset[3] I1=in_addr[3]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[30] CO=branch_addr_SB_LUT4_O_I3[31] I0=in_addr[30] I1=offset[30]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[30] CO=branch_addr_SB_LUT4_O_I3[31] I0=offset[30] I1=in_addr[30]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[2] CO=branch_addr_SB_LUT4_O_I3[3] I0=in_addr[2] I1=offset[2]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[2] CO=branch_addr_SB_LUT4_O_I3[3] I0=offset[2] I1=in_addr[2]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[29] CO=branch_addr_SB_LUT4_O_I3[30] I0=in_addr[29] I1=offset[29]
+.gate SB_CARRY CI=branch_addr_SB_LUT4_O_I3[29] CO=branch_addr_SB_LUT4_O_I3[30] I0=offset[29] I1=in_addr[29]
 .attr src "verilog/branch_predictor.v:70|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
 .gate SB_LUT4 I0=$false I1=$false I2=s[1] I3=branch_decode_sig O=prediction
 .attr module_not_derived 00000000000000000000000000000001
@@ -5692,193 +5700,193 @@
 .names $true
 1
 .names $undef
-.gate SB_CARRY CI=carry_in CO=carry_in_SB_CARRY_CI_CO[1] I0=input2[0] I1=input1[0]
+.gate SB_CARRY CI=carry_in CO=carry_in_SB_CARRY_CI_CO[1] I0=input1[0] I1=input2[0]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[9] CO=carry_in_SB_CARRY_CI_CO[10] I0=input2[9] I1=input1[9]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[9] CO=carry_in_SB_CARRY_CI_CO[10] I0=input1[9] I1=input2[9]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[8] CO=carry_in_SB_CARRY_CI_CO[9] I0=input2[8] I1=input1[8]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[8] CO=carry_in_SB_CARRY_CI_CO[9] I0=input1[8] I1=input2[8]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[28] CO=carry_in_SB_CARRY_CI_CO[29] I0=input2[28] I1=input1[28]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[28] CO=carry_in_SB_CARRY_CI_CO[29] I0=input1[28] I1=input2[28]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[27] CO=carry_in_SB_CARRY_CI_CO[28] I0=input2[27] I1=input1[27]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[27] CO=carry_in_SB_CARRY_CI_CO[28] I0=input1[27] I1=input2[27]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[26] CO=carry_in_SB_CARRY_CI_CO[27] I0=input2[26] I1=input1[26]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[26] CO=carry_in_SB_CARRY_CI_CO[27] I0=input1[26] I1=input2[26]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[25] CO=carry_in_SB_CARRY_CI_CO[26] I0=input2[25] I1=input1[25]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[25] CO=carry_in_SB_CARRY_CI_CO[26] I0=input1[25] I1=input2[25]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[24] CO=carry_in_SB_CARRY_CI_CO[25] I0=input2[24] I1=input1[24]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[24] CO=carry_in_SB_CARRY_CI_CO[25] I0=input1[24] I1=input2[24]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[23] CO=carry_in_SB_CARRY_CI_CO[24] I0=input2[23] I1=input1[23]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[23] CO=carry_in_SB_CARRY_CI_CO[24] I0=input1[23] I1=input2[23]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[22] CO=carry_in_SB_CARRY_CI_CO[23] I0=input2[22] I1=input1[22]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[22] CO=carry_in_SB_CARRY_CI_CO[23] I0=input1[22] I1=input2[22]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[21] CO=carry_in_SB_CARRY_CI_CO[22] I0=input2[21] I1=input1[21]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[21] CO=carry_in_SB_CARRY_CI_CO[22] I0=input1[21] I1=input2[21]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[20] CO=carry_in_SB_CARRY_CI_CO[21] I0=input2[20] I1=input1[20]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[20] CO=carry_in_SB_CARRY_CI_CO[21] I0=input1[20] I1=input2[20]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[1] CO=carry_in_SB_CARRY_CI_CO[2] I0=input2[1] I1=input1[1]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[1] CO=carry_in_SB_CARRY_CI_CO[2] I0=input1[1] I1=input2[1]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[7] CO=carry_in_SB_CARRY_CI_CO[8] I0=input2[7] I1=input1[7]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[7] CO=carry_in_SB_CARRY_CI_CO[8] I0=input1[7] I1=input2[7]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[19] CO=carry_in_SB_CARRY_CI_CO[20] I0=input2[19] I1=input1[19]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[19] CO=carry_in_SB_CARRY_CI_CO[20] I0=input1[19] I1=input2[19]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[18] CO=carry_in_SB_CARRY_CI_CO[19] I0=input2[18] I1=input1[18]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[18] CO=carry_in_SB_CARRY_CI_CO[19] I0=input1[18] I1=input2[18]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[17] CO=carry_in_SB_CARRY_CI_CO[18] I0=input2[17] I1=input1[17]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[17] CO=carry_in_SB_CARRY_CI_CO[18] I0=input1[17] I1=input2[17]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[16] CO=carry_in_SB_CARRY_CI_CO[17] I0=input2[16] I1=input1[16]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[16] CO=carry_in_SB_CARRY_CI_CO[17] I0=input1[16] I1=input2[16]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[15] CO=carry_in_SB_CARRY_CI_CO[16] I0=input2[15] I1=input1[15]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[15] CO=carry_in_SB_CARRY_CI_CO[16] I0=input1[15] I1=input2[15]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[14] CO=carry_in_SB_CARRY_CI_CO[15] I0=input2[14] I1=input1[14]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[14] CO=carry_in_SB_CARRY_CI_CO[15] I0=input1[14] I1=input2[14]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[13] CO=carry_in_SB_CARRY_CI_CO[14] I0=input2[13] I1=input1[13]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[13] CO=carry_in_SB_CARRY_CI_CO[14] I0=input1[13] I1=input2[13]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[12] CO=carry_in_SB_CARRY_CI_CO[13] I0=input2[12] I1=input1[12]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[12] CO=carry_in_SB_CARRY_CI_CO[13] I0=input1[12] I1=input2[12]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[11] CO=carry_in_SB_CARRY_CI_CO[12] I0=input2[11] I1=input1[11]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[11] CO=carry_in_SB_CARRY_CI_CO[12] I0=input1[11] I1=input2[11]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[10] CO=carry_in_SB_CARRY_CI_CO[11] I0=input2[10] I1=input1[10]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[10] CO=carry_in_SB_CARRY_CI_CO[11] I0=input1[10] I1=input2[10]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[6] CO=carry_in_SB_CARRY_CI_CO[7] I0=input2[6] I1=input1[6]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[6] CO=carry_in_SB_CARRY_CI_CO[7] I0=input1[6] I1=input2[6]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[5] CO=carry_in_SB_CARRY_CI_CO[6] I0=input2[5] I1=input1[5]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[5] CO=carry_in_SB_CARRY_CI_CO[6] I0=input1[5] I1=input2[5]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[4] CO=carry_in_SB_CARRY_CI_CO[5] I0=input2[4] I1=input1[4]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[4] CO=carry_in_SB_CARRY_CI_CO[5] I0=input1[4] I1=input2[4]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[3] CO=carry_in_SB_CARRY_CI_CO[4] I0=input2[3] I1=input1[3]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[3] CO=carry_in_SB_CARRY_CI_CO[4] I0=input1[3] I1=input2[3]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[30] CO=carry_in_SB_CARRY_CI_CO[31] I0=input2[30] I1=input1[30]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[30] CO=carry_in_SB_CARRY_CI_CO[31] I0=input1[30] I1=input2[30]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[2] CO=carry_in_SB_CARRY_CI_CO[3] I0=input2[2] I1=input1[2]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[2] CO=carry_in_SB_CARRY_CI_CO[3] I0=input1[2] I1=input2[2]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[29] CO=carry_in_SB_CARRY_CI_CO[30] I0=input2[29] I1=input1[29]
+.gate SB_CARRY CI=carry_in_SB_CARRY_CI_CO[29] CO=carry_in_SB_CARRY_CI_CO[30] I0=input1[29] I1=input2[29]
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4"
-.gate SB_LUT4 I0=$false I1=input2[9] I2=input1[9] I3=carry_in_SB_CARRY_CI_CO[9] O=out[9]
+.gate SB_LUT4 I0=$false I1=input1[9] I2=input2[9] I3=carry_in_SB_CARRY_CI_CO[9] O=out[9]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[8] I2=input1[8] I3=carry_in_SB_CARRY_CI_CO[8] O=out[8]
+.gate SB_LUT4 I0=$false I1=input1[8] I2=input2[8] I3=carry_in_SB_CARRY_CI_CO[8] O=out[8]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[29] I2=input1[29] I3=carry_in_SB_CARRY_CI_CO[29] O=out[29]
+.gate SB_LUT4 I0=$false I1=input1[29] I2=input2[29] I3=carry_in_SB_CARRY_CI_CO[29] O=out[29]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[28] I2=input1[28] I3=carry_in_SB_CARRY_CI_CO[28] O=out[28]
+.gate SB_LUT4 I0=$false I1=input1[28] I2=input2[28] I3=carry_in_SB_CARRY_CI_CO[28] O=out[28]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[27] I2=input1[27] I3=carry_in_SB_CARRY_CI_CO[27] O=out[27]
+.gate SB_LUT4 I0=$false I1=input1[27] I2=input2[27] I3=carry_in_SB_CARRY_CI_CO[27] O=out[27]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[26] I2=input1[26] I3=carry_in_SB_CARRY_CI_CO[26] O=out[26]
+.gate SB_LUT4 I0=$false I1=input1[26] I2=input2[26] I3=carry_in_SB_CARRY_CI_CO[26] O=out[26]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[25] I2=input1[25] I3=carry_in_SB_CARRY_CI_CO[25] O=out[25]
+.gate SB_LUT4 I0=$false I1=input1[25] I2=input2[25] I3=carry_in_SB_CARRY_CI_CO[25] O=out[25]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[24] I2=input1[24] I3=carry_in_SB_CARRY_CI_CO[24] O=out[24]
+.gate SB_LUT4 I0=$false I1=input1[24] I2=input2[24] I3=carry_in_SB_CARRY_CI_CO[24] O=out[24]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[23] I2=input1[23] I3=carry_in_SB_CARRY_CI_CO[23] O=out[23]
+.gate SB_LUT4 I0=$false I1=input1[23] I2=input2[23] I3=carry_in_SB_CARRY_CI_CO[23] O=out[23]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[22] I2=input1[22] I3=carry_in_SB_CARRY_CI_CO[22] O=out[22]
+.gate SB_LUT4 I0=$false I1=input1[22] I2=input2[22] I3=carry_in_SB_CARRY_CI_CO[22] O=out[22]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[21] I2=input1[21] I3=carry_in_SB_CARRY_CI_CO[21] O=out[21]
+.gate SB_LUT4 I0=$false I1=input1[21] I2=input2[21] I3=carry_in_SB_CARRY_CI_CO[21] O=out[21]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[20] I2=input1[20] I3=carry_in_SB_CARRY_CI_CO[20] O=out[20]
+.gate SB_LUT4 I0=$false I1=input1[20] I2=input2[20] I3=carry_in_SB_CARRY_CI_CO[20] O=out[20]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[7] I2=input1[7] I3=carry_in_SB_CARRY_CI_CO[7] O=out[7]
+.gate SB_LUT4 I0=$false I1=input1[7] I2=input2[7] I3=carry_in_SB_CARRY_CI_CO[7] O=out[7]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[1] I2=input1[1] I3=carry_in_SB_CARRY_CI_CO[1] O=out[1]
+.gate SB_LUT4 I0=$false I1=input1[1] I2=input2[1] I3=carry_in_SB_CARRY_CI_CO[1] O=out[1]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[19] I2=input1[19] I3=carry_in_SB_CARRY_CI_CO[19] O=out[19]
+.gate SB_LUT4 I0=$false I1=input1[19] I2=input2[19] I3=carry_in_SB_CARRY_CI_CO[19] O=out[19]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[18] I2=input1[18] I3=carry_in_SB_CARRY_CI_CO[18] O=out[18]
+.gate SB_LUT4 I0=$false I1=input1[18] I2=input2[18] I3=carry_in_SB_CARRY_CI_CO[18] O=out[18]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[17] I2=input1[17] I3=carry_in_SB_CARRY_CI_CO[17] O=out[17]
+.gate SB_LUT4 I0=$false I1=input1[17] I2=input2[17] I3=carry_in_SB_CARRY_CI_CO[17] O=out[17]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[16] I2=input1[16] I3=carry_in_SB_CARRY_CI_CO[16] O=out[16]
+.gate SB_LUT4 I0=$false I1=input1[16] I2=input2[16] I3=carry_in_SB_CARRY_CI_CO[16] O=out[16]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[15] I2=input1[15] I3=carry_in_SB_CARRY_CI_CO[15] O=out[15]
+.gate SB_LUT4 I0=$false I1=input1[15] I2=input2[15] I3=carry_in_SB_CARRY_CI_CO[15] O=out[15]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[14] I2=input1[14] I3=carry_in_SB_CARRY_CI_CO[14] O=out[14]
+.gate SB_LUT4 I0=$false I1=input1[14] I2=input2[14] I3=carry_in_SB_CARRY_CI_CO[14] O=out[14]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[13] I2=input1[13] I3=carry_in_SB_CARRY_CI_CO[13] O=out[13]
+.gate SB_LUT4 I0=$false I1=input1[13] I2=input2[13] I3=carry_in_SB_CARRY_CI_CO[13] O=out[13]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[12] I2=input1[12] I3=carry_in_SB_CARRY_CI_CO[12] O=out[12]
+.gate SB_LUT4 I0=$false I1=input1[12] I2=input2[12] I3=carry_in_SB_CARRY_CI_CO[12] O=out[12]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[11] I2=input1[11] I3=carry_in_SB_CARRY_CI_CO[11] O=out[11]
+.gate SB_LUT4 I0=$false I1=input1[11] I2=input2[11] I3=carry_in_SB_CARRY_CI_CO[11] O=out[11]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[6] I2=input1[6] I3=carry_in_SB_CARRY_CI_CO[6] O=out[6]
+.gate SB_LUT4 I0=$false I1=input1[6] I2=input2[6] I3=carry_in_SB_CARRY_CI_CO[6] O=out[6]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[10] I2=input1[10] I3=carry_in_SB_CARRY_CI_CO[10] O=out[10]
+.gate SB_LUT4 I0=$false I1=input1[10] I2=input2[10] I3=carry_in_SB_CARRY_CI_CO[10] O=out[10]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[0] I2=input1[0] I3=carry_in O=out[0]
+.gate SB_LUT4 I0=$false I1=input1[0] I2=input2[0] I3=carry_in O=out[0]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[5] I2=input1[5] I3=carry_in_SB_CARRY_CI_CO[5] O=out[5]
+.gate SB_LUT4 I0=$false I1=input1[5] I2=input2[5] I3=carry_in_SB_CARRY_CI_CO[5] O=out[5]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[4] I2=input1[4] I3=carry_in_SB_CARRY_CI_CO[4] O=out[4]
+.gate SB_LUT4 I0=$false I1=input1[4] I2=input2[4] I3=carry_in_SB_CARRY_CI_CO[4] O=out[4]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[3] I2=input1[3] I3=carry_in_SB_CARRY_CI_CO[3] O=out[3]
+.gate SB_LUT4 I0=$false I1=input1[3] I2=input2[3] I3=carry_in_SB_CARRY_CI_CO[3] O=out[3]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[31] I2=input1[31] I3=carry_in_SB_CARRY_CI_CO[31] O=out[31]
+.gate SB_LUT4 I0=$false I1=input1[31] I2=input2[31] I3=carry_in_SB_CARRY_CI_CO[31] O=out[31]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[30] I2=input1[30] I3=carry_in_SB_CARRY_CI_CO[30] O=out[30]
+.gate SB_LUT4 I0=$false I1=input1[30] I2=input2[30] I3=carry_in_SB_CARRY_CI_CO[30] O=out[30]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
-.gate SB_LUT4 I0=$false I1=input2[2] I2=input1[2] I3=carry_in_SB_CARRY_CI_CO[2] O=out[2]
+.gate SB_LUT4 I0=$false I1=input1[2] I2=input2[2] I3=carry_in_SB_CARRY_CI_CO[2] O=out[2]
 .attr module_not_derived 00000000000000000000000000000001
 .attr src "verilog/adder.v:66|/usr/local/bin/../share/yosys/ice40/arith_map.v:54.5-62.4|/usr/local/bin/../share/yosys/ice40/cells_map.v:55.33-56.52"
 .param LUT_INIT 0110100110010110
